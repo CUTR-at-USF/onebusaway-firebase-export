@@ -19,6 +19,7 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.constants.CSVConstants;
 import edu.usf.cutr.io.CSVFileWriter;
 import edu.usf.cutr.io.FirebaseReader;
+import edu.usf.cutr.model.TravelBehaviorEventTime;
 import edu.usf.cutr.model.TravelBehaviorInfo;
 import edu.usf.cutr.model.TravelBehaviorRecord;
 import edu.usf.cutr.utils.LocationUtils;
@@ -86,7 +87,7 @@ public class TravelBehaviorDataAnalysisManager {
             TravelBehaviorInfo.TravelBehaviorActivity exitActivity = TravelBehaviorUtils.getExitActivity(tbi.activities);
             if (exitActivity != null &&
                     exitActivity.detectedActivity.equals(mLastTravelBehaviorRecord.getGoogleActivity())) {
-                completeTravelBehaviorRecord(tbi, exitActivity);
+                completeTravelBehaviorRecord(tbi);
                 mCSVFileWriter.appendToCsV(mLastTravelBehaviorRecord);
             }
 
@@ -106,11 +107,12 @@ public class TravelBehaviorDataAnalysisManager {
                 setGoogleConfidence(enterActivity.confidenceLevel == null ? null :
                         ((float) enterActivity.confidenceLevel / 100f));
 
-        Long eventTime = enterActivity.eventTimeMillis;
-        if (eventTime != null) {
-            tbr.setStartDate(TravelBehaviorUtils.getDateFromMillis(eventTime)).
-                    setStartTime(TravelBehaviorUtils.getTimeFromMillis(eventTime)).
-                    setStartTimeMillis(eventTime);
+        TravelBehaviorEventTime bestTime = TravelBehaviorUtils.getBestTime(tbi);
+
+        if (bestTime != null) {
+            tbr.setStartDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestTime.getEventTime())).
+                    setStartDateAndTimeSource(bestTime.getTimeType().toString()).
+                    setStartTimeMillis(bestTime.getEventTime());
         }
 
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;
@@ -121,13 +123,12 @@ public class TravelBehaviorDataAnalysisManager {
         return tbr;
     }
 
-    private void completeTravelBehaviorRecord(TravelBehaviorInfo tbi,
-                                              TravelBehaviorInfo.TravelBehaviorActivity exitActivity) {
-        Long eventTime = exitActivity.eventTimeMillis;
-        if (eventTime != null) {
-            mLastTravelBehaviorRecord.setEndDate(TravelBehaviorUtils.getDateFromMillis(eventTime)).
-                    setEndTime(TravelBehaviorUtils.getTimeFromMillis(eventTime)).
-                    setEndTimeMillis(eventTime);
+    private void completeTravelBehaviorRecord(TravelBehaviorInfo tbi) {
+        TravelBehaviorEventTime bestTime = TravelBehaviorUtils.getBestTime(tbi);
+        if (bestTime != null) {
+            mLastTravelBehaviorRecord.setEndDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestTime.getEventTime())).
+                    setEndDateAndTimeSource(bestTime.getTimeType().toString()).
+                    setEndTimeMillis(bestTime.getEventTime());
         }
 
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;

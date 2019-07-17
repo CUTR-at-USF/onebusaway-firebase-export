@@ -9,6 +9,7 @@ public class QueryDocumentSnapshotComparator implements Comparator<QueryDocument
     @Override
     public int compare(QueryDocumentSnapshot o1, QueryDocumentSnapshot o2) {
         try {
+
             int i1 = Integer.valueOf(o1.getReference().getId().split("-")[0]);
             int i2 = Integer.valueOf(o2.getReference().getId().split("-")[0]);
             return i1 - i2;

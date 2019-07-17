@@ -16,6 +16,7 @@
 package edu.usf.cutr.utils;
 
 import edu.usf.cutr.constants.TravelBehaviorConstants;
+import edu.usf.cutr.model.TravelBehaviorEventTime;
 import edu.usf.cutr.model.TravelBehaviorInfo;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ public class TravelBehaviorUtils {
 
     public static TravelBehaviorInfo.TravelBehaviorActivity getEnterActivity(List<TravelBehaviorInfo.
             TravelBehaviorActivity> activities) {
-       return getActivityByType(activities, TravelBehaviorConstants.ACTIVITY_TRANSITION_ENTER);
+        return getActivityByType(activities, TravelBehaviorConstants.ACTIVITY_TRANSITION_ENTER);
     }
 
     public static TravelBehaviorInfo.TravelBehaviorActivity getExitActivity(List<TravelBehaviorInfo.
@@ -34,25 +35,34 @@ public class TravelBehaviorUtils {
         return getActivityByType(activities, TravelBehaviorConstants.ACTIVITY_TRANSITION_EXIT);
     }
 
-    public static String getDateFromMillis(Long millis) {
+    public static String getDateandTimeFromMillis(Long millis) {
         Date date = new Date(millis);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        return sdf.format(date);
-    }
-
-    public static String getTimeFromMillis(Long millis) {
-        Date date = new Date(millis);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
 
     private static TravelBehaviorInfo.TravelBehaviorActivity getActivityByType(List<TravelBehaviorInfo.
             TravelBehaviorActivity> activities, String eventType) {
-        for (TravelBehaviorInfo.TravelBehaviorActivity travelBehaviorActivity: activities) {
+        for (TravelBehaviorInfo.TravelBehaviorActivity travelBehaviorActivity : activities) {
             if (eventType.equals(travelBehaviorActivity.detectedActivityType)) {
                 return travelBehaviorActivity;
             }
         }
+        return null;
+    }
+
+    public static TravelBehaviorEventTime getBestTime(TravelBehaviorInfo travelBehaviorInfo) {
+        if (travelBehaviorInfo.activities != null && travelBehaviorInfo.activities.size() > 0 &&
+                travelBehaviorInfo.activities.get(0).eventTimeMillis != null) {
+            return new TravelBehaviorEventTime(travelBehaviorInfo.activities.get(0).eventTimeMillis,
+                    TravelBehaviorEventTime.TimeType.TRANSITION_EVENT);
+        } else {
+            TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(travelBehaviorInfo.locationInfoList);
+            if (bestLocation != null) {
+                return new TravelBehaviorEventTime(bestLocation.time, TravelBehaviorEventTime.TimeType.LOCATION);
+            }
+        }
+
         return null;
     }
 }

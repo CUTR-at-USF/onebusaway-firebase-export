@@ -22,12 +22,12 @@ public class TravelBehaviorRecord {
     private String mGoogleActivity;
     private Float mGoogleConfidence;
     private String mVehicleType;
-    private String mStartDate;
-    private String mStartTime;
+    private String mStartDateAndTime;
+    private String mStartDateAndTimeSource;
     private Double mStartLat;
     private Double mStartLon;
-    private String mEndDate;
-    private String mEndTime;
+    private String mEndDateAndTime;
+    private String mEndDateAndTimeSource;
     private Double mEndLat;
     private Double mEndLon;
     private Long mActivityDuration;
@@ -89,24 +89,6 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public String getStartDate() {
-        return mStartDate;
-    }
-
-    public TravelBehaviorRecord setStartDate(String startDate) {
-        mStartDate = startDate;
-        return this;
-    }
-
-    public String getStartTime() {
-        return mStartTime;
-    }
-
-    public TravelBehaviorRecord setStartTime(String startTime) {
-        mStartTime = startTime;
-        return this;
-    }
-
     public Double getStartLat() {
         return mStartLat;
     }
@@ -122,24 +104,6 @@ public class TravelBehaviorRecord {
 
     public TravelBehaviorRecord setStartLon(Double startLon) {
         mStartLon = startLon;
-        return this;
-    }
-
-    public String getEndDate() {
-        return mEndDate;
-    }
-
-    public TravelBehaviorRecord setEndDate(String endDate) {
-        mEndDate = endDate;
-        return this;
-    }
-
-    public String getEndTime() {
-        return mEndTime;
-    }
-
-    public TravelBehaviorRecord setEndTime(String endTime) {
-        mEndTime = endTime;
         return this;
     }
 
@@ -206,6 +170,42 @@ public class TravelBehaviorRecord {
         return this;
     }
 
+    public String getStartDateAndTime() {
+        return mStartDateAndTime;
+    }
+
+    public TravelBehaviorRecord setStartDateAndTime(String startDateAndTime) {
+        mStartDateAndTime = startDateAndTime;
+        return this;
+    }
+
+    public String getEndDateAndTime() {
+        return mEndDateAndTime;
+    }
+
+    public TravelBehaviorRecord setEndDateAndTime(String endDateAndTime) {
+        mEndDateAndTime = endDateAndTime;
+        return this;
+    }
+
+    public String getStartDateAndTimeSource() {
+        return mStartDateAndTimeSource;
+    }
+
+    public TravelBehaviorRecord setStartDateAndTimeSource(String startDateAndTimeSource) {
+        mStartDateAndTimeSource = startDateAndTimeSource;
+        return this;
+    }
+
+    public String getEndDateAndTimeSource() {
+        return mEndDateAndTimeSource;
+    }
+
+    public TravelBehaviorRecord setEndDateAndTimeSource(String endDateAndTimeSource) {
+        mEndDateAndTimeSource = endDateAndTimeSource;
+        return this;
+    }
+
     public Long getStartTimeMillis() {
         return startTimeMillis;
     }
@@ -226,8 +226,8 @@ public class TravelBehaviorRecord {
 
     public String[] toStringArray() {
         return new String[]{mUserId, mTripId, mGoogleActivity, String.valueOf(mGoogleConfidence), mVehicleType,
-                mStartDate, mStartTime, String.valueOf(mStartLat), String.valueOf(mStartLon), mEndDate, mEndTime,
-                String.valueOf(mEndLat), String.valueOf(mEndLon), String.valueOf(mActivityDuration),
+                mStartDateAndTime, mStartDateAndTimeSource, String.valueOf(mStartLat), String.valueOf(mStartLon), mEndDateAndTime,
+                mEndDateAndTimeSource, String.valueOf(mEndLat), String.valueOf(mEndLon), String.valueOf(mActivityDuration),
                 String.valueOf(mChainId), String.valueOf(mChainIndex), String.valueOf(mTourId), String.valueOf(mTourId)};
     }
 }
