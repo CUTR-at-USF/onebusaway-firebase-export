@@ -38,6 +38,8 @@ public class TravelBehaviorDataAnalysisManager {
 
     private TravelBehaviorRecord mLastTravelBehaviorRecord;
 
+    private int mTripId = 0;
+
     public TravelBehaviorDataAnalysisManager() {
         mFirebaseReader = new FirebaseReader();
         mCSVFileWriter = new CSVFileWriter();
@@ -68,25 +70,25 @@ public class TravelBehaviorDataAnalysisManager {
         Collections.sort(userInfoById, new QueryDocumentSnapshotComparator());
 
         mLastTravelBehaviorRecord = null;
-        int tripId = 0;
 
         for (QueryDocumentSnapshot doc : userInfoById) {
-            processUserActivityTransitionData(doc, userId, tripId++);
+            processUserActivityTransitionData(doc, userId);
         }
     }
 
-    private void processUserActivityTransitionData(QueryDocumentSnapshot doc, String userId, int tripId) {
+    private void processUserActivityTransitionData(QueryDocumentSnapshot doc, String userId) {
         TravelBehaviorInfo tbi = doc.toObject(TravelBehaviorInfo.class);
         if (mLastTravelBehaviorRecord == null) {
             TravelBehaviorInfo.TravelBehaviorActivity enterActivity = TravelBehaviorUtils.getEnterActivity(tbi.activities);
             if (enterActivity != null) {
-                mLastTravelBehaviorRecord = createTravelBehaviorRecord(userId, tripId, tbi, enterActivity);
+                mLastTravelBehaviorRecord = createTravelBehaviorRecord(userId, tbi, enterActivity);
             }
         } else {
             TravelBehaviorInfo.TravelBehaviorActivity exitActivity = TravelBehaviorUtils.getExitActivity(tbi.activities);
             if (exitActivity != null &&
                     exitActivity.detectedActivity.equals(mLastTravelBehaviorRecord.getGoogleActivity())) {
                 completeTravelBehaviorRecord(tbi);
+                mLastTravelBehaviorRecord.setTripId(String.valueOf(mTripId++));
                 mCSVFileWriter.appendToCsV(mLastTravelBehaviorRecord);
             }
 
@@ -94,15 +96,15 @@ public class TravelBehaviorDataAnalysisManager {
 
             TravelBehaviorInfo.TravelBehaviorActivity enterActivity = TravelBehaviorUtils.getEnterActivity(tbi.activities);
             if (enterActivity != null) {
-                mLastTravelBehaviorRecord = createTravelBehaviorRecord(userId, tripId, tbi, enterActivity);
+                mLastTravelBehaviorRecord = createTravelBehaviorRecord(userId, tbi, enterActivity);
             }
         }
     }
 
-    private TravelBehaviorRecord createTravelBehaviorRecord(String userId, int tripId, TravelBehaviorInfo tbi,
+    private TravelBehaviorRecord createTravelBehaviorRecord(String userId, TravelBehaviorInfo tbi,
                                                             TravelBehaviorInfo.TravelBehaviorActivity enterActivity) {
         TravelBehaviorRecord tbr = new TravelBehaviorRecord(userId);
-        tbr.setTripId(tripId + "").setGoogleActivity(enterActivity.detectedActivity).
+        tbr.setGoogleActivity(enterActivity.detectedActivity).
                 setGoogleConfidence(enterActivity.confidenceLevel == null ? null :
                         ((float) enterActivity.confidenceLevel / 100f));
 
