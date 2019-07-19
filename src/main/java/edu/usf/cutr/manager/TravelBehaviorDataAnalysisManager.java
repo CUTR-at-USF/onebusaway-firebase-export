@@ -16,7 +16,6 @@
 package edu.usf.cutr.manager;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
-import edu.usf.cutr.constants.CSVConstants;
 import edu.usf.cutr.io.CSVFileWriter;
 import edu.usf.cutr.io.FirebaseReader;
 import edu.usf.cutr.model.TravelBehaviorEventTime;
@@ -48,7 +47,7 @@ public class TravelBehaviorDataAnalysisManager {
 
     public void processData() {
         // create csv file and add the header
-        mCSVFileWriter.createHeader(CSVConstants.CSV_HEADER);
+        mCSVFileWriter.createHeader(TravelBehaviorRecord.CSV_HEADER);
 
         // analyze all data and append the data in the csv file
         analyzeAllTravelBehaviorData();
@@ -118,7 +117,9 @@ public class TravelBehaviorDataAnalysisManager {
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;
         TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList);
         if (bestLocation != null) {
-            tbr.setStartLat(bestLocation.getLat()).setStartLon(bestLocation.getLon());
+            tbr.setStartLat(bestLocation.getLat()).setStartLon(bestLocation.getLon()).
+                    setOriginLocationDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestLocation.time)).
+                    setOriginHorAccuracy(bestLocation.accuracy).setOriginProvider(bestLocation.provider);
         }
         return tbr;
     }
@@ -134,7 +135,9 @@ public class TravelBehaviorDataAnalysisManager {
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;
         TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList);
         if (bestLocation != null) {
-            mLastTravelBehaviorRecord.setEndLat(bestLocation.getLat()).setEndLon(bestLocation.getLon());
+            mLastTravelBehaviorRecord.setEndLat(bestLocation.getLat()).setEndLon(bestLocation.getLon()).
+                    setDestinationLocationDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestLocation.time)).
+                    setDestinationHorAccuracy(bestLocation.accuracy).setDestinationProvider(bestLocation.provider );
         }
 
         if (mLastTravelBehaviorRecord.getStartTimeMillis() != null && mLastTravelBehaviorRecord.getEndTimeMillis() != null) {

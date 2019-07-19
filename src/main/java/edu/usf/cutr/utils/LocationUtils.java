@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class LocationUtils {
-    public static final long TIME_THRESHOLD = TimeUnit.MINUTES.toMillis(10);  // 10 minutes
+    private static final long TIME_THRESHOLD = TimeUnit.MINUTES.toMillis(10);  // 10 minutes
 
-    public static final float ACC_THRESHOLD = 50f;  // 50 meters
+    private static final float ACC_THRESHOLD = 50f;  // 50 meters
 
     public static TravelBehaviorInfo.LocationInfo getBestLocation(List<TravelBehaviorInfo.LocationInfo> locationInfoList) {
         if (locationInfoList == null || locationInfoList.size() == 0) return null;

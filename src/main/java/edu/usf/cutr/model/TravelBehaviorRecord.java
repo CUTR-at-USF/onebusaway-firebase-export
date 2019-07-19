@@ -17,8 +17,38 @@ package edu.usf.cutr.model;
 
 public class TravelBehaviorRecord {
 
+    public static final String[] CSV_HEADER = {"User ID",
+            "Trip ID",
+            "Region ID",
+            "Google Activity",
+            "Google Activity Confidence",
+            "Vehicle type",
+            "Origin Date and Time (UTC)",
+            "Origin Date and Time Source",
+            "Origin location Date and Time (UTC)",
+            "Activity Start/Origin Time Diff (minutes)",
+            "Origin latitude",
+            "Origin longitude",
+            "Origin Horizontal Accuracy",
+            "Origin Location Provider",
+            "Destination Date and Time (UTC)",
+            "Destination Date and Time Source",
+            "Destination Location Date and Time (UTC)",
+            "Activity End/Destination Time Diff (minutes)",
+            "Destination latitude",
+            "Destination longitude",
+            "Destination Horizontal Accuracy",
+            "Destination Location Provider",
+            "Activity duration (minutes)",
+            "Chain ID",
+            "Chain Index",
+            "Tour ID",
+            "Tour Index"
+    };
+
     private String mUserId;
     private String mTripId;
+    private String mRegionId;
     private String mGoogleActivity;
     private Float mGoogleConfidence;
     private String mVehicleType;
@@ -35,6 +65,14 @@ public class TravelBehaviorRecord {
     private Integer mChainIndex;
     private Integer mTourId;
     private Integer mTourIndex;
+    private String mOriginLocationDateAndTime;
+    private Integer mActivityStartOriginTimeDiff;
+    private Float mOriginHorAccuracy;
+    private String mOriginProvider;
+    private String mDestinationLocationDateAndTime;
+    private Integer mActivityEndDestinationTimeDiff;
+    private Float mDestinationHorAccuracy;
+    private String mDestinationProvider;
 
     // Internal user
     private Long startTimeMillis;
@@ -44,17 +82,9 @@ public class TravelBehaviorRecord {
         mUserId = userId;
     }
 
-    public String getUserId() {
-        return mUserId;
-    }
-
-    public TravelBehaviorRecord setUserId(String userId) {
-        mUserId = userId;
+    public TravelBehaviorRecord setRegionId(String regionId) {
+        mRegionId = regionId;
         return this;
-    }
-
-    public String getTripId() {
-        return mTripId;
     }
 
     public TravelBehaviorRecord setTripId(String tripId) {
@@ -71,17 +101,9 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public Float getGoogleConfidence() {
-        return mGoogleConfidence;
-    }
-
     public TravelBehaviorRecord setGoogleConfidence(Float googleConfidence) {
         mGoogleConfidence = googleConfidence;
         return this;
-    }
-
-    public String getVehicleType() {
-        return mVehicleType;
     }
 
     public TravelBehaviorRecord setVehicleType(String vehicleType) {
@@ -89,17 +111,9 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public Double getStartLat() {
-        return mStartLat;
-    }
-
     public TravelBehaviorRecord setStartLat(Double startLat) {
         mStartLat = startLat;
         return this;
-    }
-
-    public Double getStartLon() {
-        return mStartLon;
     }
 
     public TravelBehaviorRecord setStartLon(Double startLon) {
@@ -107,17 +121,9 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public Double getEndLat() {
-        return mEndLat;
-    }
-
     public TravelBehaviorRecord setEndLat(Double endLat) {
         mEndLat = endLat;
         return this;
-    }
-
-    public Double getEndLon() {
-        return mEndLon;
     }
 
     public TravelBehaviorRecord setEndLon(Double endLon) {
@@ -125,17 +131,9 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public Long getActivityDuration() {
-        return mActivityDuration;
-    }
-
     public TravelBehaviorRecord setActivityDuration(Long activityDuration) {
         mActivityDuration = activityDuration;
         return this;
-    }
-
-    public Integer getChainId() {
-        return mChainId;
     }
 
     public TravelBehaviorRecord setChainId(Integer chainId) {
@@ -143,17 +141,9 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public Integer getChainIndex() {
-        return mChainIndex;
-    }
-
     public TravelBehaviorRecord setChainIndex(Integer chainIndex) {
         mChainIndex = chainIndex;
         return this;
-    }
-
-    public Integer getTourId() {
-        return mTourId;
     }
 
     public TravelBehaviorRecord setTourId(Integer tourId) {
@@ -161,17 +151,9 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public Integer getTourIndex() {
-        return mTourIndex;
-    }
-
     public TravelBehaviorRecord setTourIndex(Integer tourIndex) {
         mTourIndex = tourIndex;
         return this;
-    }
-
-    public String getStartDateAndTime() {
-        return mStartDateAndTime;
     }
 
     public TravelBehaviorRecord setStartDateAndTime(String startDateAndTime) {
@@ -179,26 +161,14 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public String getEndDateAndTime() {
-        return mEndDateAndTime;
-    }
-
     public TravelBehaviorRecord setEndDateAndTime(String endDateAndTime) {
         mEndDateAndTime = endDateAndTime;
         return this;
     }
 
-    public String getStartDateAndTimeSource() {
-        return mStartDateAndTimeSource;
-    }
-
     public TravelBehaviorRecord setStartDateAndTimeSource(String startDateAndTimeSource) {
         mStartDateAndTimeSource = startDateAndTimeSource;
         return this;
-    }
-
-    public String getEndDateAndTimeSource() {
-        return mEndDateAndTimeSource;
     }
 
     public TravelBehaviorRecord setEndDateAndTimeSource(String endDateAndTimeSource) {
@@ -224,10 +194,54 @@ public class TravelBehaviorRecord {
         return this;
     }
 
+    public TravelBehaviorRecord setOriginLocationDateAndTime(String originLocationDateAndTime) {
+        mOriginLocationDateAndTime = originLocationDateAndTime;
+        return this;
+    }
+
+    // TODO: Implement time difference
+    public TravelBehaviorRecord setActivityStartOriginTimeDiff(Integer activityStartOriginTimeDiff) {
+        mActivityStartOriginTimeDiff = activityStartOriginTimeDiff;
+        return this;
+    }
+
+    public TravelBehaviorRecord setOriginHorAccuracy(Float originHorAccuracy) {
+        mOriginHorAccuracy = originHorAccuracy;
+        return this;
+    }
+
+    public TravelBehaviorRecord setOriginProvider(String originProvider) {
+        mOriginProvider = originProvider;
+        return this;
+    }
+
+    public TravelBehaviorRecord setDestinationLocationDateAndTime(String destinationLocationDateAndTime) {
+        mDestinationLocationDateAndTime = destinationLocationDateAndTime;
+        return this;
+    }
+
+    public TravelBehaviorRecord setActivityEndDestinationTimeDiff(Integer activityEndDestinationTimeDiff) {
+        mActivityEndDestinationTimeDiff = activityEndDestinationTimeDiff;
+        return this;
+    }
+
+    public TravelBehaviorRecord setDestinationHorAccuracy(Float destinationHorAccuracy) {
+        mDestinationHorAccuracy = destinationHorAccuracy;
+        return this;
+    }
+
+    public TravelBehaviorRecord setDestinationProvider(String destinationProvider) {
+        mDestinationProvider = destinationProvider;
+        return this;
+    }
+
     public String[] toStringArray() {
-        return new String[]{mUserId, mTripId, mGoogleActivity, String.valueOf(mGoogleConfidence), mVehicleType,
-                mStartDateAndTime, mStartDateAndTimeSource, String.valueOf(mStartLat), String.valueOf(mStartLon), mEndDateAndTime,
-                mEndDateAndTimeSource, String.valueOf(mEndLat), String.valueOf(mEndLon), String.valueOf(mActivityDuration),
-                String.valueOf(mChainId), String.valueOf(mChainIndex), String.valueOf(mTourId), String.valueOf(mTourId)};
+        return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, String.valueOf(mGoogleConfidence), mVehicleType,
+                mStartDateAndTime, mStartDateAndTimeSource, mOriginLocationDateAndTime, String.valueOf(mActivityStartOriginTimeDiff),
+                String.valueOf(mStartLat), String.valueOf(mStartLon), String.valueOf(mOriginHorAccuracy), mOriginProvider,
+                mEndDateAndTime, mEndDateAndTimeSource, mDestinationLocationDateAndTime, String.valueOf(mActivityEndDestinationTimeDiff),
+                String.valueOf(mEndLat), String.valueOf(mEndLon), String.valueOf(mDestinationHorAccuracy), mDestinationProvider,
+                String.valueOf(mActivityDuration), String.valueOf(mChainId), String.valueOf(mChainIndex),
+                String.valueOf(mTourId), String.valueOf(mTourId)};
     }
 }
