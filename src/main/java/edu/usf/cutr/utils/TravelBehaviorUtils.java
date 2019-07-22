@@ -16,7 +16,6 @@
 package edu.usf.cutr.utils;
 
 import edu.usf.cutr.constants.TravelBehaviorConstants;
-import edu.usf.cutr.model.TravelBehaviorEventTime;
 import edu.usf.cutr.model.TravelBehaviorInfo;
 
 import java.text.SimpleDateFormat;
@@ -35,7 +34,7 @@ public class TravelBehaviorUtils {
         return getActivityByType(activities, TravelBehaviorConstants.ACTIVITY_TRANSITION_EXIT);
     }
 
-    public static String getDateandTimeFromMillis(Long millis) {
+    public static String getDateAndTimeFromMillis(Long millis) {
         Date date = new Date(millis);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
@@ -51,16 +50,10 @@ public class TravelBehaviorUtils {
         return null;
     }
 
-    public static TravelBehaviorEventTime getBestTime(TravelBehaviorInfo travelBehaviorInfo) {
+    public static Long getActivityStartTime(TravelBehaviorInfo travelBehaviorInfo) {
         if (travelBehaviorInfo.activities != null && travelBehaviorInfo.activities.size() > 0 &&
                 travelBehaviorInfo.activities.get(0).eventTimeMillis != null) {
-            return new TravelBehaviorEventTime(travelBehaviorInfo.activities.get(0).eventTimeMillis,
-                    TravelBehaviorEventTime.TimeType.TRANSITION_EVENT);
-        } else {
-            TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(travelBehaviorInfo.locationInfoList);
-            if (bestLocation != null) {
-                return new TravelBehaviorEventTime(bestLocation.time, TravelBehaviorEventTime.TimeType.LOCATION);
-            }
+            return travelBehaviorInfo.activities.get(0).eventTimeMillis;
         }
 
         return null;

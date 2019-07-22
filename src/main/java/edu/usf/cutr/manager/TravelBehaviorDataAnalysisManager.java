@@ -18,7 +18,6 @@ package edu.usf.cutr.manager;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.io.CSVFileWriter;
 import edu.usf.cutr.io.FirebaseReader;
-import edu.usf.cutr.model.TravelBehaviorEventTime;
 import edu.usf.cutr.model.TravelBehaviorInfo;
 import edu.usf.cutr.model.TravelBehaviorRecord;
 import edu.usf.cutr.utils.LocationUtils;
@@ -108,43 +107,58 @@ public class TravelBehaviorDataAnalysisManager {
                 setGoogleConfidence(enterActivity.confidenceLevel == null ? null :
                         ((float) enterActivity.confidenceLevel / 100f));
 
-        TravelBehaviorEventTime bestTime = TravelBehaviorUtils.getBestTime(tbi);
+        Long activityStartTime = TravelBehaviorUtils.getActivityStartTime(tbi);
 
-        if (bestTime != null) {
-            tbr.setStartDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestTime.getEventTime())).
-                    setStartDateAndTimeSource(bestTime.getTimeType().toString()).
-                    setStartTimeMillis(bestTime.getEventTime());
+        if (activityStartTime != null) {
+            tbr.setActivityStartDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(activityStartTime)).
+                    setActivityStartTimeMillis(activityStartTime);
         }
 
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;
         TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList);
         if (bestLocation != null) {
             tbr.setStartLat(bestLocation.getLat()).setStartLon(bestLocation.getLon()).
-                    setOriginLocationDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestLocation.time)).
-                    setOriginHorAccuracy(bestLocation.accuracy).setOriginProvider(bestLocation.provider);
+                    setOriginLocationDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(bestLocation.time)).
+                    setOriginHorAccuracy(bestLocation.accuracy).setOriginProvider(bestLocation.provider).
+                    setLocationStartTimeMillis(bestLocation.time);
         }
+
+        if (tbr.getActivityStartTimeMillis() != null && tbr.getLocationStartTimeMillis() != null) {
+            long diff = Math.abs(tbr.getActivityStartTimeMillis() - tbr.getLocationStartTimeMillis());
+            tbr.setActivityStartOriginTimeDiff(TimeUnit.MILLISECONDS.toMinutes(diff));
+        }
+
         return tbr;
     }
 
     private void completeTravelBehaviorRecord(TravelBehaviorInfo tbi) {
-        TravelBehaviorEventTime bestTime = TravelBehaviorUtils.getBestTime(tbi);
-        if (bestTime != null) {
-            mLastTravelBehaviorRecord.setEndDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestTime.getEventTime())).
-                    setEndDateAndTimeSource(bestTime.getTimeType().toString()).
-                    setEndTimeMillis(bestTime.getEventTime());
+        Long activityEndTime = TravelBehaviorUtils.getActivityStartTime(tbi);
+
+        if (activityEndTime != null) {
+            mLastTravelBehaviorRecord.setActivityEndDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(activityEndTime)).
+                    setActivityEndTimeMillis(activityEndTime);
         }
 
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;
         TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList);
         if (bestLocation != null) {
             mLastTravelBehaviorRecord.setEndLat(bestLocation.getLat()).setEndLon(bestLocation.getLon()).
-                    setDestinationLocationDateAndTime(TravelBehaviorUtils.getDateandTimeFromMillis(bestLocation.time)).
-                    setDestinationHorAccuracy(bestLocation.accuracy).setDestinationProvider(bestLocation.provider );
+                    setDestinationLocationDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(bestLocation.time)).
+                    setDestinationHorAccuracy(bestLocation.accuracy).setDestinationProvider(bestLocation.provider).
+                    setLocationEndTimeMillis(bestLocation.time);
         }
 
-        if (mLastTravelBehaviorRecord.getStartTimeMillis() != null && mLastTravelBehaviorRecord.getEndTimeMillis() != null) {
-            long diff = TimeUnit.MILLISECONDS.toMinutes(mLastTravelBehaviorRecord.getEndTimeMillis() -
-                    mLastTravelBehaviorRecord.getStartTimeMillis());
+        if (mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null &&
+                mLastTravelBehaviorRecord.getLocationEndTimeMillis() != null) {
+            long diff = Math.abs(mLastTravelBehaviorRecord.getActivityEndTimeMillis() -
+                    mLastTravelBehaviorRecord.getLocationEndTimeMillis());
+            mLastTravelBehaviorRecord.setActivityEndDestinationTimeDiff(TimeUnit.MILLISECONDS.toMinutes(diff));
+        }
+
+        if (mLastTravelBehaviorRecord.getActivityStartTimeMillis() != null &&
+                mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null) {
+            long diff = TimeUnit.MILLISECONDS.toMinutes(mLastTravelBehaviorRecord.getActivityEndTimeMillis() -
+                    mLastTravelBehaviorRecord.getActivityStartTimeMillis());
             mLastTravelBehaviorRecord.setActivityDuration(diff);
         }
 
