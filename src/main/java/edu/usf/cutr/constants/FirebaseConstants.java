@@ -19,7 +19,7 @@ public class FirebaseConstants {
 
     public static final String DATABASE_URL = "https://oba-user-behavior.firebaseio.com";
 
-    public static final String CREDENTIAL_FILE = "oba-user-behavior-firebase-adminsdk-taj3w-dd80d62d8b.json";
+    public static final String CREDENTIAL_FILE = "admin-key.json";
 
     public static final String TRAVEL_BEHAVIOR_CSV_FILE = "travel-behavior.csv";
 
