@@ -115,7 +115,7 @@ public class TravelBehaviorDataAnalysisManager {
         }
 
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;
-        TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList);
+        TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList, activityStartTime);
         if (bestLocation != null) {
             tbr.setStartLat(bestLocation.getLat()).setStartLon(bestLocation.getLon()).
                     setOriginLocationDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(bestLocation.time)).
@@ -140,7 +140,7 @@ public class TravelBehaviorDataAnalysisManager {
         }
 
         List<TravelBehaviorInfo.LocationInfo> locationInfoList = tbi.locationInfoList;
-        TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList);
+        TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(locationInfoList, activityEndTime);
         if (bestLocation != null) {
             mLastTravelBehaviorRecord.setEndLat(bestLocation.getLat()).setEndLon(bestLocation.getLon()).
                     setDestinationLocationDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(bestLocation.time)).

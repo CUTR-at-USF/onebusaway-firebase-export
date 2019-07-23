@@ -17,6 +17,8 @@ package edu.usf.cutr.utils;
 
 import edu.usf.cutr.model.TravelBehaviorInfo;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +27,33 @@ public class LocationUtils {
 
     private static final float ACC_THRESHOLD = 50f;  // 50 meters
 
+    public static TravelBehaviorInfo.LocationInfo getBestLocation(List<TravelBehaviorInfo.LocationInfo> locationInfoList,
+                                                                  final Long activityTime) {
+        if (activityTime == null) return getBestLocation(locationInfoList);
+        if (locationInfoList == null || locationInfoList.size() == 0) return null;
+        if (locationInfoList.size() == 1) return locationInfoList.get(0);
+
+        // Sort the locations based on the time difference of the activity time and the location time
+        Collections.sort(locationInfoList, (Comparator.comparingLong(a -> (Math.abs(activityTime - a.time)))));
+
+        // return the earliest location if the location is in accuracy threshold
+        for (TravelBehaviorInfo.LocationInfo info: locationInfoList) {
+            if (info.accuracy < ACC_THRESHOLD) return info;
+        }
+
+        // if non-of the location's accuracy is less then threshold then return the best one
+        TravelBehaviorInfo.LocationInfo retInfo = locationInfoList.get(0);
+        Float acc = retInfo.accuracy;
+        for (int i = 1; i < locationInfoList.size(); i++) {
+            TravelBehaviorInfo.LocationInfo info = locationInfoList.get(i);
+            if (info.accuracy < acc) {
+                acc = info.accuracy;
+                retInfo = info;
+            }
+        }
+
+        return retInfo;
+    }
     public static TravelBehaviorInfo.LocationInfo getBestLocation(List<TravelBehaviorInfo.LocationInfo> locationInfoList) {
         if (locationInfoList == null || locationInfoList.size() == 0) return null;
         if (locationInfoList.size() == 1) return locationInfoList.get(0);
