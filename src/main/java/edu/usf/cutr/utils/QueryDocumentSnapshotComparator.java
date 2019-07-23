@@ -16,6 +16,7 @@
 package edu.usf.cutr.utils;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import edu.usf.cutr.model.TravelBehaviorInfo;
 
 import java.util.Comparator;
 
@@ -23,12 +24,19 @@ public class QueryDocumentSnapshotComparator implements Comparator<QueryDocument
 
     @Override
     public int compare(QueryDocumentSnapshot o1, QueryDocumentSnapshot o2) {
-        try {
-            int i1 = Integer.valueOf(o1.getReference().getId().split("-")[0]);
-            int i2 = Integer.valueOf(o2.getReference().getId().split("-")[0]);
-            return i1 - i2;
-        } catch (Exception e) {
-            return 0;
+        long t1 = getComparableTime(o1);
+        long t2 = getComparableTime(o2);
+
+        return Long.compare(t1, t2);
+    }
+
+    private long getComparableTime(QueryDocumentSnapshot o) {
+        TravelBehaviorInfo tbi = o.toObject(TravelBehaviorInfo.class);
+        Long activityStartTime = TravelBehaviorUtils.getActivityStartTime(tbi);
+        if (activityStartTime == null) {
+            TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(tbi.locationInfoList);
+            activityStartTime = bestLocation == null ? Long.MIN_VALUE : bestLocation.time;
         }
+        return activityStartTime;
     }
 }
