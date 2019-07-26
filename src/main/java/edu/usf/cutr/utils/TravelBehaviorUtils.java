@@ -17,10 +17,12 @@ package edu.usf.cutr.utils;
 
 import edu.usf.cutr.constants.TravelBehaviorConstants;
 import edu.usf.cutr.model.TravelBehaviorInfo;
+import edu.usf.cutr.model.TravelBehaviorRecord;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TravelBehaviorUtils {
 
@@ -57,5 +59,20 @@ public class TravelBehaviorUtils {
         }
 
         return null;
+    }
+
+    // TODO: Test The method
+    public static boolean isInSameDay(List<TravelBehaviorRecord> oneDayTravelBehaviorRecordList,
+                                      TravelBehaviorRecord tbr) {
+        TravelBehaviorRecord lastRecord = oneDayTravelBehaviorRecordList.get(oneDayTravelBehaviorRecordList.size() - 1);
+        Long lastRecordActivityEndTime = lastRecord.getActivityEndTimeMillis() != null ? lastRecord.getActivityEndTimeMillis() :
+                lastRecord.getLocationEndTimeMillis();
+
+        Long newRecordActivityEndTime = tbr.getActivityEndTimeMillis() != null ? tbr.getActivityEndTimeMillis() :
+                tbr.getLocationEndTimeMillis();
+
+        if (lastRecordActivityEndTime == null || newRecordActivityEndTime == null) return false;
+        return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime) ==
+                TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime);
     }
 }

@@ -241,6 +241,14 @@ public class TravelBehaviorRecord {
         return mActivityEndTimeMillis;
     }
 
+    public Double getEndLat() {
+        return mEndLat;
+    }
+
+    public Double getEndLon() {
+        return mEndLon;
+    }
+
     public String[] toStringArray() {
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, String.valueOf(mGoogleConfidence), mVehicleType,
                 mActivityStartDateAndTime, mOriginLocationDateAndTime, String.valueOf(mActivityStartOriginTimeDiff),

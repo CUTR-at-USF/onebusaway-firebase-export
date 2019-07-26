@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class CSVFileWriter {
 
@@ -50,7 +51,13 @@ public class CSVFileWriter {
         mCSVWriter.writeNext(header);
     }
 
-    public void appendToCsV(TravelBehaviorRecord travelBehaviorRecord) {
+    public void appendAllToCsV(List<TravelBehaviorRecord> travelBehaviorRecords) {
+        for (TravelBehaviorRecord tbr: travelBehaviorRecords) {
+            appendToCsV(tbr);
+        }
+    }
+
+    private void appendToCsV(TravelBehaviorRecord travelBehaviorRecord) {
         mCSVWriter.writeNext(travelBehaviorRecord.toStringArray());
     }
 
