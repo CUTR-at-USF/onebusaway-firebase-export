@@ -16,10 +16,7 @@
 package edu.usf.cutr.io;
 
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
@@ -54,18 +51,17 @@ public class FirebaseReader {
             e.printStackTrace();
         }
 
-        FirebaseOptions options = null;
+        FirestoreOptions options = null;
         try {
-            options = new FirebaseOptions.Builder()
+            options = FirestoreOptions.newBuilder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl(FirebaseConstants.DATABASE_URL)
+                    .setTimestampsInSnapshotsEnabled(true)
                     .build();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        FirebaseApp.initializeApp(options);
-        mFirestoreDB = FirestoreClient.getFirestore();
+        mFirestoreDB = options.getService();
     }
 
     public List<QueryDocumentSnapshot> getAllUserIds() {
