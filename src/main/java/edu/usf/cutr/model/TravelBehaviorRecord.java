@@ -189,7 +189,6 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    // TODO: Implement time difference
     public TravelBehaviorRecord setActivityStartOriginTimeDiff(Long activityStartOriginTimeDiff) {
         mActivityStartOriginTimeDiff = activityStartOriginTimeDiff;
         return this;
@@ -256,6 +255,6 @@ public class TravelBehaviorRecord {
                 mActivityEndDateAndTime, mDestinationLocationDateAndTime, String.valueOf(mActivityEndDestinationTimeDiff),
                 String.valueOf(mEndLat), String.valueOf(mEndLon), String.valueOf(mDestinationHorAccuracy), mDestinationProvider,
                 String.valueOf(mActivityDuration), String.valueOf(mChainId), String.valueOf(mChainIndex),
-                String.valueOf(mTourId), String.valueOf(mTourId)};
+                String.valueOf(mTourId), String.valueOf(mTourIndex)};
     }
 }

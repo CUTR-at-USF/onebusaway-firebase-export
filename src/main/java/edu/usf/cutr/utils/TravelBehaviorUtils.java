@@ -61,7 +61,6 @@ public class TravelBehaviorUtils {
         return null;
     }
 
-    // TODO: Test The method
     public static boolean isInSameDay(List<TravelBehaviorRecord> oneDayTravelBehaviorRecordList,
                                       TravelBehaviorRecord tbr) {
         TravelBehaviorRecord lastRecord = oneDayTravelBehaviorRecordList.get(oneDayTravelBehaviorRecordList.size() - 1);
