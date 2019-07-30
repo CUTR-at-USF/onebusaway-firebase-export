@@ -15,9 +15,15 @@
  */
 package edu.usf.cutr.constants;
 
+import java.util.concurrent.TimeUnit;
+
 public class TravelBehaviorConstants {
 
     public static final String ACTIVITY_TRANSITION_ENTER = "ENTER";
 
     public static final String ACTIVITY_TRANSITION_EXIT = "EXIT";
+
+    public static final String ACTIVITY_STILL = "STILL";
+
+    public static final long  STILL_ACTIVITY_THRESHOLD = TimeUnit.MINUTES.toMillis(5);
 }

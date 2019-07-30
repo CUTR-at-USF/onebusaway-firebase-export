@@ -16,6 +16,7 @@
 package edu.usf.cutr.manager;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import edu.usf.cutr.constants.TravelBehaviorConstants;
 import edu.usf.cutr.io.CSVFileWriter;
 import edu.usf.cutr.io.FirebaseReader;
 import edu.usf.cutr.model.TravelBehaviorInfo;
@@ -95,7 +96,10 @@ public class TravelBehaviorDataAnalysisManager {
                     exitActivity.detectedActivity.equals(mLastTravelBehaviorRecord.getGoogleActivity())) {
                 completeTravelBehaviorRecord(tbi);
                 mLastTravelBehaviorRecord.setTripId(String.valueOf(mTripId++));
+
                 addTravelBehaviorRecord(mLastTravelBehaviorRecord);
+
+                eliminateStillEvent();
             }
 
             mLastTravelBehaviorRecord = null;
@@ -180,6 +184,43 @@ public class TravelBehaviorDataAnalysisManager {
             applyTourAlgorithmToOneDayRecordList();
             // add new data to list with new tour id
             mOneDayTravelBehaviorRecordList.add(tbr);
+        }
+    }
+
+    private void eliminateStillEvent() {
+        int size = mOneDayTravelBehaviorRecordList.size();
+        if (size < 3 || TravelBehaviorConstants.ACTIVITY_STILL.equals(mOneDayTravelBehaviorRecordList.get(size - 1).
+                getGoogleActivity()) || !TravelBehaviorConstants.ACTIVITY_STILL.equals(mOneDayTravelBehaviorRecordList.
+                get(size - 2).getGoogleActivity())) {
+            return;
+        }
+
+        TravelBehaviorRecord tbrFirst = mOneDayTravelBehaviorRecordList.get(size - 3);
+        TravelBehaviorRecord tbrLast = mOneDayTravelBehaviorRecordList.get(size - 1);
+
+        if (tbrFirst.getGoogleActivity().equals(tbrLast.getGoogleActivity()) &&
+                tbrFirst.getActivityEndTimeMillis() != null && tbrLast.getActivityStartTimeMillis() != null &&
+                tbrLast.getActivityStartTimeMillis() - tbrFirst.getActivityEndTimeMillis() <
+                        TravelBehaviorConstants.STILL_ACTIVITY_THRESHOLD) {
+            tbrFirst.setActivityEndDateAndTime(tbrLast.getActivityEndDateAndTime()).setActivityEndTimeMillis(
+                    tbrLast.getActivityEndTimeMillis()).setEndLat(tbrLast.getEndLat()).setEndLon(tbrLast.getEndLon()).
+                    setDestinationLocationDateAndTime(tbrLast.getDestinationLocationDateAndTime()).
+                    setDestinationHorAccuracy(tbrLast.getDestinationHorAccuracy()).setDestinationProvider
+                    (tbrLast.getDestinationProvider()).setLocationEndTimeMillis(tbrLast.getLocationEndTimeMillis()).
+                    setActivityEndDestinationTimeDiff(tbrLast.getActivityEndDestinationTimeDiff());
+
+            if (tbrFirst.getActivityStartTimeMillis() != null &&
+                    tbrFirst.getActivityEndTimeMillis() != null) {
+                long diff = TimeUnit.MILLISECONDS.toMinutes(tbrFirst.getActivityEndTimeMillis() -
+                        tbrFirst.getActivityStartTimeMillis());
+                tbrFirst.setActivityDuration(diff);
+            }
+
+            mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
+            mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
+            mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
+            mOneDayTravelBehaviorRecordList.add(tbrFirst);
+
         }
     }
 
