@@ -1,4 +1,4 @@
-# travel-behavior-analysis
+# travel-behavior-analysis [![Build Status](https://travis-ci.org/CUTR-at-USF/travel-behavior-analysis.svg?branch=master)](https://travis-ci.org/CUTR-at-USF/travel-behavior-analysis)
 Java application to process travel behavior data collected by OneBusAway and stored in Firebase Firestore.
 
 ## Setup
