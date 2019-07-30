@@ -76,6 +76,11 @@ public class FirebaseReader {
                 FirebaseConstants.FIREBASE_ACTIVITY_TRANSITION_FOLDER);
     }
 
+    public List<QueryDocumentSnapshot> getAllUserDeviceInfoById(String userId) {
+        return FirebaseIOUtils.getAllRecordIdsByUserIdAndFolder(mFirestoreDB, userId,
+                FirebaseConstants.FIREBASE_DEVICE_INFO_FOLDER);
+    }
+
     private void processTransitionData(String recordId, String userId) {
         DocumentReference docRef = FirebaseIOUtils.getFirebaseDocReferenceByUserIdAndRecordId(mFirestoreDB, userId, recordId,
                 FirebaseConstants.FIREBASE_ACTIVITY_TRANSITION_FOLDER);

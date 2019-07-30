@@ -231,6 +231,10 @@ public class TravelBehaviorRecord {
         return this;
     }
 
+    public String getRegionId() {
+        return mRegionId;
+    }
+
     public Double getStartLat() {
         return mStartLat;
     }

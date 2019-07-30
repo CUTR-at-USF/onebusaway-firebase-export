@@ -15,11 +15,13 @@
  */
 package edu.usf.cutr.manager;
 
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.constants.TravelBehaviorConstants;
 import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
 import edu.usf.cutr.io.CSVFileWriter;
 import edu.usf.cutr.io.FirebaseReader;
+import edu.usf.cutr.model.DeviceInformation;
 import edu.usf.cutr.model.TravelBehaviorInfo;
 import edu.usf.cutr.model.TravelBehaviorRecord;
 import edu.usf.cutr.utils.LocationUtils;
@@ -29,7 +31,6 @@ import edu.usf.cutr.utils.TravelBehaviorUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class TravelBehaviorDataAnalysisManager {
 
@@ -75,8 +76,10 @@ public class TravelBehaviorDataAnalysisManager {
 
         mLastTravelBehaviorRecord = null;
 
+        List<QueryDocumentSnapshot> userDeviceInfoList = mFirebaseReader.getAllUserDeviceInfoById(userId);
+
         for (QueryDocumentSnapshot doc : userInfoById) {
-            processUserActivityTransitionData(doc, userId);
+            processUserActivityTransitionData(doc, userId, userDeviceInfoList);
         }
 
         if (mOneDayTravelBehaviorRecordList.size() > 0) {
@@ -84,7 +87,8 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
-    private void processUserActivityTransitionData(QueryDocumentSnapshot doc, String userId) {
+    private void processUserActivityTransitionData(QueryDocumentSnapshot doc, String userId,
+                                                   List<QueryDocumentSnapshot> userDeviceInfoList) {
         TravelBehaviorInfo tbi = doc.toObject(TravelBehaviorInfo.class);
         if (mLastTravelBehaviorRecord == null) {
             TravelBehaviorInfo.TravelBehaviorActivity enterActivity = TravelBehaviorUtils.getEnterActivity(tbi.activities);
@@ -95,7 +99,7 @@ public class TravelBehaviorDataAnalysisManager {
             TravelBehaviorInfo.TravelBehaviorActivity exitActivity = TravelBehaviorUtils.getExitActivity(tbi.activities);
             if (exitActivity != null &&
                     exitActivity.detectedActivity.equals(mLastTravelBehaviorRecord.getGoogleActivity())) {
-                completeTravelBehaviorRecord(tbi);
+                completeTravelBehaviorRecord(tbi, doc, userDeviceInfoList);
                 mLastTravelBehaviorRecord.setTripId(String.valueOf(mTripId++));
 
                 addTravelBehaviorRecord(mLastTravelBehaviorRecord);
@@ -143,7 +147,8 @@ public class TravelBehaviorDataAnalysisManager {
         return tbr;
     }
 
-    private void completeTravelBehaviorRecord(TravelBehaviorInfo tbi) {
+    private void completeTravelBehaviorRecord(TravelBehaviorInfo tbi, QueryDocumentSnapshot doc,
+                                              List<QueryDocumentSnapshot> userDeviceInfoList) {
         Long activityEndTime = TravelBehaviorUtils.getActivityStartTime(tbi);
 
         if (activityEndTime != null) {
@@ -181,6 +186,33 @@ public class TravelBehaviorDataAnalysisManager {
                     mLastTravelBehaviorRecord.getEndLon());
             mLastTravelBehaviorRecord.setOriginDestinationDistance(distance);
         }
+
+        String regionId = findRegionIdFromDeviceInfoList(doc, userDeviceInfoList);
+        mLastTravelBehaviorRecord.setRegionId(regionId);
+    }
+
+    private String findRegionIdFromDeviceInfoList(QueryDocumentSnapshot doc,
+                                                  List<QueryDocumentSnapshot> userDeviceInfoList) {
+        if (userDeviceInfoList == null || userDeviceInfoList.size() == 0) return null;
+        long updateTimeMillis = doc.getUpdateTime().toDate().getTime();
+
+        // binary search to find closest timestamp record
+        int low = 0;
+        int high = userDeviceInfoList.size() - 1;
+
+        while (low < high) {
+            int mid = (low + high) / 2;
+            assert (mid < high);
+            long d1 = Math.abs(userDeviceInfoList.get(mid).getUpdateTime().toDate().getTime() - updateTimeMillis);
+            long d2 = Math.abs(userDeviceInfoList.get(mid).getUpdateTime().toDate().getTime() - updateTimeMillis);
+            if (d2 <= d1) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        DeviceInformation deviceInformation = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
+        return String.valueOf(deviceInformation.regionId);
     }
 
     private void addTravelBehaviorRecord(TravelBehaviorRecord tbr) {
@@ -216,7 +248,8 @@ public class TravelBehaviorDataAnalysisManager {
                     setDestinationLocationDateAndTime(tbrLast.getDestinationLocationDateAndTime()).
                     setDestinationHorAccuracy(tbrLast.getDestinationHorAccuracy()).setDestinationProvider
                     (tbrLast.getDestinationProvider()).setLocationEndTimeMillis(tbrLast.getLocationEndTimeMillis()).
-                    setActivityEndDestinationTimeDiff(tbrLast.getActivityEndDestinationTimeDiff());
+                    setActivityEndDestinationTimeDiff(tbrLast.getActivityEndDestinationTimeDiff()).setRegionId(
+                    tbrLast.getRegionId());
 
             if (tbrFirst.getActivityStartTimeMillis() != null &&
                     tbrFirst.getActivityEndTimeMillis() != null) {
