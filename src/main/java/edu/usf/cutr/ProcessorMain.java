@@ -16,10 +16,15 @@
 package edu.usf.cutr;
 
 
+import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
 import edu.usf.cutr.manager.TravelBehaviorDataAnalysisManager;
 
 public class ProcessorMain {
     public static void main(String[] args) {
-        new TravelBehaviorDataAnalysisManager().processData();
+        try {
+            new TravelBehaviorDataAnalysisManager().processData();
+        } catch (FirebaseFileNotInitializedException e) {
+            System.err.println("Firebase file is not initialized properly.");
+        }
     }
 }

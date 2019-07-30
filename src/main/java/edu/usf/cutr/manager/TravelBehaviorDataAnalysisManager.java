@@ -17,6 +17,7 @@ package edu.usf.cutr.manager;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.constants.TravelBehaviorConstants;
+import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
 import edu.usf.cutr.io.CSVFileWriter;
 import edu.usf.cutr.io.FirebaseReader;
 import edu.usf.cutr.model.TravelBehaviorInfo;
@@ -44,7 +45,7 @@ public class TravelBehaviorDataAnalysisManager {
 
     private int mTourId = 0;
 
-    public TravelBehaviorDataAnalysisManager() {
+    public TravelBehaviorDataAnalysisManager() throws FirebaseFileNotInitializedException {
         mFirebaseReader = new FirebaseReader();
         mCSVFileWriter = new CSVFileWriter();
         mOneDayTravelBehaviorRecordList = new ArrayList<>();
