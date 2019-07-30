@@ -40,11 +40,13 @@ public class FirebaseReader {
     }
 
     private void initFirebase() {
-        FileInputStream serviceAccount =
-                null;
+        FileInputStream serviceAccount = null;
         try {
-            serviceAccount = new FileInputStream(FirebaseIOUtils.getExistingFilePath(getClass(),
-                    FirebaseConstants.CREDENTIAL_FILE));
+            String filePath = FirebaseIOUtils.getExistingFilePath(getClass(), FirebaseConstants.CREDENTIAL_FILE);
+            if (filePath == null) {
+                return;
+            }
+            serviceAccount = new FileInputStream(filePath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {

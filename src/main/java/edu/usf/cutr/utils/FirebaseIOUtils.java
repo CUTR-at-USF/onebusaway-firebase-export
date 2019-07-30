@@ -37,8 +37,12 @@ public class FirebaseIOUtils {
 
     public static String getExistingFilePath(Class cls, String fileName) throws URISyntaxException {
         URL res = cls.getClassLoader().getResource(fileName);
-        File file = Paths.get(res.toURI()).toFile();
-        return file.getAbsolutePath();
+        if (res == null) {
+            return null;
+        } else {
+            File file = Paths.get(res.toURI()).toFile();
+            return file.getAbsolutePath();
+        }
     }
 
     public static String createFilePath(Class cls, String fileName) throws URISyntaxException {
