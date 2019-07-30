@@ -172,6 +172,14 @@ public class TravelBehaviorDataAnalysisManager {
                     mLastTravelBehaviorRecord.getActivityStartTimeMillis());
             mLastTravelBehaviorRecord.setActivityDuration(diff);
         }
+
+        if (mLastTravelBehaviorRecord.getStartLat() != null && mLastTravelBehaviorRecord.getStartLon() != null &&
+                mLastTravelBehaviorRecord.getEndLat() != null && mLastTravelBehaviorRecord.getEndLon() != null) {
+            float distance = LocationUtils.computeDistanceAndBearing(mLastTravelBehaviorRecord.getStartLat(),
+                    mLastTravelBehaviorRecord.getStartLon(), mLastTravelBehaviorRecord.getEndLat(),
+                    mLastTravelBehaviorRecord.getEndLon());
+            mLastTravelBehaviorRecord.setOriginDestinationDistance(distance);
+        }
     }
 
     private void addTravelBehaviorRecord(TravelBehaviorRecord tbr) {
@@ -214,6 +222,13 @@ public class TravelBehaviorDataAnalysisManager {
                 long diff = TimeUnit.MILLISECONDS.toMinutes(tbrFirst.getActivityEndTimeMillis() -
                         tbrFirst.getActivityStartTimeMillis());
                 tbrFirst.setActivityDuration(diff);
+            }
+
+            if (tbrFirst.getStartLat() != null && tbrFirst.getStartLon() != null &&
+                    tbrFirst.getEndLat() != null && tbrFirst.getEndLon() != null) {
+                float distance = LocationUtils.computeDistanceAndBearing(tbrFirst.getStartLat(), tbrFirst.getStartLon(),
+                        tbrFirst.getEndLat(), tbrFirst.getEndLon());
+                tbrFirst.setOriginDestinationDistance(distance);
             }
 
             mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);

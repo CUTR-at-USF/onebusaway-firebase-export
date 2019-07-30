@@ -38,6 +38,7 @@ public class TravelBehaviorRecord {
             "Destination Horizontal Accuracy",
             "Destination Location Provider",
             "Activity duration (minutes)",
+            "Origin-Destination Bird-Eye Distance (meters)",
             "Chain ID",
             "Chain Index",
             "Tour ID",
@@ -66,6 +67,7 @@ public class TravelBehaviorRecord {
     private Float mOriginHorAccuracy;
     private String mOriginProvider;
     private String mDestinationLocationDateAndTime;
+    private Float mOriginDestinationDistance;
     private Long mActivityEndDestinationTimeDiff;
     private Float mDestinationHorAccuracy;
     private String mDestinationProvider;
@@ -224,6 +226,19 @@ public class TravelBehaviorRecord {
         return this;
     }
 
+    public TravelBehaviorRecord setOriginDestinationDistance(Float originDestinationDistance) {
+        mOriginDestinationDistance = originDestinationDistance;
+        return this;
+    }
+
+    public Double getStartLat() {
+        return mStartLat;
+    }
+
+    public Double getStartLon() {
+        return mStartLon;
+    }
+
     public Long getLocationStartTimeMillis() {
         return mLocationStartTimeMillis;
     }
@@ -274,7 +289,7 @@ public class TravelBehaviorRecord {
                 String.valueOf(mStartLat), String.valueOf(mStartLon), String.valueOf(mOriginHorAccuracy), mOriginProvider,
                 mActivityEndDateAndTime, mDestinationLocationDateAndTime, String.valueOf(mActivityEndDestinationTimeDiff),
                 String.valueOf(mEndLat), String.valueOf(mEndLon), String.valueOf(mDestinationHorAccuracy), mDestinationProvider,
-                String.valueOf(mActivityDuration), String.valueOf(mChainId), String.valueOf(mChainIndex),
-                String.valueOf(mTourId), String.valueOf(mTourIndex)};
+                String.valueOf(mActivityDuration), String.valueOf(mOriginDestinationDistance), String.valueOf(mChainId),
+                String.valueOf(mChainIndex), String.valueOf(mTourId), String.valueOf(mTourIndex)};
     }
 }

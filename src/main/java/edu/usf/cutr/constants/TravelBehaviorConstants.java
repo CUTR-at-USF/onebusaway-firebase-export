@@ -25,5 +25,5 @@ public class TravelBehaviorConstants {
 
     public static final String ACTIVITY_STILL = "STILL";
 
-    public static final long  STILL_ACTIVITY_THRESHOLD = TimeUnit.MINUTES.toMillis(5);
+    public static final long  STILL_ACTIVITY_THRESHOLD = TimeUnit.MINUTES.toMillis(2);
 }
