@@ -71,8 +71,11 @@ public class TravelBehaviorUtils {
                 tbr.getLocationEndTimeMillis();
 
         if (lastRecordActivityEndTime == null || newRecordActivityEndTime == null) return false;
-        return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime) ==
-                TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime);
+
+        // The day starts at 3 AM and ends at 3 AM next day
+        // TODO: Move the constant same-day-difference value as a parameter
+        return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime - TravelBehaviorConstants.SAME_DAY_TIME_DIFF) ==
+                TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime - TravelBehaviorConstants.SAME_DAY_TIME_DIFF);
     }
 
     public static float millisToMinutes(long millis) {
