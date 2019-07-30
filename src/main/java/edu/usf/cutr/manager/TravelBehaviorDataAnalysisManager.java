@@ -204,17 +204,14 @@ public class TravelBehaviorDataAnalysisManager {
             }
         }
 
-        for (int i = startIndex; i < tailIndex; i++) {
-            mOneDayTravelBehaviorRecordList.get(i).setTourId(mTourId++);
-        }
-
         flushOneDayTravelBehaviorRecordList();
     }
 
     private void setTourIdBetweenIndices(int startIndex, int tailIndex) {
         int tourId = mTourId++;
+        int tourIndex = 1;
         for (int i = startIndex; i <= tailIndex; i++) {
-            mOneDayTravelBehaviorRecordList.get(i).setTourId(tourId);
+            mOneDayTravelBehaviorRecordList.get(i).setTourId(tourId).setTourIndex(tourIndex++);
         }
     }
 

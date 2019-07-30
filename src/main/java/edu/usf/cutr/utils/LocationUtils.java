@@ -44,7 +44,7 @@ public class LocationUtils {
             if (info.accuracy < ACC_THRESHOLD) return info;
         }
 
-        // if non-of the location's accuracy is less then threshold then return the best one
+        // if non-of the location's accuracy is less then threshold then return the best one with the best accuracy
         TravelBehaviorInfo.LocationInfo retInfo = locationInfoList.get(0);
         Float acc = retInfo.accuracy;
         for (int i = 1; i < locationInfoList.size(); i++) {
