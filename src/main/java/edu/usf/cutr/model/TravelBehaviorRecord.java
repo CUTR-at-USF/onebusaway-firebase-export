@@ -57,18 +57,18 @@ public class TravelBehaviorRecord {
     private String mActivityEndDateAndTime;
     private Double mEndLat;
     private Double mEndLon;
-    private Long mActivityDuration;
+    private Float mActivityDuration;
     private Integer mChainId;
     private Integer mChainIndex;
     private Integer mTourId;
     private Integer mTourIndex;
     private String mOriginLocationDateAndTime;
-    private Long mActivityStartOriginTimeDiff;
+    private Float mActivityStartOriginTimeDiff;
     private Float mOriginHorAccuracy;
     private String mOriginProvider;
     private String mDestinationLocationDateAndTime;
     private Float mOriginDestinationDistance;
-    private Long mActivityEndDestinationTimeDiff;
+    private Float mActivityEndDestinationTimeDiff;
     private Float mDestinationHorAccuracy;
     private String mDestinationProvider;
 
@@ -131,7 +131,7 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public TravelBehaviorRecord setActivityDuration(Long activityDuration) {
+    public TravelBehaviorRecord setActivityDuration(Float activityDuration) {
         mActivityDuration = activityDuration;
         return this;
     }
@@ -191,7 +191,7 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public TravelBehaviorRecord setActivityStartOriginTimeDiff(Long activityStartOriginTimeDiff) {
+    public TravelBehaviorRecord setActivityStartOriginTimeDiff(Float activityStartOriginTimeDiff) {
         mActivityStartOriginTimeDiff = activityStartOriginTimeDiff;
         return this;
     }
@@ -211,7 +211,7 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public TravelBehaviorRecord setActivityEndDestinationTimeDiff(Long activityEndDestinationTimeDiff) {
+    public TravelBehaviorRecord setActivityEndDestinationTimeDiff(Float activityEndDestinationTimeDiff) {
         mActivityEndDestinationTimeDiff = activityEndDestinationTimeDiff;
         return this;
     }
@@ -271,7 +271,7 @@ public class TravelBehaviorRecord {
         return mDestinationLocationDateAndTime;
     }
 
-    public Long getActivityEndDestinationTimeDiff() {
+    public Float getActivityEndDestinationTimeDiff() {
         return mActivityEndDestinationTimeDiff;
     }
 

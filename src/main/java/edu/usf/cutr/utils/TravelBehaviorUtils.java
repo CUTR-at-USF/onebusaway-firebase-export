@@ -74,4 +74,8 @@ public class TravelBehaviorUtils {
         return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime) ==
                 TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime);
     }
+
+    public static float millisToMinutes(long millis) {
+        return TimeUnit.MILLISECONDS.toSeconds(millis) / 60f;
+    }
 }

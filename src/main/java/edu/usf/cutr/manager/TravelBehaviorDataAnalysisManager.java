@@ -137,7 +137,7 @@ public class TravelBehaviorDataAnalysisManager {
 
         if (tbr.getActivityStartTimeMillis() != null && tbr.getLocationStartTimeMillis() != null) {
             long diff = Math.abs(tbr.getActivityStartTimeMillis() - tbr.getLocationStartTimeMillis());
-            tbr.setActivityStartOriginTimeDiff(TimeUnit.MILLISECONDS.toMinutes(diff));
+            tbr.setActivityStartOriginTimeDiff(TravelBehaviorUtils.millisToMinutes(diff));
         }
 
         return tbr;
@@ -164,14 +164,14 @@ public class TravelBehaviorDataAnalysisManager {
                 mLastTravelBehaviorRecord.getLocationEndTimeMillis() != null) {
             long diff = Math.abs(mLastTravelBehaviorRecord.getActivityEndTimeMillis() -
                     mLastTravelBehaviorRecord.getLocationEndTimeMillis());
-            mLastTravelBehaviorRecord.setActivityEndDestinationTimeDiff(TimeUnit.MILLISECONDS.toMinutes(diff));
+            mLastTravelBehaviorRecord.setActivityEndDestinationTimeDiff(TravelBehaviorUtils.millisToMinutes(diff));
         }
 
         if (mLastTravelBehaviorRecord.getActivityStartTimeMillis() != null &&
                 mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null) {
-            long diff = TimeUnit.MILLISECONDS.toMinutes(mLastTravelBehaviorRecord.getActivityEndTimeMillis() -
-                    mLastTravelBehaviorRecord.getActivityStartTimeMillis());
-            mLastTravelBehaviorRecord.setActivityDuration(diff);
+            long diff = mLastTravelBehaviorRecord.getActivityEndTimeMillis() - mLastTravelBehaviorRecord.
+                    getActivityStartTimeMillis();
+            mLastTravelBehaviorRecord.setActivityDuration(TravelBehaviorUtils.millisToMinutes(diff));
         }
 
         if (mLastTravelBehaviorRecord.getStartLat() != null && mLastTravelBehaviorRecord.getStartLon() != null &&
@@ -220,9 +220,8 @@ public class TravelBehaviorDataAnalysisManager {
 
             if (tbrFirst.getActivityStartTimeMillis() != null &&
                     tbrFirst.getActivityEndTimeMillis() != null) {
-                long diff = TimeUnit.MILLISECONDS.toMinutes(tbrFirst.getActivityEndTimeMillis() -
-                        tbrFirst.getActivityStartTimeMillis());
-                tbrFirst.setActivityDuration(diff);
+                long diff = tbrFirst.getActivityEndTimeMillis() - tbrFirst.getActivityStartTimeMillis();
+                tbrFirst.setActivityDuration(TravelBehaviorUtils.millisToMinutes(diff));
             }
 
             if (tbrFirst.getStartLat() != null && tbrFirst.getStartLon() != null &&
@@ -240,6 +239,9 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
+    /**
+     * TODO: Implement subtours to this tour algorithm
+     */
     private void applyTourAlgorithmToOneDayRecordList() {
         if (mOneDayTravelBehaviorRecordList.size() < 2) {
             flushOneDayTravelBehaviorRecordList();
