@@ -17,9 +17,6 @@ package edu.usf.cutr.io;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.*;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.cloud.FirestoreClient;
 import edu.usf.cutr.constants.FirebaseConstants;
 import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
 import edu.usf.cutr.model.TravelBehaviorInfo;

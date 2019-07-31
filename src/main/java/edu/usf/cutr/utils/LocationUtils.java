@@ -119,6 +119,10 @@ public class LocationUtils {
     }
 
     public static boolean isTravelBehaviorRecordsClose(TravelBehaviorRecord lastRecord, TravelBehaviorRecord tbr) {
+        if (lastRecord.getEndLon() == null || lastRecord.getEndLon() == null || tbr.getEndLat() == null ||
+                tbr.getEndLon() == null) {
+            return false;
+        }
         float distance = computeDistanceAndBearing(lastRecord.getEndLat(), lastRecord.getEndLon(), tbr.getEndLat(),
                 tbr.getEndLon());
         return distance < DISTANCE_THRESHOLD;
