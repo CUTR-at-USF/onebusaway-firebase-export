@@ -112,7 +112,9 @@ public class TravelBehaviorDataAnalysisManager {
 
                 addTravelBehaviorRecord(mLastTravelBehaviorRecord);
 
-                mergeStillEvent();
+                mergeStillEvents();
+
+                mergeWalkingAndRunningEvents();
             }
 
             mLastTravelBehaviorRecord = null;
@@ -272,19 +274,41 @@ public class TravelBehaviorDataAnalysisManager {
     }
 
     private void flushOneDayTravelBehaviorRecordList() {
-        // merge the running and walking events if possible
-        mergeAllWalkingAndRunningEvents();
         // flush all data to csv
         mCSVFileWriter.appendAllToCsV(mOneDayTravelBehaviorRecordList);
         // clean the one day list
         mOneDayTravelBehaviorRecordList.clear();
     }
 
-    private void mergeAllWalkingAndRunningEvents() {
-        if (!mProgramOptions.isMergeAllWalkingAndRunningEventsEnabled() || mOneDayTravelBehaviorRecordList.size() < 2) return;
+    private void mergeWalkingAndRunningEvents() {
+        int size = mOneDayTravelBehaviorRecordList.size();
+        if (!mProgramOptions.isMergeAllWalkingAndRunningEventsEnabled() || size < 2) return;
+
+        if ((TravelBehaviorConstants.ACTIVITY_RUNNING.equals(mOneDayTravelBehaviorRecordList.get(size - 1).
+                getGoogleActivity()) || TravelBehaviorConstants.ACTIVITY_WALKING.equals(mOneDayTravelBehaviorRecordList.get(size - 1).
+                getGoogleActivity())) && (TravelBehaviorConstants.ACTIVITY_RUNNING.equals(mOneDayTravelBehaviorRecordList.get(size - 2).
+                getGoogleActivity()) || TravelBehaviorConstants.ACTIVITY_WALKING.equals(mOneDayTravelBehaviorRecordList.get(size - 2).
+                getGoogleActivity()) || TravelBehaviorConstants.ACTIVITY_WALKING_AND_RUNNING.equals(mOneDayTravelBehaviorRecordList.get(size - 2).
+                getGoogleActivity()))){
+
+            TravelBehaviorRecord tbrFirst = mOneDayTravelBehaviorRecordList.get(size - 2);
+            TravelBehaviorRecord tbrSecond = mOneDayTravelBehaviorRecordList.get(size - 1);
+
+            if (tbrFirst.getActivityEndTimeMillis() != null && tbrSecond.getActivityStartTimeMillis() != null &&
+                    tbrSecond.getActivityStartTimeMillis() - tbrFirst.getActivityEndTimeMillis() <
+                            TravelBehaviorConstants.WALKING_RUNNING_THRESHOLD) {
+
+                mergeTravelBehaviorRecord(tbrFirst, tbrSecond);
+                tbrFirst.setGoogleActivity(TravelBehaviorConstants.ACTIVITY_WALKING_AND_RUNNING);
+
+                mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
+                mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
+                mOneDayTravelBehaviorRecordList.add(tbrFirst);
+            }
+        }
     }
 
-    private void mergeStillEvent() {
+    private void mergeStillEvents() {
         if (!mProgramOptions.isMergeStillEventsEnabled()) return;
 
         int size = mOneDayTravelBehaviorRecordList.size();
@@ -297,35 +321,45 @@ public class TravelBehaviorDataAnalysisManager {
         TravelBehaviorRecord tbrFirst = mOneDayTravelBehaviorRecordList.get(size - 3);
         TravelBehaviorRecord tbrLast = mOneDayTravelBehaviorRecordList.get(size - 1);
 
-        if (tbrFirst.getGoogleActivity().equals(tbrLast.getGoogleActivity()) &&
+        if ((tbrFirst.getGoogleActivity().contains(tbrLast.getGoogleActivity()) ||
+                tbrLast.getGoogleActivity().contains(tbrFirst.getGoogleActivity())) &&
                 tbrFirst.getActivityEndTimeMillis() != null && tbrLast.getActivityStartTimeMillis() != null &&
                 tbrLast.getActivityStartTimeMillis() - tbrFirst.getActivityEndTimeMillis() <
                         TravelBehaviorConstants.STILL_ACTIVITY_THRESHOLD) {
-            tbrFirst.setActivityEndDateAndTime(tbrLast.getActivityEndDateAndTime()).setActivityEndTimeMillis(
-                    tbrLast.getActivityEndTimeMillis()).setEndLat(tbrLast.getEndLat()).setEndLon(tbrLast.getEndLon()).
-                    setDestinationLocationDateAndTime(tbrLast.getDestinationLocationDateAndTime()).
-                    setDestinationHorAccuracy(tbrLast.getDestinationHorAccuracy()).setDestinationProvider
-                    (tbrLast.getDestinationProvider()).setLocationEndTimeMillis(tbrLast.getLocationEndTimeMillis()).
-                    setActivityEndDestinationTimeDiff(tbrLast.getActivityEndDestinationTimeDiff()).setRegionId(
-                    tbrLast.getRegionId());
 
-            if (tbrFirst.getActivityStartTimeMillis() != null &&
-                    tbrFirst.getActivityEndTimeMillis() != null) {
-                long diff = tbrFirst.getActivityEndTimeMillis() - tbrFirst.getActivityStartTimeMillis();
-                tbrFirst.setActivityDuration(TravelBehaviorUtils.millisToMinutes(diff));
-            }
-
-            if (tbrFirst.getStartLat() != null && tbrFirst.getStartLon() != null &&
-                    tbrFirst.getEndLat() != null && tbrFirst.getEndLon() != null) {
-                float distance = LocationUtils.computeDistanceAndBearing(tbrFirst.getStartLat(), tbrFirst.getStartLon(),
-                        tbrFirst.getEndLat(), tbrFirst.getEndLon());
-                tbrFirst.setOriginDestinationDistance(distance);
-            }
+            mergeTravelBehaviorRecord(tbrFirst, tbrLast);
 
             mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
             mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
             mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
             mOneDayTravelBehaviorRecordList.add(tbrFirst);
+        }
+    }
+
+    private void mergeTravelBehaviorRecord(TravelBehaviorRecord tbrFirst, TravelBehaviorRecord tbrLast) {
+        tbrFirst.setActivityEndDateAndTime(tbrLast.getActivityEndDateAndTime()).setActivityEndTimeMillis(
+                tbrLast.getActivityEndTimeMillis()).setEndLat(tbrLast.getEndLat()).setEndLon(tbrLast.getEndLon()).
+                setDestinationLocationDateAndTime(tbrLast.getDestinationLocationDateAndTime()).
+                setDestinationHorAccuracy(tbrLast.getDestinationHorAccuracy()).setDestinationProvider
+                (tbrLast.getDestinationProvider()).setLocationEndTimeMillis(tbrLast.getLocationEndTimeMillis()).
+                setActivityEndDestinationTimeDiff(tbrLast.getActivityEndDestinationTimeDiff()).setRegionId(
+                tbrLast.getRegionId());
+
+        if (tbrFirst.getActivityStartTimeMillis() != null &&
+                tbrFirst.getActivityEndTimeMillis() != null) {
+            long diff = tbrFirst.getActivityEndTimeMillis() - tbrFirst.getActivityStartTimeMillis();
+            tbrFirst.setActivityDuration(TravelBehaviorUtils.millisToMinutes(diff));
+        }
+
+        if (tbrFirst.getStartLat() != null && tbrFirst.getStartLon() != null &&
+                tbrFirst.getEndLat() != null && tbrFirst.getEndLon() != null) {
+            float distance = LocationUtils.computeDistanceAndBearing(tbrFirst.getStartLat(), tbrFirst.getStartLon(),
+                    tbrFirst.getEndLat(), tbrFirst.getEndLon());
+            tbrFirst.setOriginDestinationDistance(distance);
+        }
+
+        if (tbrLast.getGoogleActivity().equals(TravelBehaviorConstants.ACTIVITY_WALKING_AND_RUNNING)) {
+            tbrFirst.setGoogleActivity(TravelBehaviorConstants.ACTIVITY_WALKING_AND_RUNNING);
         }
     }
 }
