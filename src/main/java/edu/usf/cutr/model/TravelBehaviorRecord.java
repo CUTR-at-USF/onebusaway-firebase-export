@@ -39,7 +39,7 @@ public class TravelBehaviorRecord {
             "Destination longitude",
             "Destination Horizontal Accuracy",
             "Destination Location Provider",
-            "Activity duration (minutes)",
+            "Duration (minutes)",
             "Origin-Destination Bird-Eye Distance (meters)",
             "Chain ID",
             "Chain Index",

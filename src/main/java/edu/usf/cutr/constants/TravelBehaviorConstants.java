@@ -25,6 +25,10 @@ public class TravelBehaviorConstants {
 
     public static final String ACTIVITY_STILL = "STILL";
 
+    public static final String ACTIVITY_WALKING = "WALKING";
+
+    public static final String ACTIVITY_RUNNING = "RUNNING";
+
     public static final long  STILL_ACTIVITY_THRESHOLD = TimeUnit.MINUTES.toMillis(2);
 
     public static final long  SAME_DAY_TIME_DIFF = TimeUnit.HOURS.toMillis(3); // 3 hours

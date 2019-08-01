@@ -23,6 +23,7 @@ import edu.usf.cutr.io.FirebaseReader;
 import edu.usf.cutr.model.DeviceInformation;
 import edu.usf.cutr.model.TravelBehaviorInfo;
 import edu.usf.cutr.model.TravelBehaviorRecord;
+import edu.usf.cutr.options.ProgramOptions;
 import edu.usf.cutr.utils.LocationUtils;
 import edu.usf.cutr.utils.QueryDocumentSnapshotComparator;
 import edu.usf.cutr.utils.TravelBehaviorUtils;
@@ -32,6 +33,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class TravelBehaviorDataAnalysisManager {
+
+    private ProgramOptions mProgramOptions;
 
     private FirebaseReader mFirebaseReader;
 
@@ -49,14 +52,20 @@ public class TravelBehaviorDataAnalysisManager {
         mFirebaseReader = new FirebaseReader();
         mCSVFileWriter = new CSVFileWriter();
         mOneDayTravelBehaviorRecordList = new ArrayList<>();
+        mProgramOptions = ProgramOptions.getInstance();
     }
 
     public void processData() {
         // create csv file and add the header
         mCSVFileWriter.createHeader(TravelBehaviorRecord.CSV_HEADER);
 
-        // analyze all data and append the data in the csv file
-        analyzeAllTravelBehaviorData();
+        if (mProgramOptions.getUserId() == null) {
+            // analyze all data and append the data in the csv file
+            analyzeAllTravelBehaviorData();
+        } else {
+            // analyze specific user data
+            processUserById(mProgramOptions.getUserId());
+        }
 
         //close the csv file
         mCSVFileWriter.closeWriter();
@@ -227,11 +236,57 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
-    private void mergeWalkingAndRunningEvent() {
+    /**
+     * TODO: Implement subtours to this tour algorithm
+     */
+    private void applyTourAlgorithmToOneDayRecordList() {
+        if (mOneDayTravelBehaviorRecordList.size() < 2) {
+            flushOneDayTravelBehaviorRecordList();
+            return;
+        }
 
+        // Assume the first record of the day is at home
+        TravelBehaviorRecord homeTbr = mOneDayTravelBehaviorRecordList.get(0);
+        int startIndex = 0;
+        int tailIndex = 1;
+
+        while (startIndex < mOneDayTravelBehaviorRecordList.size() && tailIndex < mOneDayTravelBehaviorRecordList.size()) {
+            TravelBehaviorRecord currTbr = mOneDayTravelBehaviorRecordList.get(tailIndex);
+            if (LocationUtils.isTravelBehaviorRecordsClose(homeTbr, currTbr)) {
+                setTourIdBetweenIndices(startIndex, tailIndex);
+                startIndex = ++tailIndex;
+            } else {
+                tailIndex++;
+            }
+        }
+
+        flushOneDayTravelBehaviorRecordList();
+    }
+
+    private void setTourIdBetweenIndices(int startIndex, int tailIndex) {
+        int tourId = mTourId++;
+        int tourIndex = 1;
+        for (int i = startIndex; i <= tailIndex; i++) {
+            mOneDayTravelBehaviorRecordList.get(i).setTourId(tourId).setTourIndex(tourIndex++);
+        }
+    }
+
+    private void flushOneDayTravelBehaviorRecordList() {
+        // merge the running and walking events if possible
+        mergeAllWalkingAndRunningEvents();
+        // flush all data to csv
+        mCSVFileWriter.appendAllToCsV(mOneDayTravelBehaviorRecordList);
+        // clean the one day list
+        mOneDayTravelBehaviorRecordList.clear();
+    }
+
+    private void mergeAllWalkingAndRunningEvents() {
+        if (!mProgramOptions.isMergeAllWalkingAndRunningEventsEnabled() || mOneDayTravelBehaviorRecordList.size() < 2) return;
     }
 
     private void mergeStillEvent() {
+        if (!mProgramOptions.isMergeStillEventsEnabled()) return;
+
         int size = mOneDayTravelBehaviorRecordList.size();
         if (size < 3 || TravelBehaviorConstants.ACTIVITY_STILL.equals(mOneDayTravelBehaviorRecordList.get(size - 1).
                 getGoogleActivity()) || !TravelBehaviorConstants.ACTIVITY_STILL.equals(mOneDayTravelBehaviorRecordList.
@@ -271,49 +326,6 @@ public class TravelBehaviorDataAnalysisManager {
             mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
             mOneDayTravelBehaviorRecordList.remove(mOneDayTravelBehaviorRecordList.size() - 1);
             mOneDayTravelBehaviorRecordList.add(tbrFirst);
-
         }
-    }
-
-    /**
-     * TODO: Implement subtours to this tour algorithm
-     */
-    private void applyTourAlgorithmToOneDayRecordList() {
-        if (mOneDayTravelBehaviorRecordList.size() < 2) {
-            flushOneDayTravelBehaviorRecordList();
-            return;
-        }
-
-        // Assume the first record of the day is at home
-        TravelBehaviorRecord homeTbr = mOneDayTravelBehaviorRecordList.get(0);
-        int startIndex = 0;
-        int tailIndex = 1;
-
-        while (startIndex < mOneDayTravelBehaviorRecordList.size() && tailIndex < mOneDayTravelBehaviorRecordList.size()) {
-            TravelBehaviorRecord currTbr = mOneDayTravelBehaviorRecordList.get(tailIndex);
-            if (LocationUtils.isTravelBehaviorRecordsClose(homeTbr, currTbr)) {
-                setTourIdBetweenIndices(startIndex, tailIndex);
-                startIndex = ++tailIndex;
-            } else {
-                tailIndex++;
-            }
-        }
-
-        flushOneDayTravelBehaviorRecordList();
-    }
-
-    private void setTourIdBetweenIndices(int startIndex, int tailIndex) {
-        int tourId = mTourId++;
-        int tourIndex = 1;
-        for (int i = startIndex; i <= tailIndex; i++) {
-            mOneDayTravelBehaviorRecordList.get(i).setTourId(tourId).setTourIndex(tourIndex++);
-        }
-    }
-
-    private void flushOneDayTravelBehaviorRecordList() {
-        // flush all data to csv
-        mCSVFileWriter.appendAllToCsV(mOneDayTravelBehaviorRecordList);
-        // clean the one day list
-        mOneDayTravelBehaviorRecordList.clear();
     }
 }

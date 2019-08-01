@@ -20,6 +20,7 @@ import com.google.cloud.firestore.*;
 import edu.usf.cutr.constants.FirebaseConstants;
 import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
 import edu.usf.cutr.model.TravelBehaviorInfo;
+import edu.usf.cutr.options.ProgramOptions;
 import edu.usf.cutr.utils.FirebaseIOUtils;
 
 import java.io.FileInputStream;
@@ -40,7 +41,10 @@ public class FirebaseReader {
     private void initFirebase() throws FirebaseFileNotInitializedException {
         FileInputStream serviceAccount = null;
         try {
-            String filePath = FirebaseIOUtils.getExistingFilePath(getClass(), FirebaseConstants.CREDENTIAL_FILE);
+            String filePath = ProgramOptions.getInstance().getKeyFilePath();
+            if (filePath == null) {
+                filePath = FirebaseIOUtils.getExistingFilePath(getClass(), FirebaseConstants.CREDENTIAL_FILE);
+            }
             if (filePath == null) {
                 throw new FirebaseFileNotInitializedException();
             }
