@@ -15,7 +15,6 @@
  */
 package edu.usf.cutr.manager;
 
-import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.constants.TravelBehaviorConstants;
 import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
@@ -104,7 +103,7 @@ public class TravelBehaviorDataAnalysisManager {
 
                 addTravelBehaviorRecord(mLastTravelBehaviorRecord);
 
-                eliminateStillEvent();
+                mergeStillEvent();
             }
 
             mLastTravelBehaviorRecord = null;
@@ -228,7 +227,11 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
-    private void eliminateStillEvent() {
+    private void mergeWalkingAndRunningEvent() {
+
+    }
+
+    private void mergeStillEvent() {
         int size = mOneDayTravelBehaviorRecordList.size();
         if (size < 3 || TravelBehaviorConstants.ACTIVITY_STILL.equals(mOneDayTravelBehaviorRecordList.get(size - 1).
                 getGoogleActivity()) || !TravelBehaviorConstants.ACTIVITY_STILL.equals(mOneDayTravelBehaviorRecordList.

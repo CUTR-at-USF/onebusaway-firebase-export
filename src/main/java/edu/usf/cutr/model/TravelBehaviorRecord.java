@@ -15,6 +15,8 @@
  */
 package edu.usf.cutr.model;
 
+import edu.usf.cutr.utils.StringUtils;
+
 public class TravelBehaviorRecord {
 
     public static final String[] CSV_HEADER = {"User ID",
@@ -288,12 +290,12 @@ public class TravelBehaviorRecord {
     }
 
     public String[] toStringArray() {
-        return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, String.valueOf(mGoogleConfidence), mVehicleType,
-                mActivityStartDateAndTime, mOriginLocationDateAndTime, String.valueOf(mActivityStartOriginTimeDiff),
-                String.valueOf(mStartLat), String.valueOf(mStartLon), String.valueOf(mOriginHorAccuracy), mOriginProvider,
-                mActivityEndDateAndTime, mDestinationLocationDateAndTime, String.valueOf(mActivityEndDestinationTimeDiff),
-                String.valueOf(mEndLat), String.valueOf(mEndLon), String.valueOf(mDestinationHorAccuracy), mDestinationProvider,
-                String.valueOf(mActivityDuration), String.valueOf(mOriginDestinationDistance), String.valueOf(mChainId),
-                String.valueOf(mChainIndex), String.valueOf(mTourId), String.valueOf(mTourIndex)};
+        return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
+                mActivityStartDateAndTime, mOriginLocationDateAndTime, StringUtils.valueOf(mActivityStartOriginTimeDiff),
+                StringUtils.valueOf(mStartLat), StringUtils.valueOf(mStartLon), StringUtils.valueOf(mOriginHorAccuracy), mOriginProvider,
+                mActivityEndDateAndTime, mDestinationLocationDateAndTime, StringUtils.valueOf(mActivityEndDestinationTimeDiff),
+                StringUtils.valueOf(mEndLat), StringUtils.valueOf(mEndLon), StringUtils.valueOf(mDestinationHorAccuracy), mDestinationProvider,
+                StringUtils.valueOf(mActivityDuration), StringUtils.valueOf(mOriginDestinationDistance), StringUtils.valueOf(mChainId),
+                StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex)};
     }
 }
