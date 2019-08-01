@@ -25,6 +25,8 @@ public class ProgramOptions {
 
     public static final String USER_ID = "userId";
 
+    public static final String SAME_DAY_START_POINT = "dayStart";
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
@@ -32,6 +34,8 @@ public class ProgramOptions {
     private String mUserId;
 
     private String mKeyFilePath;
+
+    private Integer mSameDayStartPoint;
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -79,6 +83,15 @@ public class ProgramOptions {
 
     public ProgramOptions setKeyFilePath(String keyFilePath) {
         mKeyFilePath = keyFilePath;
+        return this;
+    }
+
+    public Integer getSameDayStartPoint() {
+        return mSameDayStartPoint;
+    }
+
+    public ProgramOptions setSameDayStartPoint(Integer sameDayStartPoint) {
+        mSameDayStartPoint = sameDayStartPoint;
         return this;
     }
 }

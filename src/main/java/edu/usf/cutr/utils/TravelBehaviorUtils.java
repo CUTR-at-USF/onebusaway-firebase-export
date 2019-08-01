@@ -18,6 +18,7 @@ package edu.usf.cutr.utils;
 import edu.usf.cutr.constants.TravelBehaviorConstants;
 import edu.usf.cutr.model.TravelBehaviorInfo;
 import edu.usf.cutr.model.TravelBehaviorRecord;
+import edu.usf.cutr.options.ProgramOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,10 +73,12 @@ public class TravelBehaviorUtils {
 
         if (lastRecordActivityEndTime == null || newRecordActivityEndTime == null) return false;
 
-        // The day starts at 3 AM and ends at 3 AM next day
-        // TODO: Move the constant same-day-difference value as a parameter
-        return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime - TravelBehaviorConstants.SAME_DAY_TIME_DIFF) ==
-                TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime - TravelBehaviorConstants.SAME_DAY_TIME_DIFF);
+        // By default the day starts at 3 AM and ends at 3 AM next day
+        long sameDayDiff = ProgramOptions.getInstance().getSameDayStartPoint() == null ? TravelBehaviorConstants.
+                SAME_DAY_TIME_DIFF : TimeUnit.HOURS.toMillis(ProgramOptions.getInstance().getSameDayStartPoint());
+
+        return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime - sameDayDiff) ==
+                TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime - sameDayDiff);
     }
 
     public static float millisToMinutes(long millis) {

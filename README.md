@@ -16,7 +16,8 @@ To generate the key file follow the instructions in Firebase [setup page](https:
 * `-userId` Takes a user id as an argument and performs the analysis for that specific user.
 * `-noMergeWalkingRunning` Does not merge the walking and running events.
 * `-noMergeStill` Does not merge the still events.
-  
+* `-dayStart` The analysis day start time. For example `-dayStart 3` makes the analysis time 
+window between 3AM to 3AM.
 ## License
 
 ```

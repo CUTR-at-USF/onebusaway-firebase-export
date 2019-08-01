@@ -45,6 +45,12 @@ public class ProcessorMain {
             if (cmd.hasOption(ProgramOptions.NO_MERGE_WALKING_RUNNING)) {
                 programOptions.setMergeAllWalkingAndRunningEventsEnabled(false);
             }
+
+            if (cmd.hasOption(ProgramOptions.SAME_DAY_START_POINT)) {
+                String value = cmd.getOptionValue(ProgramOptions.SAME_DAY_START_POINT);
+                Integer i = Integer.valueOf(value);
+                programOptions.setSameDayStartPoint(i);
+            }
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
@@ -60,6 +66,7 @@ public class ProcessorMain {
         Options options = new Options();
         options.addOption(ProgramOptions.USER_ID, true, "Only run the analysis for specific user");
         options.addOption(ProgramOptions.KEY_FILE, true, "Admin key file of the Firebase account");
+        options.addOption(ProgramOptions.SAME_DAY_START_POINT, true, "Starring point of the day in hours");
         options.addOption(ProgramOptions.NO_MERGE_STILL, false, "Do not merge still events");
         options.addOption(ProgramOptions.NO_MERGE_WALKING_RUNNING, false, "Do not merge waling and running events");
         return options;
