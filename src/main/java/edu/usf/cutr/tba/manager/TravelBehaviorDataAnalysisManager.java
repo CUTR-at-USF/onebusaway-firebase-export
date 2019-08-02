@@ -31,6 +31,7 @@ import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TravelBehaviorDataAnalysisManager {
 
@@ -294,9 +295,13 @@ public class TravelBehaviorDataAnalysisManager {
             TravelBehaviorRecord tbrFirst = mOneDayTravelBehaviorRecordList.get(size - 2);
             TravelBehaviorRecord tbrSecond = mOneDayTravelBehaviorRecordList.get(size - 1);
 
+            long walkingRunningActivityMergeThreshold = mProgramOptions.getWalkingRunningEventMergeThreshold() == null ?
+                    TravelBehaviorConstants.WALKING_RUNNING_THRESHOLD : TimeUnit.MINUTES.toMillis(mProgramOptions.
+                    getWalkingRunningEventMergeThreshold());
+
             if (tbrFirst.getActivityEndTimeMillis() != null && tbrSecond.getActivityStartTimeMillis() != null &&
                     tbrSecond.getActivityStartTimeMillis() - tbrFirst.getActivityEndTimeMillis() <
-                            TravelBehaviorConstants.WALKING_RUNNING_THRESHOLD) {
+                            walkingRunningActivityMergeThreshold) {
 
                 mergeTravelBehaviorRecord(tbrFirst, tbrSecond);
                 tbrFirst.setGoogleActivity(TravelBehaviorConstants.ACTIVITY_WALKING_AND_RUNNING);
@@ -321,11 +326,14 @@ public class TravelBehaviorDataAnalysisManager {
         TravelBehaviorRecord tbrFirst = mOneDayTravelBehaviorRecordList.get(size - 3);
         TravelBehaviorRecord tbrLast = mOneDayTravelBehaviorRecordList.get(size - 1);
 
+        long stillActivityMergeThreshold = mProgramOptions.getStillEventMergeThreshold() == null ?
+                TravelBehaviorConstants.STILL_ACTIVITY_THRESHOLD : TimeUnit.MINUTES.toMillis(mProgramOptions.
+                getStillEventMergeThreshold());
+
         if ((tbrFirst.getGoogleActivity().contains(tbrLast.getGoogleActivity()) ||
                 tbrLast.getGoogleActivity().contains(tbrFirst.getGoogleActivity())) &&
                 tbrFirst.getActivityEndTimeMillis() != null && tbrLast.getActivityStartTimeMillis() != null &&
-                tbrLast.getActivityStartTimeMillis() - tbrFirst.getActivityEndTimeMillis() <
-                        TravelBehaviorConstants.STILL_ACTIVITY_THRESHOLD) {
+                tbrLast.getActivityStartTimeMillis() - tbrFirst.getActivityEndTimeMillis() < stillActivityMergeThreshold) {
 
             mergeTravelBehaviorRecord(tbrFirst, tbrLast);
 

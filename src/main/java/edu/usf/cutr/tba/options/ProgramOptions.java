@@ -27,6 +27,12 @@ public class ProgramOptions {
 
     public static final String SAME_DAY_START_POINT = "dayStart";
 
+    // In minutes
+    public static final String WALKING_RUNNING_EVENT_MERGE_THRESHOLD = "walkingRunningMergeThreshold";
+
+    // In minutes
+    public static final String STILL_EVENT_MERGE_THRESHOLD = "stillMergeThreshold";
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
@@ -36,6 +42,10 @@ public class ProgramOptions {
     private String mKeyFilePath;
 
     private Integer mSameDayStartPoint;
+
+    private Integer mStillEventMergeThreshold;
+
+    private Integer mWalkingRunningEventMergeThreshold;
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -92,6 +102,24 @@ public class ProgramOptions {
 
     public ProgramOptions setSameDayStartPoint(Integer sameDayStartPoint) {
         mSameDayStartPoint = sameDayStartPoint;
+        return this;
+    }
+
+    public Integer getStillEventMergeThreshold() {
+        return mStillEventMergeThreshold;
+    }
+
+    public ProgramOptions setStillEventMergeThreshold(Integer stillEventMergeThreshold) {
+        mStillEventMergeThreshold = stillEventMergeThreshold;
+        return this;
+    }
+
+    public Integer getWalkingRunningEventMergeThreshold() {
+        return mWalkingRunningEventMergeThreshold;
+    }
+
+    public ProgramOptions setWalkingRunningEventMergeThreshold(Integer walkingRunningEventMergeThreshold) {
+        mWalkingRunningEventMergeThreshold = walkingRunningEventMergeThreshold;
         return this;
     }
 }

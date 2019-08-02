@@ -12,12 +12,14 @@ To generate the key file follow the instructions in Firebase [setup page](https:
 
 ## Command Line Options
 
-* `-keyFile` Path for the admin key of a Firebase account
+* `-keyFile` Path for the admin key of a Firebase account. 
 * `-userId` Takes a user id as an argument and performs the analysis for that specific user.
 * `-noMergeWalkingRunning` Does not merge the walking and running events.
 * `-noMergeStill` Does not merge the still events.
 * `-dayStart` The analysis day start time. For example `-dayStart 3` makes the analysis time 
-window between 3AM to 3AM.
+window between 3AM to 3AM. By default, the analysis time is 3AM to 3AM.
+* `-stillMergeThreshold` Still event merge threshold in minutes. By default it is 2 minutes.
+* `-walkingRunningMergeThreshold` Walking and running events merge threshold in minutes. By default it is 2 minutes.
 ## License
 
 ```

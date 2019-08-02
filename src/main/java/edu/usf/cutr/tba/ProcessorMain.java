@@ -51,15 +51,30 @@ public class ProcessorMain {
                 Integer i = Integer.valueOf(value);
                 programOptions.setSameDayStartPoint(i);
             }
+
+            if (cmd.hasOption(ProgramOptions.STILL_EVENT_MERGE_THRESHOLD)) {
+                String value = cmd.getOptionValue(ProgramOptions.STILL_EVENT_MERGE_THRESHOLD);
+                Integer i = Integer.valueOf(value);
+                programOptions.setStillEventMergeThreshold(i);
+            }
+
+            if (cmd.hasOption(ProgramOptions.WALKING_RUNNING_EVENT_MERGE_THRESHOLD)) {
+                String value = cmd.getOptionValue(ProgramOptions.WALKING_RUNNING_EVENT_MERGE_THRESHOLD);
+                Integer i = Integer.valueOf(value);
+                programOptions.setWalkingRunningEventMergeThreshold(i);
+            }
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
 
+        System.out.println("Analysis started!");
         try {
             new TravelBehaviorDataAnalysisManager().processData();
         } catch (FirebaseFileNotInitializedException e) {
             System.err.println("Firebase file is not initialized properly.");
         }
+
+        System.out.println("Analysis finished!");
     }
 
     private static Options createCommandLineOptions() {
@@ -67,6 +82,10 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.USER_ID, true, "Only run the analysis for specific user");
         options.addOption(ProgramOptions.KEY_FILE, true, "Admin key file of the Firebase account");
         options.addOption(ProgramOptions.SAME_DAY_START_POINT, true, "Starring point of the day in hours");
+        options.addOption(ProgramOptions.STILL_EVENT_MERGE_THRESHOLD, true, "Still event merging " +
+                "threshold. By default it is 2 minutes.");
+        options.addOption(ProgramOptions.WALKING_RUNNING_EVENT_MERGE_THRESHOLD, true, "Walking and " +
+                "running events merging threshold. By default it is 2 minutes.");
         options.addOption(ProgramOptions.NO_MERGE_STILL, false, "Do not merge still events");
         options.addOption(ProgramOptions.NO_MERGE_WALKING_RUNNING, false, "Do not merge waling and running events");
         return options;
