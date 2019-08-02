@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.utils;
+package edu.usf.cutr.tba.utils;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
-import edu.usf.cutr.model.TravelBehaviorInfo;
+import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 
 import java.util.Comparator;
 

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr;
+package edu.usf.cutr.tba;
 
 
-import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
-import edu.usf.cutr.manager.TravelBehaviorDataAnalysisManager;
-import edu.usf.cutr.options.ProgramOptions;
+import edu.usf.cutr.tba.exception.FirebaseFileNotInitializedException;
+import edu.usf.cutr.tba.manager.TravelBehaviorDataAnalysisManager;
+import edu.usf.cutr.tba.options.ProgramOptions;
 import org.apache.commons.cli.*;
 
 public class ProcessorMain {

@@ -28,7 +28,7 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>edu.usf.cutr.ProcessorMain</mainClass>
+                            <mainClass>edu.usf.cutr.tba.ProcessorMain</mainClass>
                         </configuration>
                     </execution>
                 </executions>

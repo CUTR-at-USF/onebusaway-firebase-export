@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.constants;
+package edu.usf.cutr.tba.constants;
 
 import java.util.concurrent.TimeUnit;
 

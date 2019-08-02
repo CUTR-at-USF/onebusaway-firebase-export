@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.io;
+package edu.usf.cutr.tba.io;
 
 import com.opencsv.CSVWriter;
-import edu.usf.cutr.constants.FirebaseConstants;
-import edu.usf.cutr.model.TravelBehaviorRecord;
-import edu.usf.cutr.utils.FirebaseIOUtils;
+import edu.usf.cutr.tba.constants.FirebaseConstants;
+import edu.usf.cutr.tba.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.utils.FirebaseIOUtils;
 
 import java.io.File;
 import java.io.FileWriter;

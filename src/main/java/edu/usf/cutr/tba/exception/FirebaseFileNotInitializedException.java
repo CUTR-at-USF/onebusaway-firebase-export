@@ -1,4 +1,4 @@
-package edu.usf.cutr.exception;
+package edu.usf.cutr.tba.exception;
 
 public class FirebaseFileNotInitializedException extends Exception {
     public FirebaseFileNotInitializedException() {

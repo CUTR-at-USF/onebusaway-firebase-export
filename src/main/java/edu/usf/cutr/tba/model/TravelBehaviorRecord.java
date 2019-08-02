@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.model;
+package edu.usf.cutr.tba.model;
 
-import edu.usf.cutr.utils.StringUtils;
+import edu.usf.cutr.tba.utils.StringUtils;
 
 public class TravelBehaviorRecord {
 

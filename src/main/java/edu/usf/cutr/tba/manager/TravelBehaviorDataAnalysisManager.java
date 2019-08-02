@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.manager;
+package edu.usf.cutr.tba.manager;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
-import edu.usf.cutr.constants.TravelBehaviorConstants;
-import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
-import edu.usf.cutr.io.CSVFileWriter;
-import edu.usf.cutr.io.FirebaseReader;
-import edu.usf.cutr.model.DeviceInformation;
-import edu.usf.cutr.model.TravelBehaviorInfo;
-import edu.usf.cutr.model.TravelBehaviorRecord;
-import edu.usf.cutr.options.ProgramOptions;
-import edu.usf.cutr.utils.LocationUtils;
-import edu.usf.cutr.utils.QueryDocumentSnapshotComparator;
-import edu.usf.cutr.utils.TravelBehaviorUtils;
+import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
+import edu.usf.cutr.tba.exception.FirebaseFileNotInitializedException;
+import edu.usf.cutr.tba.io.CSVFileWriter;
+import edu.usf.cutr.tba.io.FirebaseReader;
+import edu.usf.cutr.tba.model.DeviceInformation;
+import edu.usf.cutr.tba.model.TravelBehaviorInfo;
+import edu.usf.cutr.tba.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.options.ProgramOptions;
+import edu.usf.cutr.tba.utils.LocationUtils;
+import edu.usf.cutr.tba.utils.QueryDocumentSnapshotComparator;
+import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

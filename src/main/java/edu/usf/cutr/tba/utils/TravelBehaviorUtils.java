@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.utils;
+package edu.usf.cutr.tba.utils;
 
-import edu.usf.cutr.constants.TravelBehaviorConstants;
-import edu.usf.cutr.model.TravelBehaviorInfo;
-import edu.usf.cutr.model.TravelBehaviorRecord;
-import edu.usf.cutr.options.ProgramOptions;
+import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
+import edu.usf.cutr.tba.model.TravelBehaviorInfo;
+import edu.usf.cutr.tba.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.options.ProgramOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

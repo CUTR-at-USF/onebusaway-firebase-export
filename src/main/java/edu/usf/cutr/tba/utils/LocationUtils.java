@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.utils;
+package edu.usf.cutr.tba.utils;
 
-import edu.usf.cutr.model.TravelBehaviorInfo;
-import edu.usf.cutr.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.model.TravelBehaviorInfo;
+import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 
 import java.util.Collections;
 import java.util.Comparator;

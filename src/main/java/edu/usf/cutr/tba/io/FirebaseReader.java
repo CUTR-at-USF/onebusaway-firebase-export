@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.io;
+package edu.usf.cutr.tba.io;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.*;
-import edu.usf.cutr.constants.FirebaseConstants;
-import edu.usf.cutr.exception.FirebaseFileNotInitializedException;
-import edu.usf.cutr.model.TravelBehaviorInfo;
-import edu.usf.cutr.options.ProgramOptions;
-import edu.usf.cutr.utils.FirebaseIOUtils;
+import edu.usf.cutr.tba.constants.FirebaseConstants;
+import edu.usf.cutr.tba.exception.FirebaseFileNotInitializedException;
+import edu.usf.cutr.tba.model.TravelBehaviorInfo;
+import edu.usf.cutr.tba.options.ProgramOptions;
+import edu.usf.cutr.tba.utils.FirebaseIOUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

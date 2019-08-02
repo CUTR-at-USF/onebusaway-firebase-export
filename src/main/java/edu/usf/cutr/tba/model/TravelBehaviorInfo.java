@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.model;
+package edu.usf.cutr.tba.model;
 
 import java.util.List;
 
