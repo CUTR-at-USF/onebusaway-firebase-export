@@ -274,6 +274,9 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
+    /**
+     *
+     */
     private void flushOneDayTravelBehaviorRecordList() {
         // flush all data to csv
         mCSVFileWriter.appendAllToCsV(mOneDayTravelBehaviorRecordList);

@@ -26,7 +26,6 @@ import edu.usf.cutr.tba.utils.FirebaseIOUtils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -43,15 +42,10 @@ public class FirebaseReader {
         try {
             String filePath = ProgramOptions.getInstance().getKeyFilePath();
             if (filePath == null) {
-                filePath = FirebaseIOUtils.getExistingFilePath(getClass(), FirebaseConstants.CREDENTIAL_FILE);
-            }
-            if (filePath == null) {
                 throw new FirebaseFileNotInitializedException();
             }
             serviceAccount = new FileInputStream(filePath);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 

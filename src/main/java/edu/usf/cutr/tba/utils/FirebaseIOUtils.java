@@ -19,11 +19,13 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.*;
+import java.nio.file.spi.FileSystemProvider;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class FirebaseIOUtils {
@@ -33,21 +35,6 @@ public class FirebaseIOUtils {
         pathBuilder.append("users/").append(uid).append("/").
                 append(folder);
         return pathBuilder.toString();
-    }
-
-    public static String getExistingFilePath(Class cls, String fileName) throws URISyntaxException {
-        URL res = cls.getClassLoader().getResource(fileName);
-        if (res == null) {
-            return null;
-        } else {
-            File file = Paths.get(res.toURI()).toFile();
-            return file.getAbsolutePath();
-        }
-    }
-
-    public static String createFilePath(Class cls, String fileName) throws URISyntaxException {
-        URL res = cls.getClassLoader().getResource("");
-        return res.getPath() + fileName;
     }
 
     public static DocumentReference getFirebaseDocReferenceByUserIdAndRecordId(Firestore db, String userId,

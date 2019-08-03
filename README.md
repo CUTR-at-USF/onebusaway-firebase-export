@@ -3,7 +3,7 @@ Java application to process travel behavior data collected by OneBusAway and sto
 
 ## Setup
 1. Generate a private key file for your service account.
-To generate the key file follow the instructions in Firebase [setup page](https://firebase.google.com/docs/admin/setup).
+To generate the key file follow the instructions in Firebase [setup page](https://firebase.google.com/docs/admin/setup#initialize_the_sdk).
 2. Rename the generated file to `admin-key.json`.
 3. Put `admin-key.json` under the resources folder or pass the path of the admin-key file as a command line argument 
 `-keyFile path/To/File/admin-key.json`.
@@ -12,7 +12,7 @@ To generate the key file follow the instructions in Firebase [setup page](https:
 
 ## Command Line Options
 
-* `-keyFile` Path for the admin key of a Firebase account. 
+* `-keyFile <file path>` Path for the admin key of a Firebase account. 
 * `-userId` Takes a user id as an argument and performs the analysis for that specific user.
 * `-noMergeWalkingRunning` Does not merge the walking and running events.
 * `-noMergeStill` Does not merge the still events.

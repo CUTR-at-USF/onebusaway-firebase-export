@@ -18,31 +18,25 @@ package edu.usf.cutr.tba.io;
 import com.opencsv.CSVWriter;
 import edu.usf.cutr.tba.constants.FirebaseConstants;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
-import edu.usf.cutr.tba.utils.FirebaseIOUtils;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 public class CSVFileWriter {
 
-    private  CSVWriter mCSVWriter;
+    private CSVWriter mCSVWriter;
 
     public CSVFileWriter() {
         try {
-            String filePath = FirebaseIOUtils.createFilePath(getClass(), FirebaseConstants.TRAVEL_BEHAVIOR_CSV_FILE);
-            File file = new File(filePath);
+            File file = new File(FirebaseConstants.TRAVEL_BEHAVIOR_CSV_FILE);
             // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter(file);
 
             // create CSVFileWriter object filewriter object as parameter
             mCSVWriter = new CSVWriter(outputfile);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -52,7 +46,7 @@ public class CSVFileWriter {
     }
 
     public void appendAllToCsV(List<TravelBehaviorRecord> travelBehaviorRecords) {
-        for (TravelBehaviorRecord tbr: travelBehaviorRecords) {
+        for (TravelBehaviorRecord tbr : travelBehaviorRecords) {
             appendToCsV(tbr);
         }
     }

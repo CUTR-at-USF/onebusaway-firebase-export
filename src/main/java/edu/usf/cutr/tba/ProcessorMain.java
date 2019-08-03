@@ -30,12 +30,16 @@ public class ProcessorMain {
         try {
             CommandLine cmd = parser.parse(options, args);
 
-            if (cmd.hasOption(ProgramOptions.USER_ID)) {
-                programOptions.setUserId(cmd.getOptionValue(ProgramOptions.USER_ID));
-            }
-
             if (cmd.hasOption(ProgramOptions.KEY_FILE)) {
                 programOptions.setKeyFilePath(cmd.getOptionValue(ProgramOptions.KEY_FILE));
+            } else {
+                System.err.println("Firebase admin key is not provided. \n" +
+                        "Provide an admin key using -keyFile path/to/file.json");
+                return;
+            }
+
+            if (cmd.hasOption(ProgramOptions.USER_ID)) {
+                programOptions.setUserId(cmd.getOptionValue(ProgramOptions.USER_ID));
             }
 
             if (cmd.hasOption(ProgramOptions.NO_MERGE_STILL)) {

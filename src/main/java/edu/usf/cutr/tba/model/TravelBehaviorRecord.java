@@ -74,7 +74,7 @@ public class TravelBehaviorRecord {
     private Float mDestinationHorAccuracy;
     private String mDestinationProvider;
 
-    // Internal user
+    // Internal usage
     private Long mActivityStartTimeMillis;
     private Long mActivityEndTimeMillis;
     private Long mLocationStartTimeMillis;
