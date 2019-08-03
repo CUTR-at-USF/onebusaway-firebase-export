@@ -72,6 +72,9 @@ public class TravelBehaviorDataAnalysisManager {
         mCSVFileWriter.closeWriter();
     }
 
+    /**
+     * Retrieves all user ids in firebase and analyses each user's data one by one
+     */
     private void analyzeAllTravelBehaviorData() {
         List<QueryDocumentSnapshot> allUserIds = mFirebaseReader.getAllUserIds();
         for (QueryDocumentSnapshot doc : allUserIds) {
@@ -79,14 +82,21 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
+    /**
+     * analyzes a user data by the given user id
+     * @param userId firebase user id
+     */
     private void processUserById(String userId) {
+        // gets all user data by id
         List<QueryDocumentSnapshot> userInfoById = new ArrayList<>(mFirebaseReader.getAllUserInfoById(userId));
+        // sorts the data by activity time
         Collections.sort(userInfoById, new QueryDocumentSnapshotComparator());
 
         mLastTravelBehaviorRecord = null;
 
         List<QueryDocumentSnapshot> userDeviceInfoList = mFirebaseReader.getAllUserDeviceInfoById(userId);
 
+        // analyze each transition activity of the user one by one
         for (QueryDocumentSnapshot doc : userInfoById) {
             processUserActivityTransitionData(doc, userId, userDeviceInfoList);
         }
@@ -96,6 +106,16 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
+    /**
+     *  -- if mLastTravelBehaviorRecord is null which means there is no previous enter activity then we look for an enter
+     *     activity ub tge given Travel Behavior data.
+     *  -- if mLastTravelBehaviorRecord is not null which means there is a previous enter activity then we look for an
+     *     exit activity in the data.
+     *
+     * @param doc user's travel behavior data
+     * @param userId firebase user id
+     * @param userDeviceInfoList a list that contains user's device info
+     */
     private void processUserActivityTransitionData(QueryDocumentSnapshot doc, String userId,
                                                    List<QueryDocumentSnapshot> userDeviceInfoList) {
         TravelBehaviorInfo tbi = doc.toObject(TravelBehaviorInfo.class);
@@ -127,6 +147,16 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
+    /**
+     * The method creates a TravelBehaviorRecord for an enter activity which is a row representation in the output CSV
+     * The created object is not complete and it only contains the data from the enter activity. In order for this
+     * object to be valid, the next TravelBehavior data should be a matching exit activity.
+     *
+     * @param userId firebase user id
+     * @param tbi Firebase TravelBehaviorInfo object
+     * @param enterActivity enter activity
+     * @return
+     */
     private TravelBehaviorRecord createTravelBehaviorRecord(String userId, TravelBehaviorInfo tbi,
                                                             TravelBehaviorInfo.TravelBehaviorActivity enterActivity) {
         TravelBehaviorRecord tbr = new TravelBehaviorRecord(userId);
@@ -158,6 +188,13 @@ public class TravelBehaviorDataAnalysisManager {
         return tbr;
     }
 
+    /**
+     * This method completes the last travel behavior record object with an exit activity.
+     *
+     * @param tbi TravelBehaviorInfo
+     * @param doc Firebase representation of  TravelBehaviorInfo, we use it's time to determine the closest device info
+     * @param userDeviceInfoList the device info list that contains the region id
+     */
     private void completeTravelBehaviorRecord(TravelBehaviorInfo tbi, QueryDocumentSnapshot doc,
                                               List<QueryDocumentSnapshot> userDeviceInfoList) {
         Long activityEndTime = TravelBehaviorUtils.getActivityStartTime(tbi);
@@ -202,6 +239,13 @@ public class TravelBehaviorDataAnalysisManager {
         mLastTravelBehaviorRecord.setRegionId(regionId);
     }
 
+    /**
+     * Finds a region id in the device info list. It picks the closest time device info that is entered with the record
+     * It performs binary search to find the closest device info
+     * @param doc firebase representation of travel behavior data
+     * @param userDeviceInfoList device info list
+     * @return region id
+     */
     private String findRegionIdFromDeviceInfoList(QueryDocumentSnapshot doc,
                                                   List<QueryDocumentSnapshot> userDeviceInfoList) {
         if (userDeviceInfoList == null || userDeviceInfoList.size() == 0) return null;
@@ -226,6 +270,13 @@ public class TravelBehaviorDataAnalysisManager {
         return String.valueOf(deviceInformation.regionId);
     }
 
+    /**
+     * Adds a completed travel behavior record to the one day list
+     * if the given data is belong to next day it applies the tour algorithm and flushes the all today's data
+     * then adds the new data that belongs to the next day.
+     *
+     * @param tbr TravelBehaviorRecord
+     */
     private void addTravelBehaviorRecord(TravelBehaviorRecord tbr) {
         if (mOneDayTravelBehaviorRecordList.size() == 0) {
             // add new data to list with new tour id
@@ -241,6 +292,15 @@ public class TravelBehaviorDataAnalysisManager {
 
     /**
      * TODO: Implement subtours to this tour algorithm
+     *
+     * Tour Algorithm:
+     * 1. Put all activity transition records that happened in the same day
+     *    in a list
+     * 2.  Assume the first element in the list is the home of the user
+     * 3.  Iterate over the list, if the user comes back to home then
+     * mark all transition between two home travel as one tour
+     * 4. If the user does not come to the starting place (home),
+     * all activity transition are marked with new tour ids
      */
     private void applyTourAlgorithmToOneDayRecordList() {
         if (mOneDayTravelBehaviorRecordList.size() < 2) {
@@ -275,7 +335,7 @@ public class TravelBehaviorDataAnalysisManager {
     }
 
     /**
-     *
+     * Writes all one day travel behavior data to the CSV file
      */
     private void flushOneDayTravelBehaviorRecordList() {
         // flush all data to csv
@@ -284,6 +344,13 @@ public class TravelBehaviorDataAnalysisManager {
         mOneDayTravelBehaviorRecordList.clear();
     }
 
+    /**
+     * Every time we add a transition record to the same day record list,
+     * we look if this event is walking or running and we look the previous
+     * event. If the previous event is walking, running, or walking/running
+     * we merge them together.
+     * And make the event walking and running.
+     */
     private void mergeWalkingAndRunningEvents() {
         int size = mOneDayTravelBehaviorRecordList.size();
         if (!mProgramOptions.isMergeAllWalkingAndRunningEventsEnabled() || size < 2) return;
@@ -316,6 +383,14 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
+    /**
+     * Every time we add a transition record to the same day record list,
+     * we look if the previous record is a still event and the two previous
+     * event is the same event with this event and if the still event's duration
+     * is less then the threshold we remove the middle still event and merge
+     * two same (e.g., in_vehicle, in_vehicle) or similar events (e.g., walking,
+     *  walking/running) events into a single event.
+     */
     private void mergeStillEvents() {
         if (!mProgramOptions.isMergeStillEventsEnabled()) return;
 
@@ -347,6 +422,11 @@ public class TravelBehaviorDataAnalysisManager {
         }
     }
 
+    /**
+     * Merges two TravelBehaviorRecord's into the first TravelBehaviorRecord object
+     * @param tbrFirst First TravelBehaviorRecord
+     * @param tbrLast Second TravelBehaviorRecord
+     */
     private void mergeTravelBehaviorRecord(TravelBehaviorRecord tbrFirst, TravelBehaviorRecord tbrLast) {
         tbrFirst.setActivityEndDateAndTime(tbrLast.getActivityEndDateAndTime()).setActivityEndTimeMillis(
                 tbrLast.getActivityEndTimeMillis()).setEndLat(tbrLast.getEndLat()).setEndLon(tbrLast.getEndLon()).

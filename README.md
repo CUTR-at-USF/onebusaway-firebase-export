@@ -1,25 +1,31 @@
 # travel-behavior-analysis [![Build Status](https://travis-ci.org/CUTR-at-USF/travel-behavior-analysis.svg?branch=master)](https://travis-ci.org/CUTR-at-USF/travel-behavior-analysis)
 Java application to process travel behavior data collected by OneBusAway and stored in Firebase Firestore.
 
-## Setup
-1. Generate a private key file for your service account.
+## Build 
+To build the application use `mvn clean package` command. This command will create a jar file 
+(i.e., `travel-behavior-analysis-1.0-SNAPSHOT.jar`) under the `target` folder.
+ 
+## Setup Firebase Account
+1. Generate a admin private-key json file (e.g., `admin-key.json`) for your service account.
 To generate the key file follow the instructions in Firebase [setup page](https://firebase.google.com/docs/admin/setup#initialize_the_sdk).
-2. Rename the generated file to `admin-key.json`.
-3. Put `admin-key.json` under the resources folder or pass the path of the admin-key file as a command line argument 
-`-keyFile path/To/File/admin-key.json`.
-4. Run the application by typing `mvn compile`.
-5. The application will generate a `travel-behavior.csv` file under the `ravel-behavior-analysis/target/classes/` folder.
 
-## Command Line Options
+## Run
+To run the application use `java -jar` command and pass the `admin-key.json` file as an argument:
+`java -jar travel-behavior-analysis-1.0-SNAPSHOT.jar -keyFile /path/to/file/fileName.json`
 
-* `-keyFile <file path>` Path for the admin key of a Firebase account. 
-* `-userId` Takes a user id as an argument and performs the analysis for that specific user.
-* `-noMergeWalkingRunning` Does not merge the walking and running events.
-* `-noMergeStill` Does not merge the still events.
-* `-dayStart` The analysis day start time. For example `-dayStart 3` makes the analysis time 
+## Additional Optional Command Line Arguments 
+* `-userId <userId>` Takes a user id as an argument and performs the analysis for that specific user. Example usage:
+`-userId abcdef`.
+* `-dayStart <hour>` The analysis day start time. For example `-dayStart 3` makes the analysis time 
 window between 3AM to 3AM. By default, the analysis time is 3AM to 3AM.
-* `-stillMergeThreshold` Still event merge threshold in minutes. By default it is 2 minutes.
-* `-walkingRunningMergeThreshold` Walking and running events merge threshold in minutes. By default it is 2 minutes.
+* `-stillMergeThreshold <minutes>` Still event merge threshold in minutes. By default it is 2 minutes. Example usage:
+`-stillMergeThreshold 1` makes the merge threshold 1 minute.
+* `-walkingRunningMergeThreshold <minutes>` Walking and running events merge threshold in minutes. 
+By default it is 2 minutes. Example usage: `-walkingRunningMergeThreshold 1` makes the merge threshold 1 minute.
+* `-noMergeWalkingRunning` Does not merge the walking and running events. This option does not take a parameter.
+* `-noMergeStill` Does not merge the still events.  This option does not take a parameter.
+
+
 ## License
 
 ```
