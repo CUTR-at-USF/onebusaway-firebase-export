@@ -232,8 +232,8 @@ public class KmlFileWriter {
         String sb = "<Placemark><name>" + name + " - Trip ID " + tbr.getTripId() + "</name>\n" +
                 "<description><![CDATA[" +
                 "<strong>" + name + " Time: </strong> " + (origin ? localStartTime : localEndTime) + "\n<br />" +
-                "<strong>" + "Activity/Location Time Diff: </strong> " + (origin ? dFormat.format(tbr.getActivityStartOriginTimeDiff()) : dFormat.format(tbr.getActivityEndDestinationTimeDiff())) + " min\n<br />" +
                 "<strong>" + "Activity: </strong> " + tbr.getGoogleActivity() + " (" + tbr.getGoogleConfidence() + ")" + "\n<br />" +
+                "<strong>" + "Activity/Location Time Diff: </strong> " + (origin ? dFormat.format(tbr.getActivityStartOriginTimeDiff()) : dFormat.format(tbr.getActivityEndDestinationTimeDiff())) + " min\n<br />" +
                 "<strong>" + "Activity Duration: </strong> " + dFormat.format(tbr.getActivityDuration()) + " min\n<br />" +
                 "<strong>Location Provider:</strong> " + (origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()) + "\n<br />" +
                 "<strong>Horizontal Accuracy:</strong> " + dFormat.format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy()) + "m\n<br />" +
