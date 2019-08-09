@@ -282,10 +282,14 @@ public class TravelBehaviorDataAnalysisManager {
      * @param tbr TravelBehaviorRecord
      */
     private void addTravelBehaviorRecord(TravelBehaviorRecord tbr) {
+        // By default the day starts at 3 AM and ends at 3 AM next day
+        long sameDayDiffHours = ProgramOptions.getInstance().getSameDayStartPoint() == null ? TravelBehaviorConstants.
+                SAME_DAY_TIME_DIFF : ProgramOptions.getInstance().getSameDayStartPoint();
+
         if (mOneDayTravelBehaviorRecordList.size() == 0) {
             // add new data to list with new tour id
             mOneDayTravelBehaviorRecordList.add(tbr);
-        } else if (TravelBehaviorUtils.isInSameDay(mOneDayTravelBehaviorRecordList, tbr)) {
+        } else if (TravelBehaviorUtils.isInSameDay(mOneDayTravelBehaviorRecordList, tbr, sameDayDiffHours)) {
             mOneDayTravelBehaviorRecordList.add(tbr);
         } else {
             applyTourAlgorithmToOneDayRecordList();

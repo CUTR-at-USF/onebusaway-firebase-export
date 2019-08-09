@@ -18,13 +18,13 @@ package edu.usf.cutr.tba.utils;
 import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
 import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
-import edu.usf.cutr.tba.options.ProgramOptions;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -95,23 +95,52 @@ public class TravelBehaviorUtils {
         return null;
     }
 
+    /**
+     * Returns true if the provided travel behavior record (tbr) is in the same day as the others in the provided list
+     * (oneDayTravelBehaviorRecordList), using (midnight + sameDayDiffHours) to split days.  Local time of the travel
+     * behavior data is used for midnight.
+     *
+     * @param oneDayTravelBehaviorRecordList
+     * @param tbr
+     * @param sameDayDiffHours                    the number of hours past midnight to use as a time to split days.  For example, if you
+     *                                       use 3, then 3am will be used to split the day.
+     * @return true if the provided travel behavior record (tbr) is in the same day as the others in the provided list
+     * (oneDayTravelBehaviorRecordList), using (midnight + sameDayDiffHours) to split days.  Local time of the travel
+     * behavior data is used for midnight.
+     */
     public static boolean isInSameDay(List<TravelBehaviorRecord> oneDayTravelBehaviorRecordList,
-                                      TravelBehaviorRecord tbr) {
-        TravelBehaviorRecord lastRecord = oneDayTravelBehaviorRecordList.get(oneDayTravelBehaviorRecordList.size() - 1);
-        Long lastRecordActivityEndTime = lastRecord.getActivityEndTimeMillis() != null ? lastRecord.getActivityEndTimeMillis() :
-                lastRecord.getLocationEndTimeMillis();
+                                      TravelBehaviorRecord tbr, long sameDayDiffHours) {
+        // Get the times of the first record in the list, as well as the time of the new tbr
+        TravelBehaviorRecord firstRecord = oneDayTravelBehaviorRecordList.get(0);
+        Long firstRecordActivityEndTime = firstRecord.getActivityEndTimeMillis() != null ? firstRecord.getActivityEndTimeMillis() :
+                firstRecord.getLocationEndTimeMillis();
 
         Long newRecordActivityEndTime = tbr.getActivityEndTimeMillis() != null ? tbr.getActivityEndTimeMillis() :
                 tbr.getLocationEndTimeMillis();
 
-        if (lastRecordActivityEndTime == null || newRecordActivityEndTime == null) return false;
+        if (firstRecordActivityEndTime == null || newRecordActivityEndTime == null) {
+            // An incomplete record - return false
+            return false;
+        }
 
-        // By default the day starts at 3 AM and ends at 3 AM next day
-        long sameDayDiff = ProgramOptions.getInstance().getSameDayStartPoint() == null ? TravelBehaviorConstants.
-                SAME_DAY_TIME_DIFF : TimeUnit.HOURS.toMillis(ProgramOptions.getInstance().getSameDayStartPoint());
+        Instant firstRecordActivityEndTimeInstant = Instant.ofEpochMilli(firstRecordActivityEndTime);
+        Instant newRecordActivityEndTimeInstant = Instant.ofEpochMilli(newRecordActivityEndTime);
 
-        return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime - sameDayDiff) ==
-                TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime - sameDayDiff);
+        // Get time zone from travel behavior location
+        ZoneId zoneId = TimeZoneHelper.query(tbr.getStartLat(), tbr.getStartLon());
+
+        ZonedDateTime localTimeList = firstRecordActivityEndTimeInstant.atZone(zoneId);
+        ZonedDateTime localTimeTbr = newRecordActivityEndTimeInstant.atZone(zoneId);
+
+        if (localTimeList.truncatedTo(ChronoUnit.DAYS).equals(localTimeTbr.truncatedTo(ChronoUnit.DAYS))) {
+            // If the two events tie within the same day, then return true
+            return true;
+        }
+
+        // We still need to determine if the tbr is after midnight on the day after the list day, but before (midnight plus the sameDayDiffHours offset) (e.g., between midnight and 3am on the day after the list)
+        ZonedDateTime nextDayMidnight = localTimeList.truncatedTo(ChronoUnit.DAYS).plus(1, ChronoUnit.DAYS);
+        ZonedDateTime nextDayMidnightPlusOffset = nextDayMidnight.plus(sameDayDiffHours, ChronoUnit.HOURS);
+        return localTimeTbr.isAfter(nextDayMidnight) && localTimeTbr.isBefore(nextDayMidnightPlusOffset);
     }
 
     public static float millisToMinutes(long millis) {
