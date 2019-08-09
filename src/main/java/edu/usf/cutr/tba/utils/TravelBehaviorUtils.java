@@ -18,7 +18,6 @@ package edu.usf.cutr.tba.utils;
 import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
 import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
-import edu.usf.cutr.tba.options.ProgramOptions;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -95,8 +94,21 @@ public class TravelBehaviorUtils {
         return null;
     }
 
+    /**
+     * Returns true if the provided travel behavior record (tbr) is in the same day as the others in the provided list
+     * (oneDayTravelBehaviorRecordList), using (midnight + sameDayDiff) to split days.  Local time of the travel
+     * behavior data is used for midnight.
+     *
+     * @param oneDayTravelBehaviorRecordList
+     * @param tbr
+     * @param sameDayDiff                    the number of milliseconds past midnight to use as a time to split days.  For example, if you
+     *                                       use 1.08e+7, then 3am will be used to split the day.
+     * @return true if the provided travel behavior record (tbr) is in the same day as the others in the provided list
+     * (oneDayTravelBehaviorRecordList), using (midnight + sameDayDiff) to split days.  Local time of the travel
+     * behavior data is used for midnight.
+     */
     public static boolean isInSameDay(List<TravelBehaviorRecord> oneDayTravelBehaviorRecordList,
-                                      TravelBehaviorRecord tbr) {
+                                      TravelBehaviorRecord tbr, long sameDayDiff) {
         TravelBehaviorRecord lastRecord = oneDayTravelBehaviorRecordList.get(oneDayTravelBehaviorRecordList.size() - 1);
         Long lastRecordActivityEndTime = lastRecord.getActivityEndTimeMillis() != null ? lastRecord.getActivityEndTimeMillis() :
                 lastRecord.getLocationEndTimeMillis();
@@ -105,10 +117,6 @@ public class TravelBehaviorUtils {
                 tbr.getLocationEndTimeMillis();
 
         if (lastRecordActivityEndTime == null || newRecordActivityEndTime == null) return false;
-
-        // By default the day starts at 3 AM and ends at 3 AM next day
-        long sameDayDiff = ProgramOptions.getInstance().getSameDayStartPoint() == null ? TravelBehaviorConstants.
-                SAME_DAY_TIME_DIFF : TimeUnit.HOURS.toMillis(ProgramOptions.getInstance().getSameDayStartPoint());
 
         return TimeUnit.MILLISECONDS.toDays(lastRecordActivityEndTime - sameDayDiff) ==
                 TimeUnit.MILLISECONDS.toDays(newRecordActivityEndTime - sameDayDiff);
