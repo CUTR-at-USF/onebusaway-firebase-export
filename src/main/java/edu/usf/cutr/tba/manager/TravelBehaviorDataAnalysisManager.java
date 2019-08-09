@@ -20,6 +20,7 @@ import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
 import edu.usf.cutr.tba.exception.FirebaseFileNotInitializedException;
 import edu.usf.cutr.tba.io.CSVFileWriter;
 import edu.usf.cutr.tba.io.FirebaseReader;
+import edu.usf.cutr.tba.io.KmlFileWriter;
 import edu.usf.cutr.tba.model.DeviceInformation;
 import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
@@ -41,6 +42,8 @@ public class TravelBehaviorDataAnalysisManager {
 
     private CSVFileWriter mCSVFileWriter;
 
+    private KmlFileWriter mKmlFileWriter;
+
     private TravelBehaviorRecord mLastTravelBehaviorRecord;
 
     private List<TravelBehaviorRecord> mOneDayTravelBehaviorRecordList;
@@ -52,6 +55,7 @@ public class TravelBehaviorDataAnalysisManager {
     public TravelBehaviorDataAnalysisManager() throws FirebaseFileNotInitializedException {
         mFirebaseReader = new FirebaseReader();
         mCSVFileWriter = new CSVFileWriter();
+        mKmlFileWriter = new KmlFileWriter();
         mOneDayTravelBehaviorRecordList = new ArrayList<>();
         mProgramOptions = ProgramOptions.getInstance();
     }
@@ -340,6 +344,8 @@ public class TravelBehaviorDataAnalysisManager {
     private void flushOneDayTravelBehaviorRecordList() {
         // flush all data to csv
         mCSVFileWriter.appendAllToCsV(mOneDayTravelBehaviorRecordList);
+        // Write a KML file for this user's behavior for this day
+        mKmlFileWriter.appendAllToKml(mOneDayTravelBehaviorRecordList);
         // clean the one day list
         mOneDayTravelBehaviorRecordList.clear();
     }

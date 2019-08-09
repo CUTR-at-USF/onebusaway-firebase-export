@@ -21,6 +21,10 @@ import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 import edu.usf.cutr.tba.options.ProgramOptions;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -37,10 +41,39 @@ public class TravelBehaviorUtils {
         return getActivityByType(activities, TravelBehaviorConstants.ACTIVITY_TRANSITION_EXIT);
     }
 
+    /**
+     * Gets the time in the string ISO 8601 UTC format from the provided epoch time
+     * @param millis
+     * @return the time in the string ISO 8601 UTC format from the provided epoch time
+     */
     public static String getDateAndTimeFromMillis(Long millis) {
         Date date = new Date(millis);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return sdf.format(date);
+    }
+
+    /**
+     * Gets the date in string format from the provided epoch time
+     * @param millis
+     * @return the date in string format from the provided epoch time
+     */
+    public static String getDateAndTimeFileNameFromMillis(Long millis) {
+        Date date = new Date(millis);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH mm ss");
+        return sdf.format(date);
+    }
+
+    /**
+     * Gets the local time based on the provided epoch time and Zone Id
+     *
+     * @param millis
+     * @return the local time based on the provided epoch time and Zone Id
+     */
+    public static String getLocalTimeFromMillis(Long millis, ZoneId zoneId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+        Instant instant = Instant.ofEpochMilli(millis);
+        ZonedDateTime localTime = instant.atZone(zoneId);
+        return localTime.format(formatter);
     }
 
     private static TravelBehaviorInfo.TravelBehaviorActivity getActivityByType(List<TravelBehaviorInfo.

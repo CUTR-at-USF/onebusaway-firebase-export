@@ -94,8 +94,22 @@ public class TravelBehaviorRecord {
         return this;
     }
 
+    /**
+     * The activity recognized by the Android Activity Transition API (see https://developer.android.com/guide/topics/location/transitions)
+     *
+     * @return activity recognized by the Android Activity Transition API
+     */
     public String getGoogleActivity() {
         return mGoogleActivity;
+    }
+
+    /**
+     * The confidence returned by the Android Activity Recognition API, following an activity transition. Values are between 0 and 1.
+     *
+     * @return confidence returned by the Android Activity Recognition API, following an activity transition. Values are between 0 and 1.
+     */
+    public Float getGoogleConfidence() {
+        return mGoogleConfidence;
     }
 
     public TravelBehaviorRecord setGoogleActivity(String googleActivity) {
@@ -269,6 +283,10 @@ public class TravelBehaviorRecord {
         return mEndLon;
     }
 
+    public String getActivityStartDateAndTime() {
+        return mActivityStartDateAndTime;
+    }
+
     public String getActivityEndDateAndTime() {
         return mActivityEndDateAndTime;
     }
@@ -277,16 +295,55 @@ public class TravelBehaviorRecord {
         return mDestinationLocationDateAndTime;
     }
 
+    /**
+     * Returns the time difference between the activity end time and location time, in minutes
+     * @return the time difference between the activity end time and location time, in minutes
+     */
     public Float getActivityEndDestinationTimeDiff() {
         return mActivityEndDestinationTimeDiff;
+    }
+
+    /**
+     * Returns the time difference between the activity start time and location time, in minutes
+     *
+     * @return the time difference between the activity start time and location time, in minutes
+     */
+    public Float getActivityStartOriginTimeDiff() {
+        return mActivityStartOriginTimeDiff;
     }
 
     public Float getDestinationHorAccuracy() {
         return mDestinationHorAccuracy;
     }
 
+    public Float getOriginHorAccuracy() {
+        return mOriginHorAccuracy;
+    }
+
+
     public String getDestinationProvider() {
         return mDestinationProvider;
+    }
+
+    public String getOriginProvider() {
+        return mOriginProvider;
+    }
+
+    public String getUserId() {
+        return mUserId;
+    }
+
+    public String getTripId() {
+        return mTripId;
+    }
+
+    /**
+     * Returns duration of the activity, in minutes
+     *
+     * @return duration of the activity, in minutes
+     */
+    public Float getActivityDuration() {
+        return mActivityDuration;
     }
 
     public String[] toStringArray() {
