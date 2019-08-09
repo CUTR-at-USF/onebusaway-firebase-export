@@ -101,4 +101,7 @@ dependency-reduced-pom.xml
 *.csv
 *.kml
 *.kmz
+*.zip
+*.xls
+*.xlsx
 
