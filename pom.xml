@@ -76,6 +76,12 @@
             <artifactId>commons-cli</artifactId>
             <version>1.4</version>
         </dependency>
+        <!-- For getting time zones for locations -->
+        <dependency>
+            <groupId>net.iakovlev</groupId>
+            <artifactId>timeshape</artifactId>
+            <version>2018d.6</version>
+        </dependency>
     </dependencies>
 
 </project>

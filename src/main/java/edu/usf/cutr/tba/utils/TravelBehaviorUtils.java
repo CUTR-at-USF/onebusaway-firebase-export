@@ -21,6 +21,10 @@ import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 import edu.usf.cutr.tba.options.ProgramOptions;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -57,6 +61,19 @@ public class TravelBehaviorUtils {
         Date date = new Date(millis);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
+    }
+
+    /**
+     * Gets the local time based on the provided epoch time and Zone Id
+     *
+     * @param millis
+     * @return the local time based on the provided epoch time and Zone Id
+     */
+    public static String getLocalTimeFromMillis(Long millis, ZoneId zoneId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+        Instant instant = Instant.ofEpochMilli(millis);
+        ZonedDateTime localTime = instant.atZone(zoneId);
+        return localTime.format(formatter);
     }
 
     private static TravelBehaviorInfo.TravelBehaviorActivity getActivityByType(List<TravelBehaviorInfo.

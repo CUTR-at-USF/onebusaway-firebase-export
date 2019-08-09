@@ -15,19 +15,19 @@
  */
 package edu.usf.cutr.tba.io;
 
-import com.opencsv.CSVWriter;
-import edu.usf.cutr.tba.constants.FirebaseConstants;
-import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.utils.TimeZoneHelper;
 import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 
 import java.io.*;
 import java.text.DecimalFormat;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static edu.usf.cutr.tba.constants.FirebaseConstants.*;
+import static edu.usf.cutr.tba.constants.FirebaseConstants.TRAVEL_BEHAVIOR_KML_FILE_EXTENSION;
+import static edu.usf.cutr.tba.constants.FirebaseConstants.TRAVEL_BEHAVIOR_KMZ_FILE_EXTENSION;
 
 public class KmlFileWriter {
 
@@ -221,13 +221,18 @@ public class KmlFileWriter {
      * @return a location Placemark from the provided TravelBehaviorRecord - an origin placemark if origin is true, and a destination placemark if origin is false
      */
     private String getLocationPlacemark(TravelBehaviorRecord tbr, boolean origin) {
+        // Convert times to user local times for display in marker balloon
+        ZoneId zoneId = TimeZoneHelper.query(tbr.getStartLat(), tbr.getStartLon());
+        String startTimeBalloon = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityStartTimeMillis(), zoneId);
+        String endTimeBalloon = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityEndTimeMillis(), zoneId);
+
         StringBuilder sb = new StringBuilder();
         String name = origin ? "Start" : "End";
         sb.append("<Placemark><name>").append(name).append(" - Trip ID ").append(tbr.getTripId()).append("</name>\n");
         sb.append("<description><![CDATA[" + "<strong>Horizontal Accuracy:</strong> ")
                 .append(new DecimalFormat("#,##0.00").format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy())).append("m\n<br />")
                 .append("<strong>Location Provider:</strong> ").append(origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()).append("\n<br />")
-                .append("<strong>").append(name).append(" Time: </strong> ").append(origin ? tbr.getActivityStartDateAndTime() : tbr.getActivityEndDateAndTime()).append("\n<br />")
+                .append("<strong>").append(name).append(" Time: </strong> ").append(origin ? startTimeBalloon : endTimeBalloon).append("\n<br />")
                 .append("]]>\n</description>")
                 .append("<styleUrl>" + (origin ? "#msn_triangle" : "#msn_target") + "</styleUrl>")
                 .append("<Point><coordinates><![CDATA[").append(origin ? tbr.getStartLon() : tbr.getEndLon())
