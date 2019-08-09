@@ -21,6 +21,10 @@ public class FirebaseConstants {
 
     public static final String TRAVEL_BEHAVIOR_CSV_FILE = "travel-behavior.csv";
 
+    public static final String TRAVEL_BEHAVIOR_KML_FILE_EXTENSION = ".kml";
+
+    public static final String TRAVEL_BEHAVIOR_KMZ_FILE_EXTENSION = ".kmz";
+
     public static final String FIREBASE_ACTIVITY_TRANSITION_FOLDER = "activity-transitions";
 
     public static final String FIREBASE_ARRIVAL_AND_DEPARTURE_FOLDER = "arrival-and-departures";

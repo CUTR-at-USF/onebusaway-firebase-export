@@ -37,9 +37,25 @@ public class TravelBehaviorUtils {
         return getActivityByType(activities, TravelBehaviorConstants.ACTIVITY_TRANSITION_EXIT);
     }
 
+    /**
+     * Gets the time in the string ISO 8601 UTC format from the provided epoch time
+     * @param millis
+     * @return the time in the string ISO 8601 UTC format from the provided epoch time
+     */
     public static String getDateAndTimeFromMillis(Long millis) {
         Date date = new Date(millis);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return sdf.format(date);
+    }
+
+    /**
+     * Gets the date in string format from the provided epoch time
+     * @param millis
+     * @return the date in string format from the provided epoch time
+     */
+    public static String getDateFromMillis(Long millis) {
+        Date date = new Date(millis);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
 

@@ -269,6 +269,10 @@ public class TravelBehaviorRecord {
         return mEndLon;
     }
 
+    public String getActivityStartDateAndTime() {
+        return mActivityStartDateAndTime;
+    }
+
     public String getActivityEndDateAndTime() {
         return mActivityEndDateAndTime;
     }
@@ -285,8 +289,25 @@ public class TravelBehaviorRecord {
         return mDestinationHorAccuracy;
     }
 
+    public Float getOriginHorAccuracy() {
+        return mOriginHorAccuracy;
+    }
+
+
     public String getDestinationProvider() {
         return mDestinationProvider;
+    }
+
+    public String getOriginProvider() {
+        return mOriginProvider;
+    }
+
+    public String getUserId() {
+        return mUserId;
+    }
+
+    public String getTripId() {
+        return mTripId;
     }
 
     public String[] toStringArray() {
