@@ -57,9 +57,9 @@ public class TravelBehaviorUtils {
      * @param millis
      * @return the date in string format from the provided epoch time
      */
-    public static String getDateFromMillis(Long millis) {
+    public static String getDateAndTimeFileNameFromMillis(Long millis) {
         Date date = new Date(millis);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH mm ss");
         return sdf.format(date);
     }
 

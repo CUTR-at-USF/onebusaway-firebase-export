@@ -160,7 +160,7 @@ public class KmlFileWriter {
         try {
             TravelBehaviorRecord firstTbr = travelBehaviorRecords.get(0);
 
-            String fileName = firstTbr.getUserId() + "_" + TravelBehaviorUtils.getDateFromMillis(firstTbr.getActivityStartTimeMillis());
+            String fileName = firstTbr.getUserId() + "_" + TravelBehaviorUtils.getDateAndTimeFileNameFromMillis(firstTbr.getActivityStartTimeMillis());
             File kmlFile = new File(fileName + TRAVEL_BEHAVIOR_KML_FILE_EXTENSION);
             mKmlWriter = new BufferedWriter(new FileWriter(kmlFile));
 
@@ -221,30 +221,28 @@ public class KmlFileWriter {
      * @return a location Placemark from the provided TravelBehaviorRecord - an origin placemark if origin is true, and a destination placemark if origin is false
      */
     private String getLocationPlacemark(TravelBehaviorRecord tbr, boolean origin) {
+        DecimalFormat dFormat = new DecimalFormat("#,##0.00");
+
         // Convert times to user local times for display in marker balloon
         ZoneId zoneId = TimeZoneHelper.query(tbr.getStartLat(), tbr.getStartLon());
-        String startTimeBalloon = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityStartTimeMillis(), zoneId);
-        String endTimeBalloon = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityEndTimeMillis(), zoneId);
-        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+        String localStartTime = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityStartTimeMillis(), zoneId);
+        String localEndTime = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityEndTimeMillis(), zoneId);
 
-        StringBuilder sb = new StringBuilder();
         String name = origin ? "Start" : "End";
-        sb.append("<Placemark><name>").append(name).append(" - Trip ID ").append(tbr.getTripId()).append("</name>\n");
-        sb.append("<description><![CDATA[")
-                .append("<strong>").append(name).append(" Time: </strong> ").append(origin ? startTimeBalloon : endTimeBalloon).append("\n<br />")
-                .append("<strong>").append("Activity/Location Time Diff: </strong> ").append(origin ? decimalFormat.format(tbr.getActivityStartOriginTimeDiff()) : decimalFormat.format(tbr.getActivityEndDestinationTimeDiff())).append(" min\n<br />")
-                .append("<strong>").append("Activity: </strong> ").append(tbr.getGoogleActivity()).append(" (" + decimalFormat.format(tbr.getGoogleConfidence() * 100) + "%)").append("\n<br />")
-                .append("<strong>").append("Activity Duration: </strong> ").append(decimalFormat.format(tbr.getActivityDuration())).append(" min\n<br />")
-                .append("<strong>Location Provider:</strong> ").append(origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()).append("\n<br />")
-                .append("<strong>Horizontal Accuracy:</strong> ").append(decimalFormat.format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy())).append("m\n<br />")
-                .append("]]>\n</description>")
-                .append("<styleUrl>" + (origin ? "#msn_triangle" : "#msn_target") + "</styleUrl>")
-                .append("<Point><coordinates><![CDATA[").append(origin ? tbr.getStartLon() : tbr.getEndLon())
-                .append(",").append(origin ? tbr.getStartLat() : tbr.getEndLat()).append("]]></coordinates>\n")
-                .append("</Point>")
-                .append("<TimeStamp>").append("<when>").append(origin ? tbr.getActivityStartDateAndTime() : tbr.getActivityEndDateAndTime())
-                .append("</when>\n</TimeStamp></Placemark>");
-        return sb.toString();
+        String sb = "<Placemark><name>" + name + " - Trip ID " + tbr.getTripId() + "</name>\n" +
+                "<description><![CDATA[" +
+                "<strong>" + name + " Time: </strong> " + (origin ? localStartTime : localEndTime) + "\n<br />" +
+                "<strong>" + "Activity/Location Time Diff: </strong> " + (origin ? dFormat.format(tbr.getActivityStartOriginTimeDiff()) : dFormat.format(tbr.getActivityEndDestinationTimeDiff())) + " min\n<br />" +
+                "<strong>" + "Activity: </strong> " + tbr.getGoogleActivity() + " (" + tbr.getGoogleConfidence() + ")" + "\n<br />" +
+                "<strong>" + "Activity Duration: </strong> " + dFormat.format(tbr.getActivityDuration()) + " min\n<br />" +
+                "<strong>Location Provider:</strong> " + (origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()) + "\n<br />" +
+                "<strong>Horizontal Accuracy:</strong> " + dFormat.format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy()) + "m\n<br />" +
+                "]]>\n</description>" +
+                "<styleUrl>" + (origin ? "#msn_triangle" : "#msn_target") + "</styleUrl>" +
+                "<Point><coordinates><![CDATA[" + (origin ? tbr.getStartLon() : tbr.getEndLon()) +
+                "," + (origin ? tbr.getStartLat() : tbr.getEndLat()) + "]]></coordinates>\n" + "</Point>" +
+                "<TimeStamp>" + "<when>" + (origin ? tbr.getActivityStartDateAndTime() : tbr.getActivityEndDateAndTime()) + "</when>\n</TimeStamp></Placemark>";
+        return sb;
     }
 
     /**
