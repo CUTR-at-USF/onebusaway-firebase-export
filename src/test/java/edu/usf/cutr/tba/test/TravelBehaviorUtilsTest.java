@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -21,17 +20,55 @@ public class TravelBehaviorUtilsTest {
     @Test
     public void testIsInSameDay() {
         List<TravelBehaviorRecord> list = new ArrayList<>();
+        // Use Eastern time location
+        double lat = 28.0587, lon = -82.4139;
 
         TravelBehaviorRecord day1a = new TravelBehaviorRecord(userId);
+        day1a.setStartLat(lat);
+        day1a.setStartLon(lon);
+        day1a.setEndLat(lat);
+        day1a.setEndLon(lon);
         TravelBehaviorRecord day1b = new TravelBehaviorRecord(userId);
+        day1b.setStartLat(lat);
+        day1b.setStartLon(lon);
+        day1b.setEndLat(lat);
+        day1b.setEndLon(lon);
         TravelBehaviorRecord day1c = new TravelBehaviorRecord(userId);
+        day1c.setStartLat(lat);
+        day1c.setStartLon(lon);
+        day1c.setEndLat(lat);
+        day1c.setEndLon(lon);
         TravelBehaviorRecord day1d = new TravelBehaviorRecord(userId);
+        day1d.setStartLat(lat);
+        day1d.setStartLon(lon);
+        day1d.setEndLat(lat);
+        day1d.setEndLon(lon);
         TravelBehaviorRecord day1e = new TravelBehaviorRecord(userId);
+        day1e.setStartLat(lat);
+        day1e.setStartLon(lon);
+        day1e.setEndLat(lat);
+        day1e.setEndLon(lon);
         TravelBehaviorRecord day1f = new TravelBehaviorRecord(userId);
+        day1f.setStartLat(lat);
+        day1f.setStartLon(lon);
+        day1f.setEndLat(lat);
+        day1f.setEndLon(lon);
         TravelBehaviorRecord day1g = new TravelBehaviorRecord(userId);
+        day1g.setStartLat(lat);
+        day1g.setStartLon(lon);
+        day1g.setEndLat(lat);
+        day1g.setEndLon(lon);
 
         TravelBehaviorRecord day2a = new TravelBehaviorRecord(userId);
+        day2a.setStartLat(lat);
+        day2a.setStartLon(lon);
+        day2a.setEndLat(lat);
+        day2a.setEndLon(lon);
         TravelBehaviorRecord day2b = new TravelBehaviorRecord(userId);
+        day2b.setStartLat(lat);
+        day2b.setStartLon(lon);
+        day2b.setEndLat(lat);
+        day2b.setEndLon(lon);
 
         // Day 1
 
@@ -74,7 +111,7 @@ public class TravelBehaviorUtilsTest {
         day2b.setActivityEndTimeMillis(1565494582198L);
 
         // Days are split at midnight + SAME_DAY_TIME_DIFF, using local time.  We use 3am local time to split days in the below tests.
-        final long SAME_DAY_TIME_DIFF = TimeUnit.HOURS.toMillis(3);
+        final long SAME_DAY_TIME_DIFF = 3;
 
         // Add the times in the same day one-by-one and confirm that they all belong in the same day (returns true)
         list.add(day1a);
@@ -94,6 +131,7 @@ public class TravelBehaviorUtilsTest {
 
         list.add(day1f);
         assertTrue(TravelBehaviorUtils.isInSameDay(list, day1g, SAME_DAY_TIME_DIFF));
+        list.add(day1g);
 
         // Test the times in day two against the day 1 list, and confirm that they all return false (not in the same day)
         assertFalse(TravelBehaviorUtils.isInSameDay(list, day2a, SAME_DAY_TIME_DIFF));

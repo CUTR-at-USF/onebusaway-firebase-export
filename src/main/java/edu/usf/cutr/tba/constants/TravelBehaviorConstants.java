@@ -36,7 +36,7 @@ public class TravelBehaviorConstants {
     public static final long  WALKING_RUNNING_THRESHOLD = TimeUnit.MINUTES.toMillis(2);
 
     /**
-     * We split days at this number of milliseconds past midnight (e.g., if 3 hours, or 1.08e+7 milliseconds, then it will be split at 3am)
+     * We split days at this number of hours past midnight (e.g., if 3 hours, then it will be split at 3am)
      */
-    public static final long  SAME_DAY_TIME_DIFF = TimeUnit.HOURS.toMillis(3); // 3 hours
+    public static final long SAME_DAY_TIME_DIFF = 3; // 3 hours
 }
