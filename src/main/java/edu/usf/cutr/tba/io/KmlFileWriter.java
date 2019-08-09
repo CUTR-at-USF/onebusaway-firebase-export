@@ -225,14 +225,18 @@ public class KmlFileWriter {
         ZoneId zoneId = TimeZoneHelper.query(tbr.getStartLat(), tbr.getStartLon());
         String startTimeBalloon = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityStartTimeMillis(), zoneId);
         String endTimeBalloon = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityEndTimeMillis(), zoneId);
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 
         StringBuilder sb = new StringBuilder();
         String name = origin ? "Start" : "End";
         sb.append("<Placemark><name>").append(name).append(" - Trip ID ").append(tbr.getTripId()).append("</name>\n");
-        sb.append("<description><![CDATA[" + "<strong>Horizontal Accuracy:</strong> ")
-                .append(new DecimalFormat("#,##0.00").format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy())).append("m\n<br />")
-                .append("<strong>Location Provider:</strong> ").append(origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()).append("\n<br />")
+        sb.append("<description><![CDATA[")
                 .append("<strong>").append(name).append(" Time: </strong> ").append(origin ? startTimeBalloon : endTimeBalloon).append("\n<br />")
+                .append("<strong>").append("Activity/Location Time Diff: </strong> ").append(origin ? decimalFormat.format(tbr.getActivityStartOriginTimeDiff()) : decimalFormat.format(tbr.getActivityEndDestinationTimeDiff())).append(" min\n<br />")
+                .append("<strong>").append("Activity: </strong> ").append(tbr.getGoogleActivity()).append(" (" + decimalFormat.format(tbr.getGoogleConfidence() * 100) + "%)").append("\n<br />")
+                .append("<strong>").append("Activity Duration: </strong> ").append(decimalFormat.format(tbr.getActivityDuration())).append(" min\n<br />")
+                .append("<strong>Location Provider:</strong> ").append(origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()).append("\n<br />")
+                .append("<strong>Horizontal Accuracy:</strong> ").append(decimalFormat.format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy())).append("m\n<br />")
                 .append("]]>\n</description>")
                 .append("<styleUrl>" + (origin ? "#msn_triangle" : "#msn_target") + "</styleUrl>")
                 .append("<Point><coordinates><![CDATA[").append(origin ? tbr.getStartLon() : tbr.getEndLon())
