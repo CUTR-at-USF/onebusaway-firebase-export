@@ -22,8 +22,8 @@ public class TimeZoneHelper {
      */
     synchronized static public ZoneId query(double lat, double lon) {
         if (mTimeZoneEngine == null) {
-            // Use North America bounding box to reduce initialization time
-            mTimeZoneEngine = TimeZoneEngine.initialize(10.833305983642491, -136.0546875, 54.97761367069628, -46.40625);
+            // We can't assume all participate travel behavior will occur within the U.S., so init globally
+            mTimeZoneEngine = TimeZoneEngine.initialize();
         }
         Optional<ZoneId> maybeZoneId = mTimeZoneEngine.query(lat, lon);
         return maybeZoneId.orElse(null);

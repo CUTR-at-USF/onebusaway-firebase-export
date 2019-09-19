@@ -126,8 +126,20 @@ public class TravelBehaviorUtils {
         Instant firstRecordActivityEndTimeInstant = Instant.ofEpochMilli(firstRecordActivityEndTime);
         Instant newRecordActivityEndTimeInstant = Instant.ofEpochMilli(newRecordActivityEndTime);
 
+        double lat, lon;
+        if (tbr.getStartLat() != null && tbr.getStartLon() != null) {
+            lat = tbr.getStartLat();
+            lon = tbr.getStartLon();
+        } else if (tbr.getEndLat() != null && tbr.getEndLon() != null) {
+            lat = tbr.getEndLat();
+            lon = tbr.getEndLon();
+        } else {
+            // An incomplete record - return false
+            return false;
+        }
+
         // Get time zone from travel behavior location
-        ZoneId zoneId = TimeZoneHelper.query(tbr.getStartLat(), tbr.getStartLon());
+        ZoneId zoneId = TimeZoneHelper.query(lat, lon);
 
         ZonedDateTime localTimeList = firstRecordActivityEndTimeInstant.atZone(zoneId);
         ZonedDateTime localTimeTbr = newRecordActivityEndTimeInstant.atZone(zoneId);
