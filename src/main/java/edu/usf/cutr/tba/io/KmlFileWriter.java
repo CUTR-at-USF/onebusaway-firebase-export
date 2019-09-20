@@ -160,7 +160,22 @@ public class KmlFileWriter {
         try {
             TravelBehaviorRecord firstTbr = travelBehaviorRecords.get(0);
 
-            String fileName = firstTbr.getUserId() + "_" + TravelBehaviorUtils.getDateAndTimeFileNameFromMillis(firstTbr.getActivityStartTimeMillis());
+            // Use one of the timestamps to create the file name
+            Long millis;
+            if (firstTbr.getActivityStartTimeMillis() != null) {
+                millis = firstTbr.getActivityStartTimeMillis();
+            } else if (firstTbr.getLocationStartTimeMillis() != null) {
+                millis = firstTbr.getLocationStartTimeMillis();
+            } else if (firstTbr.getActivityEndTimeMillis() != null) {
+                millis = firstTbr.getActivityEndTimeMillis();
+            } else if (firstTbr.getLocationEndTimeMillis() != null) {
+                millis = firstTbr.getLocationEndTimeMillis();
+            } else {
+                System.err.println("Bad time data in first record for travel behavior data list - skipping KMZ write for " + firstTbr.getUserId());
+                return;
+            }
+
+            String fileName = firstTbr.getUserId() + "_" + TravelBehaviorUtils.getDateAndTimeFileNameFromMillis(millis);
             File kmlFile = new File(fileName + TRAVEL_BEHAVIOR_KML_FILE_EXTENSION);
             mKmlWriter = new BufferedWriter(new FileWriter(kmlFile));
 
@@ -224,19 +239,56 @@ public class KmlFileWriter {
         DecimalFormat dFormat = new DecimalFormat("#,##0.00");
 
         // Convert times to user local times for display in marker balloon
-        ZoneId zoneId = TimeZoneHelper.query(tbr.getStartLat(), tbr.getStartLon());
+        double lat, lon;
+        if (tbr.getStartLat() != null && tbr.getStartLon() != null) {
+            lat = tbr.getStartLat();
+            lon = tbr.getStartLon();
+        } else if (tbr.getEndLat() != null && tbr.getEndLon() != null) {
+            lat = tbr.getEndLat();
+            lon = tbr.getEndLon();
+        } else {
+            // Bad location data - we can't create a placemark out of this record
+            return "";
+        }
+        ZoneId zoneId = TimeZoneHelper.query(lat, lon);
         String localStartTime = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityStartTimeMillis(), zoneId);
         String localEndTime = TravelBehaviorUtils.getLocalTimeFromMillis(tbr.getActivityEndTimeMillis(), zoneId);
+
+        // Validate time fields before formatting them
+        String timeDiff;
+        if ((origin && tbr.getActivityStartOriginTimeDiff() != null && !Float.isNaN(tbr.getActivityStartOriginTimeDiff()))
+                || (!origin && tbr.getActivityEndDestinationTimeDiff() != null && !Float.isNaN(tbr.getActivityEndDestinationTimeDiff()))) {
+            timeDiff = "<strong>" + "Activity/Location Time Diff: </strong> " + (origin ? dFormat.format(tbr.getActivityStartOriginTimeDiff()) : dFormat.format(tbr.getActivityEndDestinationTimeDiff())) + " min\n<br />";
+        } else {
+            timeDiff = "<strong>" + "Activity/Location Time Diff: </strong> Invalid time data\n<br />";
+        }
+
+        // Validate horizontal accuracy before formatting them
+        String horAccuracy;
+        if ((origin && tbr.getOriginHorAccuracy() != null && !Float.isNaN(tbr.getOriginHorAccuracy())) ||
+                (!origin && tbr.getDestinationHorAccuracy() != null && !Float.isNaN(tbr.getDestinationHorAccuracy()))) {
+            horAccuracy = "<strong>Horizontal Accuracy:</strong> " + dFormat.format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy()) + "m\n<br />";
+        } else {
+            horAccuracy = "<strong>Horizontal Accuracy:</strong> Invalid data\n<br />";
+        }
+
+        // Validate duration before formatting it
+        String duration = "";
+        if (tbr.getActivityDuration() != null) {
+            duration = "<strong>" + "Activity Duration: </strong> " + dFormat.format(tbr.getActivityDuration()) + " min\n<br />";
+        } else {
+            duration = "<strong>" + "Activity Duration: </strong> Bad time data\n<br />";
+        }
 
         String name = origin ? "Start" : "End";
         String sb = "<Placemark><name>" + name + " - Trip ID " + tbr.getTripId() + "</name>\n" +
                 "<description><![CDATA[" +
                 "<strong>" + name + " Time: </strong> " + (origin ? localStartTime : localEndTime) + "\n<br />" +
                 "<strong>" + "Activity: </strong> " + tbr.getGoogleActivity() + " (" + tbr.getGoogleConfidence() + ")" + "\n<br />" +
-                "<strong>" + "Activity/Location Time Diff: </strong> " + (origin ? dFormat.format(tbr.getActivityStartOriginTimeDiff()) : dFormat.format(tbr.getActivityEndDestinationTimeDiff())) + " min\n<br />" +
-                "<strong>" + "Activity Duration: </strong> " + dFormat.format(tbr.getActivityDuration()) + " min\n<br />" +
+                timeDiff +
+                duration +
                 "<strong>Location Provider:</strong> " + (origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()) + "\n<br />" +
-                "<strong>Horizontal Accuracy:</strong> " + dFormat.format(origin ? tbr.getOriginHorAccuracy() : tbr.getDestinationHorAccuracy()) + "m\n<br />" +
+                horAccuracy +
                 "]]>\n</description>" +
                 "<styleUrl>" + (origin ? "#msn_triangle" : "#msn_target") + "</styleUrl>" +
                 "<Point><coordinates><![CDATA[" + (origin ? tbr.getStartLon() : tbr.getEndLon()) +

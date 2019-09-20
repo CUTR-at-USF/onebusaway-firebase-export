@@ -64,12 +64,15 @@ public class TravelBehaviorUtils {
     }
 
     /**
-     * Gets the local time based on the provided epoch time and Zone Id
+     * Gets the local time based on the provided epoch time and Zone Id, or an empty string if the time is null
      *
      * @param millis
-     * @return the local time based on the provided epoch time and Zone Id
+     * @return the local time based on the provided epoch time and Zone Id, or an empty string if the time is null
      */
     public static String getLocalTimeFromMillis(Long millis, ZoneId zoneId) {
+        if (millis == null) {
+            return "";
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
         Instant instant = Instant.ofEpochMilli(millis);
         ZonedDateTime localTime = instant.atZone(zoneId);
