@@ -157,6 +157,9 @@ public class KmlFileWriter {
         if (travelBehaviorRecords.isEmpty()) {
             return;
         }
+        if (!TravelBehaviorUtils.isAllowedToExport(travelBehaviorRecords.get(0))) {
+            return;
+        }
         try {
             TravelBehaviorRecord firstTbr = travelBehaviorRecords.get(0);
 

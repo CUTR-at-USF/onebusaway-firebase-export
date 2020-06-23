@@ -330,4 +330,21 @@ public class TravelBehaviorUtilsTest {
         assertFalse(TravelBehaviorUtils.isInSameDay(list, day2a, SAME_DAY_TIME_DIFF));
         assertFalse(TravelBehaviorUtils.isInSameDay(list, day2b, SAME_DAY_TIME_DIFF));
     }
+
+    /**
+     * Same as testIsInSameDayValidLocations(), but tests without a valid start or end location.
+     */
+    @Test
+    public void testExcludeYorkFromExport() {
+        TravelBehaviorRecord allowed = new TravelBehaviorRecord("1234")
+                .setRegionId("1");
+        assertTrue(TravelBehaviorUtils.isAllowedToExport(allowed));
+
+        TravelBehaviorRecord notAllowed = new TravelBehaviorRecord("9876")
+                .setRegionId("5");
+        assertFalse(TravelBehaviorUtils.isAllowedToExport(notAllowed));
+
+        TravelBehaviorRecord nullRegion = new TravelBehaviorRecord("9876");
+        assertTrue(TravelBehaviorUtils.isAllowedToExport(nullRegion));
+    }
 }

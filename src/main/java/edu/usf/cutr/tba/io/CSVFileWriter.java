@@ -18,6 +18,7 @@ package edu.usf.cutr.tba.io;
 import com.opencsv.CSVWriter;
 import edu.usf.cutr.tba.constants.FirebaseConstants;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -47,7 +48,9 @@ public class CSVFileWriter {
 
     public void appendAllToCsV(List<TravelBehaviorRecord> travelBehaviorRecords) {
         for (TravelBehaviorRecord tbr : travelBehaviorRecords) {
-            appendToCsV(tbr);
+            if (TravelBehaviorUtils.isAllowedToExport(tbr)) {
+                appendToCsV(tbr);
+            }
         }
     }
 

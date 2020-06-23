@@ -161,4 +161,20 @@ public class TravelBehaviorUtils {
     public static float millisToMinutes(long millis) {
         return TimeUnit.MILLISECONDS.toSeconds(millis) / 60f;
     }
+
+    /**
+     * Returns true if the TravelBehaviorRecord is allowed to be exported based on a variety of conditions, and false if it is not allowed
+     *
+     * @param tbr TravelBehaviorRecord to examine
+     * @return true if the TravelBehaviorRecord is allowed to be exported based on a variety of conditions, and false if it is not allowed
+     */
+    public static boolean isAllowedToExport(TravelBehaviorRecord tbr) {
+        final String YORK_REGION_ID = "5"; // From http://regions.onebusaway.org/regions-v3.json
+        // We currently aren't exporting data from York Region Transit in Canada at their request due to international privacy concerns
+        if (tbr.getRegionId() != null && tbr.getRegionId().equals(YORK_REGION_ID)) {
+            return false;
+        }
+        // No other restrictions
+        return true;
+    }
 }
