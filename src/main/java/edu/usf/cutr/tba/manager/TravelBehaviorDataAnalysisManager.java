@@ -189,6 +189,10 @@ public class TravelBehaviorDataAnalysisManager {
             tbr.setActivityStartOriginTimeDiff(TravelBehaviorUtils.millisToMinutes(diff));
         }
 
+        if (tbi.isIgnoringBatteryOptimizations != null){
+            tbr.setIsIgnoringBatteryOptimization(tbi.isIgnoringBatteryOptimizations);
+        }
+
         return tbr;
     }
 
@@ -239,6 +243,15 @@ public class TravelBehaviorDataAnalysisManager {
             mLastTravelBehaviorRecord.setOriginDestinationDistance(distance);
         }
 
+        if (tbi.isIgnoringBatteryOptimizations != null){
+            if (mLastTravelBehaviorRecord.getIsUsingBatteryOptimization() != null){
+                if(mLastTravelBehaviorRecord.getIsUsingBatteryOptimization() == Boolean.FALSE && tbi.isIgnoringBatteryOptimizations == Boolean.TRUE){
+                    mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(Boolean.TRUE);
+                }
+            }else {
+                mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(tbi.isIgnoringBatteryOptimizations);
+            }
+        }
         String regionId = findRegionIdFromDeviceInfoList(doc, userDeviceInfoList);
         mLastTravelBehaviorRecord.setRegionId(regionId);
     }
