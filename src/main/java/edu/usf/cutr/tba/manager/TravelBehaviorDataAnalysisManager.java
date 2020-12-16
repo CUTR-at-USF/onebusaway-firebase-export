@@ -189,6 +189,7 @@ public class TravelBehaviorDataAnalysisManager {
             tbr.setActivityStartOriginTimeDiff(TravelBehaviorUtils.millisToMinutes(diff));
         }
 
+        //Add the status isIgnoringBatteryOptimization while creating the TB Record
         if (tbi.isIgnoringBatteryOptimizations != null){
             tbr.setIsIgnoringBatteryOptimization(tbi.isIgnoringBatteryOptimizations);
         }
@@ -243,12 +244,16 @@ public class TravelBehaviorDataAnalysisManager {
             mLastTravelBehaviorRecord.setOriginDestinationDistance(distance);
         }
 
+        //While completing TBR update isIgnoringBatteryOptimization IF required
+        //Current logic is: Use TRUE if the status is true while creating OR while completing the TBR
         if (tbi.isIgnoringBatteryOptimizations != null){
-            if (mLastTravelBehaviorRecord.getIsUsingBatteryOptimization() != null){
-                if(mLastTravelBehaviorRecord.getIsUsingBatteryOptimization() == Boolean.FALSE && tbi.isIgnoringBatteryOptimizations == Boolean.TRUE){
+            if (mLastTravelBehaviorRecord.getIsIgnoringBatteryOptimization() != null){
+                //Overwrite the value if true while completing the TBR
+                if(tbi.isIgnoringBatteryOptimizations){
                     mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(Boolean.TRUE);
                 }
             }else {
+                //There was not value while creating, update the value with the status while completing TBR
                 mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(tbi.isIgnoringBatteryOptimizations);
             }
         }

@@ -354,7 +354,7 @@ public class TravelBehaviorRecord {
         return mActivityDuration;
     }
 
-    public Boolean getIsUsingBatteryOptimization() {return mIsIgnoringBatteryOptimizations;}
+    public Boolean getIsIgnoringBatteryOptimization() {return mIsIgnoringBatteryOptimizations;}
 
     public String[] toStringArray() {
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
