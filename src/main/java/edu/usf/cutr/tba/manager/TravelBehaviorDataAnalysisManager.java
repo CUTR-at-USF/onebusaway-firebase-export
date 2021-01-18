@@ -189,10 +189,6 @@ public class TravelBehaviorDataAnalysisManager {
             tbr.setActivityStartOriginTimeDiff(TravelBehaviorUtils.millisToMinutes(diff));
         }
 
-        //Add the status isIgnoringBatteryOptimization while creating the TB Record
-        if (tbi.isIgnoringBatteryOptimizations != null){
-            tbr.setIsIgnoringBatteryOptimization(tbi.isIgnoringBatteryOptimizations);
-        }
 
         return tbr;
     }
@@ -245,18 +241,7 @@ public class TravelBehaviorDataAnalysisManager {
         }
 
         //While completing TBR update isIgnoringBatteryOptimization IF required
-        //Current logic is: Use TRUE if the status is true while creating OR while completing the TBR
-        if (tbi.isIgnoringBatteryOptimizations != null){
-            if (mLastTravelBehaviorRecord.getIsIgnoringBatteryOptimization() != null){
-                //Overwrite the value if true while completing the TBR
-                if(tbi.isIgnoringBatteryOptimizations){
-                    mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(Boolean.TRUE);
-                }
-            }else {
-                //There was not value while creating, update the value with the status while completing TBR
-                mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(tbi.isIgnoringBatteryOptimizations);
-            }
-        }
+
         String regionId = findRegionIdFromDeviceInfoList(doc, userDeviceInfoList);
         mLastTravelBehaviorRecord.setRegionId(regionId);
     }
