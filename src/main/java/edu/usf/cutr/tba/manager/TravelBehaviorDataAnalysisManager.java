@@ -99,11 +99,11 @@ public class TravelBehaviorDataAnalysisManager {
 
         mLastTravelBehaviorRecord = null;
 
-        //Get the device information of the current userId
+        // Get the device information of the current userId
         List<QueryDocumentSnapshot> userDeviceInfoList = new ArrayList<>(mFirebaseReader.getAllUserDeviceInfoById(userId));
 
-        //Sort the data by timestamp, if timestamp is not available, then the comparator will
-        //fall back to the QueryDocumentSnapshot id which is assumed has the timestamp as its name
+        // Sort the data by timestamp, if timestamp is not available, then the comparator will
+        // fall back to the QueryDocumentSnapshot id which is assumed has the timestamp as its name
         Collections.sort(userDeviceInfoList, new QueryDocumentSnapshotDeviceComparator());
 
         // analyze each transition activity of the user one by one
@@ -129,20 +129,6 @@ public class TravelBehaviorDataAnalysisManager {
     private void processUserActivityTransitionData(QueryDocumentSnapshot doc, String userId,
                                                    List<QueryDocumentSnapshot> userDeviceInfoList) {
         TravelBehaviorInfo tbi = doc.toObject(TravelBehaviorInfo.class);
-//        DeviceInformation dvInfo;
-//        String timeStamp;
-//        if (userDeviceInfoList.size() > 0) {
-//            if(userDeviceInfoList.size() > 1){
-//                dvInfo = userDeviceInfoList.get(1).toObject(DeviceInformation.class);
-//            }else {
-//                dvInfo = userDeviceInfoList.get(0).toObject(DeviceInformation.class);
-//            }
-//            timeStamp = dvInfo.timestamp;
-//            System.out.println("TimeStamp previous: " + timeStamp);
-//            timeStamp = userDeviceInfoList.get(0).getId();
-//
-//            System.out.println("TimeStamp from id: " + timeStamp);
-//        }
         if (mLastTravelBehaviorRecord == null) {
             TravelBehaviorInfo.TravelBehaviorActivity enterActivity = TravelBehaviorUtils.getEnterActivity(tbi.activities);
             if (enterActivity != null) {
@@ -260,48 +246,45 @@ public class TravelBehaviorDataAnalysisManager {
             mLastTravelBehaviorRecord.setOriginDestinationDistance(distance);
         }
 
-        //String regionId = findRegionIdFromDeviceInfoList(doc, userDeviceInfoList);
-        //mLastTravelBehaviorRecord.setRegionId(regionId);
-
-        //While completing TBR update isIgnoringBatteryOptimization, isTalkBackEnabled
-        //and isPowerSaveModeOn
-        if(mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null){ /*if valid activity end time*/
-            //Get the previous DeviceInformation but closest in time to the activity end time
+        // While completing TBR update isIgnoringBatteryOptimization, isTalkBackEnabled
+        // and isPowerSaveModeOn
+        if (mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null) { /*if valid activity end time*/
+            // Get the previous DeviceInformation but closest in time to the activity end time
             DeviceInformation dvInfo = getClosestDeviceInfo(userDeviceInfoList);
-            if(dvInfo != null) { /*If there is DeviceInformation available*/
-                //Get the corresponding properties when available
-                if(dvInfo.getIgnoringBatteryOptimizations() != null){
+            if (dvInfo != null) { /*If there is DeviceInformation available*/
+                // Get the corresponding properties when available
+                if (dvInfo.getIgnoringBatteryOptimizations() != null) {
                     mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(dvInfo.getIgnoringBatteryOptimizations());
                 }
-                if(dvInfo.getTalkBackEnabled() != null){
+                if (dvInfo.getTalkBackEnabled() != null) {
                     mLastTravelBehaviorRecord.setIsTalkBackEnabled(dvInfo.getTalkBackEnabled());
                 }
 
-                if(dvInfo.getPowerSaveModeEnabled() != null){
+                if (dvInfo.getPowerSaveModeEnabled() != null){
                     mLastTravelBehaviorRecord.setIsPowerSaveModeEnabled(dvInfo.getPowerSaveModeEnabled());
                 }
-                //setRegionID
+                // setRegionID
                 mLastTravelBehaviorRecord.setRegionId(String.valueOf(dvInfo.regionId));
             }
         }
     }
 
     /**
-     * Performs a binary search to return the DeviceInformation object which timestamp is closest to the
-     * activityEndTime.
+     * Performs a binary search to return the DeviceInformation object which nearest timestamp
+     * that occurs prior to (and not after) the activityEndTime.
      * @param userDeviceInfoList Sorted list of QueryDocumentSnapshot including information over time of user device
      * @return DeviceInformation object with the timestamp closest to the activityEndTime. If the
      * activityEndTime or DeviceInfo list are not available, return null
      */
     private DeviceInformation getClosestDeviceInfo(List<QueryDocumentSnapshot> userDeviceInfoList){
         Long endTimeMillis = mLastTravelBehaviorRecord.getActivityEndTimeMillis();
-        //If the device list is empty or there is no activity end time then return null
+        // If the device list is empty or there is no activity end time then return null
         if (userDeviceInfoList == null || userDeviceInfoList.size() == 0 ||
                 mLastTravelBehaviorRecord.getActivityEndTimeMillis() == null) return null;
 
         int low = 0;
         int high = userDeviceInfoList.size() - 1;
-        //If timestamp is lower that the first element on the array list, return null
+        // If timestamp is lower that the first element on the array list, return null
         DeviceInformation devInfo = userDeviceInfoList.get(low).toObject(DeviceInformation.class);
         String timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
@@ -311,13 +294,13 @@ public class TravelBehaviorDataAnalysisManager {
             return null;
         }
 
-        //If timestamp is higher that the last element on the array list, return null
+        // If timestamp is higher that the last element on the array list, return null
         devInfo = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
         timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
             timeStamp = userDeviceInfoList.get(high).getId();
         }
-        if(endTimeMillis >= Long.parseLong(timeStamp)){
+        if (endTimeMillis >= Long.parseLong(timeStamp)){
             devInfo.setTimestamp(timeStamp);
             return devInfo;
         }
@@ -333,16 +316,16 @@ public class TravelBehaviorDataAnalysisManager {
                 timeStamp = userDeviceInfoList.get(high).getId();
             }
 
-            if(endTimeMillis < Long.parseLong(timeStamp)){
+            if (endTimeMillis < Long.parseLong(timeStamp)) {
                 high = mid -1;
-            }else if(endTimeMillis > Long.parseLong(timeStamp)){
+            } else if (endTimeMillis > Long.parseLong(timeStamp)) {
                 low = mid +1;
-            }else{
+            } else {
                 devInfo.setTimestamp(timeStamp);
                 return devInfo;
             }
         }
-        //low == high+1, return [high]
+        // low is equal to high+1, return userDeviceInfoList at index high
         devInfo = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
         timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {

@@ -50,7 +50,7 @@ public class DeviceInformation {
         this.timestamp = timestamp;
     }
 
-    public String getTimestamp(){ return this.timestamp; }
+    public String getTimestamp() { return this.timestamp; }
 
     public Boolean getIgnoringBatteryOptimizations() { return isIgnoringBatteryOptimizations; }
 

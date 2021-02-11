@@ -254,17 +254,17 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public  TravelBehaviorRecord setIsIgnoringBatteryOptimization(Boolean isIgnoringBatteryOptimization){
+    public  TravelBehaviorRecord setIsIgnoringBatteryOptimization(Boolean isIgnoringBatteryOptimization) {
         mIsIgnoringBatteryOptimizations = isIgnoringBatteryOptimization;
         return this;
     }
 
-    public TravelBehaviorRecord setIsTalkBackEnabled(Boolean isTalkBackEnabled){
+    public TravelBehaviorRecord setIsTalkBackEnabled(Boolean isTalkBackEnabled) {
         mIsTalkBackEnabled = isTalkBackEnabled;
         return this;
     }
 
-    public TravelBehaviorRecord setIsPowerSaveModeEnabled(Boolean isPowerSaveModeEnabled){
+    public TravelBehaviorRecord setIsPowerSaveModeEnabled(Boolean isPowerSaveModeEnabled) {
         mIsPowerSaveModeEnabled = isPowerSaveModeEnabled;
         return this;
     }
@@ -368,11 +368,11 @@ public class TravelBehaviorRecord {
         return mActivityDuration;
     }
 
-    public Boolean getIsIgnoringBatteryOptimization() {return mIsIgnoringBatteryOptimizations;}
+    public Boolean getIsIgnoringBatteryOptimization() { return mIsIgnoringBatteryOptimizations; }
 
-    public Boolean getIsTalkBackEnabled(){return mIsTalkBackEnabled;}
+    public Boolean getIsTalkBackEnabled() { return mIsTalkBackEnabled; }
 
-    public Boolean getIsPowerSaveModeEnabled(){return mIsPowerSaveModeEnabled;}
+    public Boolean getIsPowerSaveModeEnabled() { return mIsPowerSaveModeEnabled; }
 
     public String[] toStringArray() {
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
