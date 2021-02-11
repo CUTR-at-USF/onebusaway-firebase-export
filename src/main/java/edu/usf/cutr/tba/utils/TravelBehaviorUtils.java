@@ -15,7 +15,9 @@
  */
 package edu.usf.cutr.tba.utils;
 
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
+import edu.usf.cutr.tba.model.DeviceInformation;
 import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 
@@ -176,5 +178,71 @@ public class TravelBehaviorUtils {
         }
         // No other restrictions
         return true;
+    }
+
+    /**
+     * Performs a binary search to return the DeviceInformation object which nearest timestamp
+     * that occurs prior to (and not after) the activityEndTime.
+     * @param userDeviceInfoList Sorted list of QueryDocumentSnapshot including information over time of user device
+     * @param activityEndTimeMillis End time of an activity in milliseconds.
+     * @return DeviceInformation object with the timestamp closest to the activityEndTime. If the
+     * activityEndTime or DeviceInfo list are not available, return null
+     */
+    public static DeviceInformation getClosestDeviceInfo(List<QueryDocumentSnapshot> userDeviceInfoList, Long activityEndTimeMillis) {
+        // If the device list is empty or there is no activity end time then return null
+        if (userDeviceInfoList == null || userDeviceInfoList.size() == 0 ||
+                activityEndTimeMillis == null) return null;
+
+        int low = 0;
+        int high = userDeviceInfoList.size() - 1;
+        // If timestamp is lower that the first element on the array list, return null
+        DeviceInformation devInfo = userDeviceInfoList.get(low).toObject(DeviceInformation.class);
+        String timeStamp = devInfo.getTimestamp();
+        if (timeStamp == null) {
+            timeStamp = userDeviceInfoList.get(low).getId();
+        }
+        if(activityEndTimeMillis < Long.parseLong(timeStamp)){
+            return null;
+        }
+
+        // If timestamp is higher that the last element on the array list, return null
+        devInfo = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
+        timeStamp = devInfo.getTimestamp();
+        if (timeStamp == null) {
+            timeStamp = userDeviceInfoList.get(high).getId();
+        }
+        if (activityEndTimeMillis >= Long.parseLong(timeStamp)){
+            devInfo.setTimestamp(timeStamp);
+            return devInfo;
+        }
+
+        // activityEndTimeMillis is not bigger or lower thant the extreme values on the arrayList.
+        // Perform a binary search to find closest timestamp record previous to activityEndTimeMillis
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            assert (mid <= high);
+            devInfo = userDeviceInfoList.get(mid).toObject(DeviceInformation.class);
+            timeStamp = devInfo.getTimestamp();
+            if (timeStamp == null) {
+                timeStamp = userDeviceInfoList.get(high).getId();
+            }
+
+            if (activityEndTimeMillis < Long.parseLong(timeStamp)) {
+                high = mid -1;
+            } else if (activityEndTimeMillis > Long.parseLong(timeStamp)) {
+                low = mid +1;
+            } else {
+                devInfo.setTimestamp(timeStamp);
+                return devInfo;
+            }
+        }
+        // low is equal to high+1, return userDeviceInfoList at index high
+        devInfo = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
+        timeStamp = devInfo.getTimestamp();
+        if (timeStamp == null) {
+            timeStamp = userDeviceInfoList.get(high).getId();
+        }
+        devInfo.setTimestamp(timeStamp);
+        return devInfo;
     }
 }
