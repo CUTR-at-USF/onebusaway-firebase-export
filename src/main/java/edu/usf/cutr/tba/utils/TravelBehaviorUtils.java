@@ -192,8 +192,7 @@ public class TravelBehaviorUtils {
      */
     public static DeviceInformation getClosestDeviceInfo(@Nonnull List<QueryDocumentSnapshot> userDeviceInfoList, @NotNull Long activityEndTimeMillis) {
         // If the device list is empty or there is no activity end time then return null
-        if (userDeviceInfoList == null || userDeviceInfoList.size() == 0 ||
-                activityEndTimeMillis == null) return null;
+        if (userDeviceInfoList.size() == 0) return null;
 
         int low = 0;
         int high = userDeviceInfoList.size() - 1;
