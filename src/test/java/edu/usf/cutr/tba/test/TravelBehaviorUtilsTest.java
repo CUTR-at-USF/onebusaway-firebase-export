@@ -1,8 +1,11 @@
 package edu.usf.cutr.tba.test;
 
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import edu.usf.cutr.tba.model.DeviceInformation;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -346,5 +349,83 @@ public class TravelBehaviorUtilsTest {
 
         TravelBehaviorRecord nullRegion = new TravelBehaviorRecord("9876");
         assertTrue(TravelBehaviorUtils.isAllowedToExport(nullRegion));
+    }
+
+    /**
+     * Given a list of  QueryDocumentSnapshot, verify the behavior of GetClosestDeviceInfo
+     */
+    @Test
+    public void testGetClosestDeviceInfo() {
+        //Mock 5 DeviceInformation classes
+        DeviceInformation dev1 = Mockito.mock(DeviceInformation.class);
+        Mockito.when(dev1.getTimestamp()).thenReturn("123456770");
+        DeviceInformation dev2 = Mockito.mock(DeviceInformation.class);
+        Mockito.when(dev2.getTimestamp()).thenReturn("123456775");
+        DeviceInformation dev3 = Mockito.mock(DeviceInformation.class);
+        Mockito.when(dev3.getTimestamp()).thenReturn("123456780");
+        DeviceInformation dev4 = Mockito.mock(DeviceInformation.class);
+        Mockito.when(dev4.getTimestamp()).thenReturn("123456785");
+        DeviceInformation dev5 = Mockito.mock(DeviceInformation.class);
+        Mockito.when(dev5.getTimestamp()).thenReturn("123456790");
+        DeviceInformation dev6 = Mockito.mock(DeviceInformation.class);
+        Mockito.when(dev6.getTimestamp()).thenReturn("123456795");
+
+        //Mock 5 QueryDocumentSnapshot to add to the list
+        QueryDocumentSnapshot qDoc1 = Mockito.mock(QueryDocumentSnapshot.class);
+        Mockito.when(qDoc1.toObject(DeviceInformation.class)).thenReturn(dev1);
+        QueryDocumentSnapshot qDoc2 = Mockito.mock(QueryDocumentSnapshot.class);
+        Mockito.when(qDoc2.toObject(DeviceInformation.class)).thenReturn(dev2);
+        QueryDocumentSnapshot qDoc3 = Mockito.mock(QueryDocumentSnapshot.class);
+        Mockito.when(qDoc3.toObject(DeviceInformation.class)).thenReturn(dev3);
+        QueryDocumentSnapshot qDoc4 = Mockito.mock(QueryDocumentSnapshot.class);
+        Mockito.when(qDoc4.toObject(DeviceInformation.class)).thenReturn(dev4);
+        QueryDocumentSnapshot qDoc5 = Mockito.mock(QueryDocumentSnapshot.class);
+        Mockito.when(qDoc5.toObject(DeviceInformation.class)).thenReturn(dev5);
+        QueryDocumentSnapshot qDoc6 = Mockito.mock(QueryDocumentSnapshot.class);
+        Mockito.when(qDoc6.toObject(DeviceInformation.class)).thenReturn(dev6);
+
+        // Create ArrayList to pass as parameter
+        List<QueryDocumentSnapshot> userDevInfoById = new ArrayList<>();
+        userDevInfoById.add(qDoc1);
+        userDevInfoById.add(qDoc2);
+        userDevInfoById.add(qDoc3);
+        userDevInfoById.add(qDoc4);
+        userDevInfoById.add(qDoc5);
+        userDevInfoById.add(qDoc6);
+
+        // Verify for a endTime in the middle of the list
+        Long actEndTime = Long.valueOf(123456788);
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev4);
+
+        // Verify for a endTime previous to the firs timeStamp
+        actEndTime = Long.valueOf(1234567);
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+
+        // Verify for a endTime after the last timeStamp on the list
+        actEndTime = Long.valueOf(123456799);
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev6);
+
+        // Verify for a endTime after before the second element on the list
+        actEndTime = Long.valueOf(123456772);
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev1);
+
+        // Verify for a endTime existent on the list
+        actEndTime = Long.valueOf(123456790);
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev5);
+
+        // Verify for a endTime null
+        actEndTime = null;
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+
+        // Verify for a arrayList size 0
+        actEndTime = Long.valueOf(123456788);
+        userDevInfoById.clear();
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+
+        // Verify for a arrayList is null
+        actEndTime = Long.valueOf(123456788);
+        userDevInfoById = null;
+        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+
     }
 }

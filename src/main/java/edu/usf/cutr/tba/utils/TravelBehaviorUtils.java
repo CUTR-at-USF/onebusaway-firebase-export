@@ -183,7 +183,7 @@ public class TravelBehaviorUtils {
     /**
      * Performs a binary search to return the DeviceInformation object which nearest timestamp
      * that occurs prior to (and not after) the activityEndTime.
-     * @param userDeviceInfoList Sorted list of QueryDocumentSnapshot including information over time of user device
+     * @param userDeviceInfoList Sorted (by timeStamp) list of QueryDocumentSnapshot including information over time of user device
      * @param activityEndTimeMillis End time of an activity in milliseconds.
      * @return DeviceInformation object with the timestamp closest to the activityEndTime. If the
      * activityEndTime or DeviceInfo list are not available, return null
