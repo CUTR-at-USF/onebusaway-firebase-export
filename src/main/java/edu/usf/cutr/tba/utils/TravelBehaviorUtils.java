@@ -16,11 +16,13 @@
 package edu.usf.cutr.tba.utils;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.firebase.database.annotations.NotNull;
 import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
 import edu.usf.cutr.tba.model.DeviceInformation;
 import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 
+import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -188,24 +190,24 @@ public class TravelBehaviorUtils {
      * @return DeviceInformation object with the timestamp closest to the activityEndTime. If the
      * activityEndTime or DeviceInfo list are not available, return null
      */
-    public static DeviceInformation getClosestDeviceInfo(List<QueryDocumentSnapshot> userDeviceInfoList, Long activityEndTimeMillis) {
+    public static DeviceInformation getClosestDeviceInfo(@Nonnull List<QueryDocumentSnapshot> userDeviceInfoList, @NotNull Long activityEndTimeMillis) {
         // If the device list is empty or there is no activity end time then return null
         if (userDeviceInfoList == null || userDeviceInfoList.size() == 0 ||
                 activityEndTimeMillis == null) return null;
 
         int low = 0;
         int high = userDeviceInfoList.size() - 1;
-        // If timestamp is lower that the first element on the array list, return null
+        // If timestamp is lower that the first element on the array list, return the first devInfo in List
         DeviceInformation devInfo = userDeviceInfoList.get(low).toObject(DeviceInformation.class);
         String timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
             timeStamp = userDeviceInfoList.get(low).getId();
         }
         if(activityEndTimeMillis < Long.parseLong(timeStamp)){
-            return null;
+            return devInfo;
         }
 
-        // If timestamp is higher that the last element on the array list, return null
+        // If timestamp is higher that the last element on the array list, return last devInfo
         devInfo = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
         timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {

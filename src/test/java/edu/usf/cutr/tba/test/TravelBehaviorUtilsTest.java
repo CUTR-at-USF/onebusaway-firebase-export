@@ -10,8 +10,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Tests utilities for processing travel behavior data
@@ -352,7 +351,8 @@ public class TravelBehaviorUtilsTest {
     }
 
     /**
-     * Given a list of  QueryDocumentSnapshot, verify the behavior of GetClosestDeviceInfo
+     * Given a list of  QueryDocumentSnapshot and a endActivityTime,
+     * verify the behavior of GetClosestDeviceInfo
      */
     @Test
     public void testGetClosestDeviceInfo() {
@@ -394,38 +394,38 @@ public class TravelBehaviorUtilsTest {
         userDevInfoById.add(qDoc6);
 
         // Verify for a endTime in the middle of the list
-        Long actEndTime = Long.valueOf(123456788);
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev4);
+        Long actEndTime = 123456788L;
+        assertSame(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime), dev4);
 
-        // Verify for a endTime previous to the firs timeStamp
-        actEndTime = Long.valueOf(1234567);
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+        // Verify if endTime is previous to the firs timeStamp on list, return the first element on list
+        actEndTime = 1234567L;
+        assertSame(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime), dev1);
 
         // Verify for a endTime after the last timeStamp on the list
-        actEndTime = Long.valueOf(123456799);
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev6);
+        actEndTime = 123456799L;
+        assertSame(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime), dev6);
 
-        // Verify for a endTime after before the second element on the list
-        actEndTime = Long.valueOf(123456772);
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev1);
+        // Verify for a endTime before the second element on the list
+        actEndTime = 123456772L;
+        assertSame(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime), dev1);
 
         // Verify for a endTime existent on the list
-        actEndTime = Long.valueOf(123456790);
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== dev5);
+        actEndTime = 123456790L;
+        assertSame(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime), dev5);
 
         // Verify for a endTime null
         actEndTime = null;
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+        assertNull(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime));
 
         // Verify for a arrayList size 0
-        actEndTime = Long.valueOf(123456788);
+        actEndTime = 123456788L;
         userDevInfoById.clear();
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+        assertNull(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime));
 
         // Verify for a arrayList is null
-        actEndTime = Long.valueOf(123456788);
+        actEndTime = 123456788L;
         userDevInfoById = null;
-        assertTrue(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime)== null);
+        assertNull(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime));
 
     }
 }

@@ -248,11 +248,11 @@ public class TravelBehaviorDataAnalysisManager {
 
         // While completing TBR update isIgnoringBatteryOptimization, isTalkBackEnabled
         // and isPowerSaveModeOn
-        if (mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null) { /*if valid activity end time*/
+        if (mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null) {
             // Get the previous DeviceInformation but closest in time to the activity end time
             DeviceInformation dvInfo = TravelBehaviorUtils.getClosestDeviceInfo(userDeviceInfoList,
                     mLastTravelBehaviorRecord.getActivityEndTimeMillis());
-            if (dvInfo != null) { /*If there is DeviceInformation available*/
+            if (dvInfo != null) {
                 // Get the corresponding properties when available
                 if (dvInfo.getIgnoringBatteryOptimizations() != null) {
                     mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(dvInfo.getIgnoringBatteryOptimizations());
