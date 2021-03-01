@@ -413,18 +413,9 @@ public class TravelBehaviorUtilsTest {
         actEndTime = 123456790L;
         assertSame(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime), dev5);
 
-        // Verify for a endTime null
-        actEndTime = null;
-        assertNull(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime));
-
         // Verify for a arrayList size 0
         actEndTime = 123456788L;
         userDevInfoById.clear();
-        assertNull(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime));
-
-        // Verify for a arrayList is null
-        actEndTime = 123456788L;
-        userDevInfoById = null;
         assertNull(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime));
 
     }
