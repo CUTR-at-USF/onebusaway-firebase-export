@@ -27,6 +27,7 @@ import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.LocationUtils;
 import edu.usf.cutr.tba.utils.QueryDocumentSnapshotComparator;
+import edu.usf.cutr.tba.utils.QueryDocumentSnapshotDeviceComparator;
 import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 
 import java.util.ArrayList;
@@ -98,7 +99,12 @@ public class TravelBehaviorDataAnalysisManager {
 
         mLastTravelBehaviorRecord = null;
 
-        List<QueryDocumentSnapshot> userDeviceInfoList = mFirebaseReader.getAllUserDeviceInfoById(userId);
+        // Get the device information of the current userId
+        List<QueryDocumentSnapshot> userDeviceInfoList = new ArrayList<>(mFirebaseReader.getAllUserDeviceInfoById(userId));
+
+        // Sort the data by timestamp, if timestamp is not available, then the comparator will
+        // fall back to the QueryDocumentSnapshot id which is assumed has the timestamp as its name
+        Collections.sort(userDeviceInfoList, new QueryDocumentSnapshotDeviceComparator());
 
         // analyze each transition activity of the user one by one
         for (QueryDocumentSnapshot doc : userInfoById) {
@@ -189,6 +195,7 @@ public class TravelBehaviorDataAnalysisManager {
             tbr.setActivityStartOriginTimeDiff(TravelBehaviorUtils.millisToMinutes(diff));
         }
 
+
         return tbr;
     }
 
@@ -239,9 +246,30 @@ public class TravelBehaviorDataAnalysisManager {
             mLastTravelBehaviorRecord.setOriginDestinationDistance(distance);
         }
 
-        String regionId = findRegionIdFromDeviceInfoList(doc, userDeviceInfoList);
-        mLastTravelBehaviorRecord.setRegionId(regionId);
+        // While completing TBR update isIgnoringBatteryOptimization, isTalkBackEnabled
+        // and isPowerSaveModeOn
+        if (mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null) {
+            // Get the previous DeviceInformation but closest in time to the activity end time
+            DeviceInformation dvInfo = TravelBehaviorUtils.getClosestDeviceInfo(userDeviceInfoList,
+                    mLastTravelBehaviorRecord.getActivityEndTimeMillis());
+            if (dvInfo != null) {
+                // Get the corresponding properties when available
+                if (dvInfo.getIgnoringBatteryOptimizations() != null) {
+                    mLastTravelBehaviorRecord.setIsIgnoringBatteryOptimization(dvInfo.getIgnoringBatteryOptimizations());
+                }
+                if (dvInfo.getTalkBackEnabled() != null) {
+                    mLastTravelBehaviorRecord.setIsTalkBackEnabled(dvInfo.getTalkBackEnabled());
+                }
+
+                if (dvInfo.getPowerSaveModeEnabled() != null){
+                    mLastTravelBehaviorRecord.setIsPowerSaveModeEnabled(dvInfo.getPowerSaveModeEnabled());
+                }
+                // setRegionID
+                mLastTravelBehaviorRecord.setRegionId(String.valueOf(dvInfo.regionId));
+            }
+        }
     }
+
 
     /**
      * Finds a region id in the device info list. It picks the closest time device info that is entered with the record
