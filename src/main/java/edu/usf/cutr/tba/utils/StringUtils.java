@@ -14,10 +14,36 @@
  * limitations under the License.
  */
 package edu.usf.cutr.tba.utils;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 public class StringUtils {
     public static String valueOf(Object o) {
         if (o == null) return "";
         return String.valueOf(o);
+    }
+
+    /**
+     * Gets the date in string format to validate is a date in format mm-dd-yyyy
+     * @param dateStr
+     * @return true if the dateStr is a valid date in format mm-dd-yyyy
+     */
+    public static boolean validateStringDateJava8(String dateStr)
+    {
+        String dateFormat = "MM-dd-uuuu";
+        boolean valid;
+        // Define formatter for "mm-dd-yyyy"
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateFormat)
+                .withResolverStyle(ResolverStyle.STRICT);
+
+        try {
+            LocalDate.parse(dateStr, dateFormatter);
+            valid = true;
+        } catch (DateTimeParseException e) {
+            valid = false;
+        }
+        return valid;
     }
 }

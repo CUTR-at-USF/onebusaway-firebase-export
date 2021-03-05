@@ -67,6 +67,21 @@ public class ProcessorMain {
                 Integer i = Integer.valueOf(value);
                 programOptions.setWalkingRunningEventMergeThreshold(i);
             }
+
+            if (cmd.hasOption(ProgramOptions.START_DATE) && cmd.hasOption(ProgramOptions.END_DATE)) {
+                String valueStart = cmd.getOptionValue(ProgramOptions.START_DATE);
+
+                String valueEnd = cmd.getOptionValue(ProgramOptions.END_DATE);
+
+            } else if (cmd.hasOption(ProgramOptions.START_DATE)) {
+                System.err.println("startDate and endDate must be provided together. \n" +
+                        "startDate was provided but endDate was not provided.");
+                return;
+            } else if (cmd.hasOption(ProgramOptions.END_DATE)) {
+                System.err.println("startDate and endDate must be provided together. \n" +
+                        "endDate was provided but startDate was not provided.");
+                return;
+            }
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
