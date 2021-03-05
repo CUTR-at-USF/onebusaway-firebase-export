@@ -45,7 +45,9 @@ public class TravelBehaviorRecord {
             "Chain Index",
             "Tour ID",
             "Tour Index",
-            "Ignoring Battery Optimizations"
+            "Ignoring Battery Optimizations",
+            "Talk Back Enabled",
+            "Power Save Mode Enabled"
     };
 
     private String mUserId;
@@ -76,6 +78,8 @@ public class TravelBehaviorRecord {
     private String mDestinationProvider;
 
     private Boolean mIsIgnoringBatteryOptimizations;
+    private Boolean mIsTalkBackEnabled;
+    private Boolean mIsPowerSaveModeEnabled;
 
     // Internal usage
     private Long mActivityStartTimeMillis;
@@ -250,8 +254,18 @@ public class TravelBehaviorRecord {
         return this;
     }
 
-    public  TravelBehaviorRecord setIsIgnoringBatteryOptimization(Boolean isIgnoringBatteryOptimization){
+    public  TravelBehaviorRecord setIsIgnoringBatteryOptimization(Boolean isIgnoringBatteryOptimization) {
         mIsIgnoringBatteryOptimizations = isIgnoringBatteryOptimization;
+        return this;
+    }
+
+    public TravelBehaviorRecord setIsTalkBackEnabled(Boolean isTalkBackEnabled) {
+        mIsTalkBackEnabled = isTalkBackEnabled;
+        return this;
+    }
+
+    public TravelBehaviorRecord setIsPowerSaveModeEnabled(Boolean isPowerSaveModeEnabled) {
+        mIsPowerSaveModeEnabled = isPowerSaveModeEnabled;
         return this;
     }
 
@@ -354,7 +368,11 @@ public class TravelBehaviorRecord {
         return mActivityDuration;
     }
 
-    public Boolean getIsIgnoringBatteryOptimization() {return mIsIgnoringBatteryOptimizations;}
+    public Boolean getIsIgnoringBatteryOptimization() { return mIsIgnoringBatteryOptimizations; }
+
+    public Boolean getIsTalkBackEnabled() { return mIsTalkBackEnabled; }
+
+    public Boolean getIsPowerSaveModeEnabled() { return mIsPowerSaveModeEnabled; }
 
     public String[] toStringArray() {
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
@@ -363,6 +381,7 @@ public class TravelBehaviorRecord {
                 mActivityEndDateAndTime, mDestinationLocationDateAndTime, StringUtils.valueOf(mActivityEndDestinationTimeDiff),
                 StringUtils.valueOf(mEndLat), StringUtils.valueOf(mEndLon), StringUtils.valueOf(mDestinationHorAccuracy), mDestinationProvider,
                 StringUtils.valueOf(mActivityDuration), StringUtils.valueOf(mOriginDestinationDistance), StringUtils.valueOf(mChainId),
-                StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex), StringUtils.valueOf(mIsIgnoringBatteryOptimizations)};
+                StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex),
+                StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled)};
     }
 }

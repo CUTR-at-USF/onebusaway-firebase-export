@@ -7,17 +7,21 @@ public class DeviceInformation {
 
     public String deviceModel;
 
-    public String sdkVersion;
-
-    public Integer sdkVersionInt;
-
     public String googlePlayServicesApp;
 
     public Integer googlePlayServicesLib;
 
-    public Long regionId;
+    public Boolean isIgnoringBatteryOptimizations;
+
+    public Boolean isPowerSaveModeEnabled;
 
     public Boolean isTalkBackEnabled;
+
+    public Long regionId;
+
+    public String sdkVersion;
+
+    public Integer sdkVersionInt;
 
     public String timestamp;
 
@@ -26,7 +30,9 @@ public class DeviceInformation {
 
     public DeviceInformation(String appVersion, String deviceModel, String sdkVersion,
                              Integer sdkVersionInt, String googlePlayServicesApp,
-                             Integer googlePlayServicesLib, Long regionId, Boolean isTalkBackEnabled) {
+                             Integer googlePlayServicesLib, Long regionId, Boolean isTalkBackEnabled,
+                            Boolean isPowerSaveModeEnabled, Boolean isIgnoringBatteryOptimizations,
+                             String timestamp) {
         this.appVersion = appVersion;
         this.deviceModel = deviceModel;
         this.sdkVersion = sdkVersion;
@@ -35,11 +41,22 @@ public class DeviceInformation {
         this.googlePlayServicesLib = googlePlayServicesLib;
         this.regionId = regionId;
         this.isTalkBackEnabled = isTalkBackEnabled;
+        this.isPowerSaveModeEnabled = isPowerSaveModeEnabled;
+        this.isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations;
+        this.timestamp = timestamp;
     }
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+
+    public String getTimestamp() { return this.timestamp; }
+
+    public Boolean getIgnoringBatteryOptimizations() { return isIgnoringBatteryOptimizations; }
+
+    public Boolean getPowerSaveModeEnabled() { return isPowerSaveModeEnabled; }
+
+    public Boolean getTalkBackEnabled() { return isTalkBackEnabled; }
 
     @Override
     public int hashCode() {
