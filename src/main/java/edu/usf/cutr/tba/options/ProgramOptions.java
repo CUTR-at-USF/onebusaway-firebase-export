@@ -34,9 +34,9 @@ public class ProgramOptions {
     public static final String STILL_EVENT_MERGE_THRESHOLD = "stillMergeThreshold";
 
     //Start date option to perform a document search
-    public static final String START_DATE = "Start date (mm/dd/yyyy) to filter data collection based on a date range.";
+    public static final String START_DATE = "";
     //End date option to perform a document search
-    public static final String END_DATE = "End date (mm/dd/yyyy) to filter data collection based on a date range.";
+    public static final String END_DATE = "";
 
     private boolean mIsMergeStillEventsEnabled = true;
 

@@ -27,8 +27,8 @@ public class StringUtils {
 
     /**
      * Gets the date in string format to validate is a date in format mm-dd-yyyy
-     * @param dateStr
-     * @return true if the dateStr is a valid date in format mm-dd-yyyy
+     * @param dateStr string with the date to ve validated
+     * @return true if the dateStr is a valid date in format mm-dd-yyyy, false otherwise
      */
     public static boolean validateStringDateJava8(String dateStr)
     {

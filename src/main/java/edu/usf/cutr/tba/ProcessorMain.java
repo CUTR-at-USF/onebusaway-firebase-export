@@ -19,6 +19,7 @@ package edu.usf.cutr.tba;
 import edu.usf.cutr.tba.exception.FirebaseFileNotInitializedException;
 import edu.usf.cutr.tba.manager.TravelBehaviorDataAnalysisManager;
 import edu.usf.cutr.tba.options.ProgramOptions;
+import edu.usf.cutr.tba.utils.StringUtils;
 import org.apache.commons.cli.*;
 
 public class ProcessorMain {
@@ -73,6 +74,15 @@ public class ProcessorMain {
 
                 String valueEnd = cmd.getOptionValue(ProgramOptions.END_DATE);
 
+                //Validate dates
+                if (!StringUtils.validateStringDateJava8(valueStart) || !StringUtils.validateStringDateJava8(valueEnd)) {
+                    System.err.println("Invalid start/end dates provided. \n" +
+                            "Please provide dates in using the format mm-dd-yyyy.");
+                    return;
+                }
+                programOptions.setStartDate(valueStart);
+                programOptions.setEndDate(valueEnd);
+
             } else if (cmd.hasOption(ProgramOptions.START_DATE)) {
                 System.err.println("startDate and endDate must be provided together. \n" +
                         "startDate was provided but endDate was not provided.");
@@ -107,6 +117,8 @@ public class ProcessorMain {
                 "running events merging threshold. By default it is 2 minutes.");
         options.addOption(ProgramOptions.NO_MERGE_STILL, false, "Do not merge still events");
         options.addOption(ProgramOptions.NO_MERGE_WALKING_RUNNING, false, "Do not merge waling and running events");
+        options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
+        options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
         return options;
     }
 }
