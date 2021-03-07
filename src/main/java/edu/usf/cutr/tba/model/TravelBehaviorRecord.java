@@ -382,6 +382,6 @@ public class TravelBehaviorRecord {
                 StringUtils.valueOf(mEndLat), StringUtils.valueOf(mEndLon), StringUtils.valueOf(mDestinationHorAccuracy), mDestinationProvider,
                 StringUtils.valueOf(mActivityDuration), StringUtils.valueOf(mOriginDestinationDistance), StringUtils.valueOf(mChainId),
                 StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex),
-                StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled)};
+                StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled), StringUtils.valueOf(mIsPowerSaveModeEnabled)};
     }
 }
