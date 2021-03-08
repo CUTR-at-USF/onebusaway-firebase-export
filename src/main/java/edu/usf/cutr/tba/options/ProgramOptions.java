@@ -33,10 +33,13 @@ public class ProgramOptions {
     // In minutes
     public static final String STILL_EVENT_MERGE_THRESHOLD = "stillMergeThreshold";
 
-    //Start date option to perform a document search
-    public static final String START_DATE = "";
-    //End date option to perform a document search
-    public static final String END_DATE = "";
+    // Start date option to perform a document search
+    public static final String START_DATE = "startDate";
+    // End date option to perform a document search
+    public static final String END_DATE = "endDate";
+
+    // Time zone used to parse the date parameters
+    public  static final String TIME_ZONE = "America/New_York";
 
     private boolean mIsMergeStillEventsEnabled = true;
 
@@ -52,9 +55,9 @@ public class ProgramOptions {
 
     private Integer mWalkingRunningEventMergeThreshold;
 
-    private String mStartDate;
+    private long mStartDate = 0;
 
-    private String mEndDate;
+    private long mEndDate = 0;
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -132,16 +135,16 @@ public class ProgramOptions {
         return this;
     }
 
-    public  String getStartDate() { return mStartDate;}
+    public  long getStartDate() { return mStartDate;}
 
-    public  ProgramOptions setStartDate(String startDate) {
+    public  ProgramOptions setStartDate(long startDate) {
         this.mStartDate = startDate;
         return this;
     }
 
-    public  String getEndDate() { return mEndDate;}
+    public  long getEndDate() { return mEndDate;}
 
-    public  ProgramOptions setEndDate(String endDate) {
+    public  ProgramOptions setEndDate(long endDate) {
         this.mEndDate = endDate;
         return this;
     }
