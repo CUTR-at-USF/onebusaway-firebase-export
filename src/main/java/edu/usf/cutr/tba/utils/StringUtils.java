@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 package edu.usf.cutr.tba.utils;
+import edu.usf.cutr.tba.options.ProgramOptions;
+
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
@@ -28,22 +31,21 @@ public class StringUtils {
     /**
      * Gets the date in string format to validate is a date in format mm-dd-yyyy
      * @param dateStr string with the date to ve validated
-     * @return true if the dateStr is a valid date in format mm-dd-yyyy, false otherwise
+     * @return Valid date in millis if the dateStr is a valid date in format mm-dd-yyyy, 0 otherwise
      */
-    public static boolean validateStringDateJava8(String dateStr)
+    public static long validateStringDateAndParseToMillis(String dateStr)
     {
         String dateFormat = "MM-dd-uuuu";
-        boolean valid;
+        long validDateMillis;
         // Define formatter for "mm-dd-yyyy"
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateFormat)
                 .withResolverStyle(ResolverStyle.STRICT);
-
         try {
-            LocalDate.parse(dateStr, dateFormatter);
-            valid = true;
+            LocalDate validDate = LocalDate.parse(dateStr, dateFormatter);
+            validDateMillis = validDate.atStartOfDay(ZoneId.of(ProgramOptions.TIME_ZONE)).toInstant().toEpochMilli();
         } catch (DateTimeParseException e) {
-            valid = false;
+            validDateMillis = 0;
         }
-        return valid;
+        return validDateMillis;
     }
 }
