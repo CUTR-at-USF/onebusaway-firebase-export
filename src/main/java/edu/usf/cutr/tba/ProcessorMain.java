@@ -70,18 +70,17 @@ public class ProcessorMain {
             }
 
             if (cmd.hasOption(ProgramOptions.START_DATE) && cmd.hasOption(ProgramOptions.END_DATE)) {
-                String valueStart = cmd.getOptionValue(ProgramOptions.START_DATE);
-
-                String valueEnd = cmd.getOptionValue(ProgramOptions.END_DATE);
+                long dateStartMillis = StringUtils.validateStringDateAndParseToMillis(cmd.getOptionValue(ProgramOptions.START_DATE));
+                long dateEndMillis = StringUtils.validateStringDateAndParseToMillis(cmd.getOptionValue(ProgramOptions.END_DATE));
 
                 //Validate dates
-                if (!StringUtils.validateStringDateJava8(valueStart) || !StringUtils.validateStringDateJava8(valueEnd)) {
+                if (dateStartMillis==0 || dateEndMillis==0) {
                     System.err.println("Invalid start/end dates provided. \n" +
                             "Please provide dates in using the format mm-dd-yyyy.");
                     return;
                 }
-                programOptions.setStartDate(valueStart);
-                programOptions.setEndDate(valueEnd);
+                programOptions.setStartDate(dateStartMillis);
+                programOptions.setEndDate(dateEndMillis);
 
             } else if (cmd.hasOption(ProgramOptions.START_DATE)) {
                 System.err.println("startDate and endDate must be provided together. \n" +
