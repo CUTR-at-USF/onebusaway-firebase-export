@@ -35,6 +35,7 @@ public class StringUtils {
      */
     public static long validateStringDateAndParseToMillis(String dateStr)
     {
+        // uuuu is required in order to use ResolverStyle.STRICT
         String dateFormat = "MM-dd-uuuu";
         long validDateMillis;
         // Define formatter for "mm-dd-yyyy"
