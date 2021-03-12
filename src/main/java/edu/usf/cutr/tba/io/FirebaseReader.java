@@ -71,6 +71,19 @@ public class FirebaseReader {
                 FirebaseConstants.FIREBASE_ACTIVITY_TRANSITION_FOLDER);
     }
 
+    /**
+     * Call the appropriate function to get all user information filtered by a date range.
+     * @param userId id of user to
+     * @param startDateMillis starting date to filter activities
+     * @param endDateMillis end date to filter activities
+     * @return List including all user information filtered by a date range.
+     */
+    public List<QueryDocumentSnapshot> getAllUserInfoByIdAndDateRange(String userId, long startDateMillis,
+                                                                      long endDateMillis) {
+        return FirebaseIOUtils.getAllRecordIdsByDateRangeUserIdAndFolder(mFirestoreDB, userId,
+                FirebaseConstants.FIREBASE_ACTIVITY_TRANSITION_FOLDER, startDateMillis, endDateMillis);
+    }
+
     public List<QueryDocumentSnapshot> getAllUserDeviceInfoById(String userId) {
         return FirebaseIOUtils.getAllRecordIdsByUserIdAndFolder(mFirestoreDB, userId,
                 FirebaseConstants.FIREBASE_DEVICE_INFO_FOLDER);

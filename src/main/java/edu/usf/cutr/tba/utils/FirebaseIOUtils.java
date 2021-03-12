@@ -18,14 +18,8 @@ package edu.usf.cutr.tba.utils;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.*;
-import java.nio.file.spi.FileSystemProvider;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class FirebaseIOUtils {
@@ -54,6 +48,24 @@ public class FirebaseIOUtils {
         return getQueryDocumentSnapshots(cr);
     }
 
+    /**
+     *
+     * @param db Firestore data base interface
+     * @param userId id of user to retrieve data from
+     * @param folder path to collection in data base
+     * @param startDateMillis starting date to filter activities
+     * @param endDateMillis end date to filter activities
+     * @return List of QueryDocument Snapshots including the filtered documents with activities.
+     */
+    public static List<QueryDocumentSnapshot> getAllRecordIdsByDateRangeUserIdAndFolder(Firestore db, String userId,
+                                                                                        String folder, long startDateMillis,
+                                                                                        long endDateMillis) {
+        CollectionReference cr = db.collection("users/" + userId + "/" + folder);
+        Query dateRangeQuery = cr.whereGreaterThanOrEqualTo("firstActivityEventTimeMillis",
+                startDateMillis).whereLessThanOrEqualTo("firstActivityEventTimeMillis", endDateMillis);
+        return getQueryDocumentSnapshots(dateRangeQuery);
+    }
+
     private static List<QueryDocumentSnapshot> getQueryDocumentSnapshots(CollectionReference cr) {
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = cr.get();
         try {
@@ -65,4 +77,22 @@ public class FirebaseIOUtils {
         }
         return new ArrayList<>();
     }
+
+    /**
+     * Perform a query and return de documents collection
+     * @param qr query to be performed
+     * @return list of document according to the entered filters
+     */
+    private static List<QueryDocumentSnapshot> getQueryDocumentSnapshots(Query qr) {
+        ApiFuture<QuerySnapshot> querySnapshotApiFuture = qr.get();
+        try {
+            return querySnapshotApiFuture.get().getDocuments();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
 }
