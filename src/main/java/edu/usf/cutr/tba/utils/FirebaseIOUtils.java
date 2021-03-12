@@ -49,13 +49,13 @@ public class FirebaseIOUtils {
     }
 
     /**
-     *
+     * Perform a query by userId using a date range as filter
      * @param db Firestore data base interface
      * @param userId id of user to retrieve data from
      * @param folder path to collection in data base
      * @param startDateMillis starting date to filter activities
      * @param endDateMillis end date to filter activities
-     * @return List of QueryDocument Snapshots including the filtered documents with activities.
+     * @return List of QueryDocument Snapshots including activities filtered by date range.
      */
     public static List<QueryDocumentSnapshot> getAllRecordIdsByDateRangeUserIdAndFolder(Firestore db, String userId,
                                                                                         String folder, long startDateMillis,
