@@ -288,7 +288,7 @@ public class KmlFileWriter {
         if (tbr.getIsIgnoringBatteryOptimization() != null) {
             strIgnoringBatteryOptimization = "<strong>" + "Ignoring Battery Optimization: </strong> " + tbr.getIsIgnoringBatteryOptimization().toString() + "\n<br />";
         } else {
-            strIgnoringBatteryOptimization = "<strong>" + "Ignoring Battery Optimization: </strong> N/A\n<br />";
+            strIgnoringBatteryOptimization = "<strong>" + "Ignoring Battery Optimization: </strong> \n<br />";
         }
 
         // Validate talk back enabled feature before formatting
@@ -296,7 +296,7 @@ public class KmlFileWriter {
         if (tbr.getIsTalkBackEnabled() != null) {
             strTalkBackEnabled = "<strong>" + "Talk Back Enabled: </strong> " + tbr.getIsTalkBackEnabled().toString() + "\n<br />";
         } else {
-            strTalkBackEnabled = "<strong>" + "Talk Back Enabled: </strong> N/A\n<br />";
+            strTalkBackEnabled = "<strong>" + "Talk Back Enabled: </strong> \n<br />";
         }
 
         // Validate power save mode enabled feature before formatting
@@ -304,7 +304,7 @@ public class KmlFileWriter {
         if (tbr.getIsPowerSaveModeEnabled() != null) {
             strPowerSaveModeEnabled = "<strong>" + "Power Save Mode Enabled: </strong> " + tbr.getIsPowerSaveModeEnabled().toString() + "\n<br />";
         } else {
-            strPowerSaveModeEnabled = "<strong>" + "Power Save Mode Enabled: </strong> N/A\n<br />";
+            strPowerSaveModeEnabled = "<strong>" + "Power Save Mode Enabled: </strong> \n<br />";
         }
 
 
