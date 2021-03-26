@@ -74,7 +74,7 @@ public class ProcessorMain {
                 long dateEndMillis = StringUtils.validateStringDateAndParseToMillis(cmd.getOptionValue(ProgramOptions.END_DATE));
 
                 //Validate dates
-                if (dateStartMillis==0 || dateEndMillis==0) {
+                if (dateStartMillis == 0 || dateEndMillis == 0) {
                     System.err.println("Invalid start/end dates provided. \n" +
                             "Please provide dates in using the format mm-dd-yyyy.");
                     return;
