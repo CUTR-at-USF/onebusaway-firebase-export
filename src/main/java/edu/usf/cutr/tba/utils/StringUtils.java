@@ -30,7 +30,7 @@ public class StringUtils {
 
     /**
      * Gets the date in string format to validate is a date in format mm-dd-yyyy
-     * @param dateStr string with the date to ve validated
+     * @param dateStr string with the date to be validated
      * @return Valid date in millis if the dateStr is a valid date in format mm-dd-yyyy, 0 otherwise
      */
     public static long validateStringDateAndParseToMillis(String dateStr)
