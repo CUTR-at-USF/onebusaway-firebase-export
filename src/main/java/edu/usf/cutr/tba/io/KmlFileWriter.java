@@ -283,6 +283,31 @@ public class KmlFileWriter {
             duration = "<strong>" + "Activity Duration: </strong> Bad time data\n<br />";
         }
 
+        // Validate battery optimization feature before formatting
+        String strIgnoringBatteryOptimization;
+        if (tbr.getIsIgnoringBatteryOptimization() != null) {
+            strIgnoringBatteryOptimization = "<strong>" + "Ignoring Battery Optimization: </strong> " + tbr.getIsIgnoringBatteryOptimization().toString() + "\n<br />";
+        } else {
+            strIgnoringBatteryOptimization = "<strong>" + "Ignoring Battery Optimization: </strong> N/A\n<br />";
+        }
+
+        // Validate talk back enabled feature before formatting
+        String strTalkBackEnabled;
+        if (tbr.getIsTalkBackEnabled() != null) {
+            strTalkBackEnabled = "<strong>" + "Talk Back Enabled: </strong> " + tbr.getIsTalkBackEnabled().toString() + "\n<br />";
+        } else {
+            strTalkBackEnabled = "<strong>" + "Talk Back Enabled: </strong> N/A\n<br />";
+        }
+
+        // Validate power save mode enabled feature before formatting
+        String strPowerSaveModeEnabled;
+        if (tbr.getIsPowerSaveModeEnabled() != null) {
+            strPowerSaveModeEnabled = "<strong>" + "Power Save Mode Enabled: </strong> " + tbr.getIsPowerSaveModeEnabled().toString() + "\n<br />";
+        } else {
+            strPowerSaveModeEnabled = "<strong>" + "Power Save Mode Enabled: </strong> N/A\n<br />";
+        }
+
+
         String name = origin ? "Start" : "End";
         String sb = "<Placemark><name>" + name + " - Trip ID " + tbr.getTripId() + "</name>\n" +
                 "<description><![CDATA[" +
@@ -291,7 +316,7 @@ public class KmlFileWriter {
                 timeDiff +
                 duration +
                 "<strong>Location Provider:</strong> " + (origin ? tbr.getOriginProvider() : tbr.getDestinationProvider()) + "\n<br />" +
-                horAccuracy +
+                horAccuracy + strIgnoringBatteryOptimization + strTalkBackEnabled + strPowerSaveModeEnabled +
                 "]]>\n</description>" +
                 "<styleUrl>" + (origin ? "#msn_triangle" : "#msn_target") + "</styleUrl>" +
                 "<Point><coordinates><![CDATA[" + (origin ? tbr.getStartLon() : tbr.getEndLon()) +
