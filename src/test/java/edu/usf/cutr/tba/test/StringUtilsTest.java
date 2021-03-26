@@ -10,9 +10,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class StringUtilsTest {
 
-
     /**
-     * Given a list of  QueryDocumentSnapshot and a endActivityTime,
+     * Given a list of  QueryDocumentSnapshot and an endActivityTime,
      * verify the behavior of GetClosestDeviceInfo
      */
     @Test
@@ -20,7 +19,7 @@ public class StringUtilsTest {
         String strDate1 = "02-29-2021";
         String strDate2 = "02-29-2020"; // 1582952400000L America/New York
         String strDate3 = "02152021";
-        String strDate4 = "02-18-2021"; // 1613624400000L America New York
+        String strDate4 = "02-18-2021"; // 1613624400000L America/New York
         String strDate5 = "21-05-2020";
         String strDate6 = "May-05-2020";
         String strDate7 = "Hello World";
