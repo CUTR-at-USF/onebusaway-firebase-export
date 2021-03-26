@@ -33,8 +33,7 @@ public class StringUtils {
      * @param dateStr string with the date to be validated
      * @return Valid date in millis if the dateStr is a valid date in format mm-dd-yyyy, 0 otherwise
      */
-    public static long validateStringDateAndParseToMillis(String dateStr)
-    {
+    public static long validateStringDateAndParseToMillis(String dateStr) {
         // uuuu is required in order to use ResolverStyle.STRICT
         String dateFormat = "MM-dd-uuuu";
         long validDateMillis;
