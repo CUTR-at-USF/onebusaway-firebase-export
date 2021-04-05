@@ -24,7 +24,7 @@ window between 3AM to 3AM. By default, the analysis time is 3AM to 3AM.
 By default it is 2 minutes. Example usage: `-walkingRunningMergeThreshold 1` makes the merge threshold 1 minute.
 * `-noMergeWalkingRunning` Does not merge the walking and running events. This option does not take a parameter.
 * `-noMergeStill` Does not merge the still events.  This option does not take a parameter.
-* `-startDate <mm-dd-aaaa> -endDate<mm-dd-aaa>` Takes two dates as argument and performs the analysis for activities in
+* `-startDate <mm-dd-aaaa> -endDate<mm-dd-aaaa>` Takes two dates as argument and performs the analysis for activities in
   the specific date range. The filter will assume the dates in the America/New_York timezone. Example usage:
   -startDate 05-16-2020 -endDate 03-30-2021 perform the analysis from May 16, 2020 00:00:00, to March 30, 2021 00:00:00.
 
