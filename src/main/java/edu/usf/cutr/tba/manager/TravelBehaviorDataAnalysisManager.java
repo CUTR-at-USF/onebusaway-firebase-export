@@ -92,8 +92,19 @@ public class TravelBehaviorDataAnalysisManager {
      * @param userId firebase user id
      */
     private void processUserById(String userId) {
-        // gets all user data by id
-        List<QueryDocumentSnapshot> userInfoById = new ArrayList<>(mFirebaseReader.getAllUserInfoById(userId));
+        // Holds all user data by id
+        List<QueryDocumentSnapshot> userInfoById;
+
+        long startDateMillis = mProgramOptions.getStartDate();
+        long endDateMillis = mProgramOptions.getEndDate();
+
+        if (startDateMillis > 0 && endDateMillis > 0) {
+            // Valid date range exists, make a filtered query by using date range
+            userInfoById = new ArrayList<>(mFirebaseReader.getAllUserInfoByIdAndDateRange(userId, startDateMillis, endDateMillis));
+        } else {
+            // No valid date range defined, continue with a regular query by userId
+            userInfoById = new ArrayList<>(mFirebaseReader.getAllUserInfoById(userId));
+        }
         // sorts the data by activity time
         Collections.sort(userInfoById, new QueryDocumentSnapshotComparator());
 

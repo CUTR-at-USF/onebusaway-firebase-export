@@ -127,6 +127,8 @@ public class TravelBehaviorInfo {
 
     public Boolean isIgnoringBatteryOptimizations;
 
+    public long firstActivityEventTimeMillis;
+
     public TravelBehaviorInfo() {
     }
 

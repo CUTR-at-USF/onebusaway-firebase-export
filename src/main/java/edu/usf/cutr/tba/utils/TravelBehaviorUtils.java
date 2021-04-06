@@ -246,4 +246,21 @@ public class TravelBehaviorUtils {
         devInfo.setTimestamp(timeStamp);
         return devInfo;
     }
+
+    /**
+     * Generates a comparable activityStartTime for an activity-transitions document.
+     * If the activityStartTime from the transition is null, a value between bestLocation.time
+     * and Long.MIN_VALUE will be selected
+     * @param o QueryDocumentSnapshot for an activity-transitions document
+     * @return a comparable (not null) activityStartTimeValue
+     */
+    public static long getComparableTime(QueryDocumentSnapshot o) {
+        TravelBehaviorInfo tbi = o.toObject(TravelBehaviorInfo.class);
+        Long activityStartTime = TravelBehaviorUtils.getActivityStartTime(tbi);
+        if (activityStartTime == null) {
+            TravelBehaviorInfo.LocationInfo bestLocation = LocationUtils.getBestLocation(tbi.locationInfoList);
+            activityStartTime = (bestLocation == null) ? Long.MIN_VALUE : bestLocation.time;
+        }
+        return activityStartTime;
+    }
 }
