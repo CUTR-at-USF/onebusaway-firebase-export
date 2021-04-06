@@ -32,13 +32,13 @@ public class QueryDocumentSnapshotDeviceComparator implements Comparator<QueryDo
 
     @Override
     public int compare(QueryDocumentSnapshot o1, QueryDocumentSnapshot o2) {
-        long t1 = getComparableTime(o1);
-        long t2 = getComparableTime(o2);
+        long t1 = getDeviceComparableTime(o1);
+        long t2 = getDeviceComparableTime(o2);
 
         return Long.compare(t1, t2);
     }
 
-    private long getComparableTime(QueryDocumentSnapshot o) {
+    private long getDeviceComparableTime(QueryDocumentSnapshot o) {
         DeviceInformation devInfo = o.toObject(DeviceInformation.class);
 
         String timeStamp = devInfo.getTimestamp();
