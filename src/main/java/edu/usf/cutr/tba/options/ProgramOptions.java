@@ -62,6 +62,8 @@ public class ProgramOptions {
 
     private long mEndDate = 0;
 
+    private String mOutputDir;
+
     private static ProgramOptions sProgramOptions = null;
 
     private ProgramOptions() {
@@ -138,17 +140,24 @@ public class ProgramOptions {
         return this;
     }
 
-    public  long getStartDate() { return mStartDate;}
+    public  long getStartDate() { return mStartDate; }
 
     public  ProgramOptions setStartDate(long startDate) {
         this.mStartDate = startDate;
         return this;
     }
 
-    public  long getEndDate() { return mEndDate;}
+    public  long getEndDate() { return mEndDate; }
 
     public  ProgramOptions setEndDate(long endDate) {
         this.mEndDate = endDate;
+        return this;
+    }
+
+    public String getOutputDir() { return mOutputDir; }
+
+    public ProgramOptions setOutputDir (String outputDir) {
+        this.mOutputDir = outputDir;
         return this;
     }
 
