@@ -41,6 +41,9 @@ public class ProgramOptions {
     // Time zone used to parse the date parameters
     public  static final String TIME_ZONE = "America/New_York";
 
+    // Custom directory to save output files on
+    public static final String SAVE_ON_PATH = "outputDir";
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
