@@ -22,6 +22,11 @@ import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.StringUtils;
 import org.apache.commons.cli.*;
 
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ProcessorMain {
     public static void main(String[] args) {
         Options options = createCommandLineOptions();
@@ -91,6 +96,23 @@ public class ProcessorMain {
                         "endDate was provided but startDate was not provided.");
                 return;
             }
+
+            if (cmd.hasOption(ProgramOptions.SAVE_ON_PATH)) {
+                String strPath = cmd.getOptionValue(ProgramOptions.SAVE_ON_PATH);
+                try {
+                    Path localPath = Paths.get(strPath);
+                    if (Files.exists(localPath)) {
+                        programOptions.setOutputDir(localPath.toString());
+                    } else {
+                        System.out.println("The provided path does not exists or there is no access permission " +
+                                "to access the directory.");
+                        return;
+                    }
+                } catch (InvalidPathException e) {
+                    System.err.println("Invalid command line option. SAVE_ON_PATH is not a valid path.");
+                    return;
+                }
+            }
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
@@ -118,6 +140,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.NO_MERGE_WALKING_RUNNING, false, "Do not merge waling and running events");
         options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
+        options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Absolute path of directory to save output data on.");
         return options;
     }
 }
