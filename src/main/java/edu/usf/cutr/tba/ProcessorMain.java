@@ -22,11 +22,6 @@ import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.StringUtils;
 import org.apache.commons.cli.*;
 
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public class ProcessorMain {
     public static void main(String[] args) {
         Options options = createCommandLineOptions();
@@ -97,19 +92,16 @@ public class ProcessorMain {
                 return;
             }
 
+            // Verify and process custom output folder
             if (cmd.hasOption(ProgramOptions.SAVE_ON_PATH)) {
-                String strPath = cmd.getOptionValue(ProgramOptions.SAVE_ON_PATH);
-                try {
-                    Path localPath = Paths.get(strPath);
-                    if (Files.exists(localPath)) {
-                        programOptions.setOutputDir(localPath.toString());
-                    } else {
-                        System.out.println("The provided path does not exists or there is no access permission " +
-                                "to access the directory.");
-                        return;
-                    }
-                } catch (InvalidPathException e) {
-                    System.err.println("Invalid command line option. SAVE_ON_PATH is not a valid path.");
+                String argDir = cmd.getOptionValue(ProgramOptions.SAVE_ON_PATH);
+                // Validate if the argDir is a valid path, if not exists then try to create it
+                String newDir = StringUtils.validateAndParseOutputPath(argDir);
+
+                if (!newDir.isEmpty()) {
+                    programOptions.setOutputDir(newDir);
+                } else {
+                    // Error messages where provided in the validateAndParseOutputPath function.
                     return;
                 }
             }

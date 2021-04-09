@@ -62,7 +62,7 @@ public class ProgramOptions {
 
     private long mEndDate = 0;
 
-    private String mOutputDir;
+    private String mOutputDir = "";
 
     private static ProgramOptions sProgramOptions = null;
 
