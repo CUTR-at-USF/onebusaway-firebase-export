@@ -132,7 +132,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.NO_MERGE_WALKING_RUNNING, false, "Do not merge waling and running events");
         options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
-        options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Absolute path of directory to save output data on.");
+        options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Path of directory to save output data on.");
         return options;
     }
 }
