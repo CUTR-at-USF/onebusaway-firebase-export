@@ -74,7 +74,7 @@ public class StringUtilsTest {
             String existentFolder = createdFolder.getPath().toString();
 
             // Create a path for a non existent folder.
-            Path newFolderPath = Paths.get(createdFolder.getParent(), "newFolder");
+            Path newFolderPath = Paths.get(createdFolder.getParent(), "newFolder", "newSubFolder");
 
             // test for an existent folder
             assertEquals(existentFolder, StringUtils.validateAndParseOutputPath(existentFolder));
