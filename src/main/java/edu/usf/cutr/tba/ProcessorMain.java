@@ -101,7 +101,7 @@ public class ProcessorMain {
                 if (!newDir.isEmpty()) {
                     programOptions.setOutputDir(newDir);
                 } else {
-                    // Error messages where provided in the validateAndParseOutputPath function.
+                    // Error messages were provided in the validateAndParseOutputPath() method.
                     return;
                 }
             }
