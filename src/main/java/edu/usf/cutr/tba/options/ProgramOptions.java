@@ -44,11 +44,16 @@ public class ProgramOptions {
     // Custom directory to save output files on
     public static final String SAVE_ON_PATH = "outputDir";
 
+    // Path to file with multiple IDs
+    public static final String MULTI_USERS_PATH = "multiUserId";
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
 
     private String mUserId;
+
+    private String mMultiUserId;
 
     private String mKeyFilePath;
 
@@ -158,6 +163,13 @@ public class ProgramOptions {
 
     public ProgramOptions setOutputDir (String outputDir) {
         this.mOutputDir = outputDir;
+        return this;
+    }
+
+    public String getMultiUserId() { return mMultiUserId; }
+
+    public ProgramOptions setMultiUserId( String multiUserId) {
+        this.mMultiUserId = multiUserId;
         return this;
     }
 

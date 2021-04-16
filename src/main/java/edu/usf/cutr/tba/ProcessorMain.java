@@ -105,6 +105,12 @@ public class ProcessorMain {
                     return;
                 }
             }
+
+            // Verify and process file with multiple users
+            if (cmd.hasOption(ProgramOptions.MULTI_USERS_PATH)) {
+                String argMultiUserPath = cmd.getOptionValue(ProgramOptions.MULTI_USERS_PATH);
+            }
+
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
@@ -133,6 +139,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Path of directory to save output data on.");
+        options.addOption(ProgramOptions.MULTI_USERS_PATH, true, "Path to file including multiple user IDs.");
         return options;
     }
 }
