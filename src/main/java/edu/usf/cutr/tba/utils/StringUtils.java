@@ -67,13 +67,12 @@ public class StringUtils {
                 return localPath.toString();
             } else {
                 // Folder does not exists, try to create it
-                System.out.println("The provided path does not exists or there is no access permission. " +
-                        "Trying to create the folder: \n" + localPath.toString());
+                System.out.println("The provided path does not exist. " +
+                        "Trying to create the folder: '" + localPath.toString() + "' ...");
                 try {
                     Files.createDirectories(localPath);
                     return localPath.toString();
-                }
-                catch (Exception e ) {
+                } catch (Exception e ) {
                     System.out.println("It was not possible to create the directory: " + localPath.toString());
                     System.err.println("Error:" + e);
                     return "";
