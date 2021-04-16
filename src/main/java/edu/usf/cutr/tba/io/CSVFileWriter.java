@@ -53,7 +53,7 @@ public class CSVFileWriter {
         try {
             mCSVWriter.writeNext(header);
         } catch(Exception e) {
-            System.out.println("Create header error: " + e);
+            System.err.println("Create header error: " + e);
         }
     }
 
@@ -69,7 +69,7 @@ public class CSVFileWriter {
         try  {
             mCSVWriter.writeNext(travelBehaviorRecord.toStringArray());
         } catch (Exception e) {
-            System.out.println("Append to CSV Exception: " + e);
+            System.err.println("Append to CSV Exception: " + e);
         }
     }
 
