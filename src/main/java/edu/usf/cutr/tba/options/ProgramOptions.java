@@ -41,6 +41,9 @@ public class ProgramOptions {
     // Time zone used to parse the date parameters
     public  static final String TIME_ZONE = "America/New_York";
 
+    // Custom directory to save output files on
+    public static final String SAVE_ON_PATH = "outputDir";
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
@@ -58,6 +61,8 @@ public class ProgramOptions {
     private long mStartDate = 0;
 
     private long mEndDate = 0;
+
+    private String mOutputDir = "";
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -135,17 +140,24 @@ public class ProgramOptions {
         return this;
     }
 
-    public  long getStartDate() { return mStartDate;}
+    public  long getStartDate() { return mStartDate; }
 
     public  ProgramOptions setStartDate(long startDate) {
         this.mStartDate = startDate;
         return this;
     }
 
-    public  long getEndDate() { return mEndDate;}
+    public  long getEndDate() { return mEndDate; }
 
     public  ProgramOptions setEndDate(long endDate) {
         this.mEndDate = endDate;
+        return this;
+    }
+
+    public String getOutputDir() { return mOutputDir; }
+
+    public ProgramOptions setOutputDir (String outputDir) {
+        this.mOutputDir = outputDir;
         return this;
     }
 

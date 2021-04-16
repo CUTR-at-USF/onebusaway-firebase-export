@@ -18,32 +18,43 @@ package edu.usf.cutr.tba.io;
 import com.opencsv.CSVWriter;
 import edu.usf.cutr.tba.constants.FirebaseConstants;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class CSVFileWriter {
 
     private CSVWriter mCSVWriter;
+    private ProgramOptions mProgramOptions;
 
     public CSVFileWriter() {
+        mProgramOptions = ProgramOptions.getInstance();
         try {
-            File file = new File(FirebaseConstants.TRAVEL_BEHAVIOR_CSV_FILE);
+            Path localPath;
+            localPath = Paths.get(mProgramOptions.getOutputDir(), FirebaseConstants.TRAVEL_BEHAVIOR_CSV_FILE);
+            File file = new File(localPath.toString());
             // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter(file);
+            FileWriter outputFile = new FileWriter(file);
 
             // create CSVFileWriter object filewriter object as parameter
-            mCSVWriter = new CSVWriter(outputfile);
+            mCSVWriter = new CSVWriter(outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void createHeader(String[] header) {
-        mCSVWriter.writeNext(header);
+        try {
+            mCSVWriter.writeNext(header);
+        } catch(Exception e) {
+            System.err.println("Create header error: " + e);
+        }
     }
 
     public void appendAllToCsV(List<TravelBehaviorRecord> travelBehaviorRecords) {
@@ -55,7 +66,11 @@ public class CSVFileWriter {
     }
 
     private void appendToCsV(TravelBehaviorRecord travelBehaviorRecord) {
-        mCSVWriter.writeNext(travelBehaviorRecord.toStringArray());
+        try  {
+            mCSVWriter.writeNext(travelBehaviorRecord.toStringArray());
+        } catch (Exception e) {
+            System.err.println("Append to CSV Exception: " + e);
+        }
     }
 
     public void closeWriter() {

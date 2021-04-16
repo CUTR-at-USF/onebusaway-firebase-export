@@ -27,6 +27,10 @@ By default it is 2 minutes. Example usage: `-walkingRunningMergeThreshold 1` mak
 * `-startDate <mm-dd-yyyy> -endDate <mm-dd-yyyy>` Takes two dates as argument and performs the analysis for activities in
   the specific date range. The filter will assume the dates in the America/New_York timezone. Example usage:
   -startDate 05-16-2020 -endDate 03-30-2021 will perform the analysis from May 16, 2020 00:00:00, to March 30, 2021 00:00:00.
+* `-outputDir <outputFolderPathAndName>` Takes a string with the desired output folder path and use it to save the
+analysis output files. If the folder does not exist, the application will try to create it. Example usage:
+-outputDir myOutputData will look for the myOutputData folder in the current working directory. If myOutputData folder 
+  does not exist, it will be created. 
 
 ## License
 
