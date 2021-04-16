@@ -56,9 +56,12 @@ public class TravelBehaviorDataAnalysisManager {
     public TravelBehaviorDataAnalysisManager() throws FirebaseFileNotInitializedException {
         mFirebaseReader = new FirebaseReader();
         mCSVFileWriter = new CSVFileWriter();
-        mKmlFileWriter = new KmlFileWriter();
         mOneDayTravelBehaviorRecordList = new ArrayList<>();
         mProgramOptions = ProgramOptions.getInstance();
+
+        if (!mProgramOptions.getNoKMZ()) {
+            mKmlFileWriter = new KmlFileWriter();
+        }
     }
 
     public void processData() {
@@ -387,8 +390,10 @@ public class TravelBehaviorDataAnalysisManager {
     private void flushOneDayTravelBehaviorRecordList() {
         // flush all data to csv
         mCSVFileWriter.appendAllToCsV(mOneDayTravelBehaviorRecordList);
-        // Write a KML file for this user's behavior for this day
-        mKmlFileWriter.appendAllToKml(mOneDayTravelBehaviorRecordList);
+        if (!mProgramOptions.getNoKMZ()) {
+            // Write a KML file for this user's behavior for this day
+            mKmlFileWriter.appendAllToKml(mOneDayTravelBehaviorRecordList);
+        }
         // clean the one day list
         mOneDayTravelBehaviorRecordList.clear();
     }
