@@ -16,10 +16,13 @@
 package edu.usf.cutr.tba.io;
 
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
+import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.TimeZoneHelper;
 import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.time.ZoneId;
 import java.util.List;
@@ -32,6 +35,7 @@ import static edu.usf.cutr.tba.constants.FirebaseConstants.TRAVEL_BEHAVIOR_KMZ_F
 public class KmlFileWriter {
 
     BufferedWriter mKmlWriter;
+    private ProgramOptions mProgramOptions;
 
     private static final String STYLE_TEXT =
             "<StyleMap id=\"msn_ylw-pushpin\">\n" +
@@ -179,7 +183,10 @@ public class KmlFileWriter {
             }
 
             String fileName = firstTbr.getUserId() + "_" + TravelBehaviorUtils.getDateAndTimeFileNameFromMillis(millis);
-            File kmlFile = new File(fileName + TRAVEL_BEHAVIOR_KML_FILE_EXTENSION);
+            mProgramOptions = ProgramOptions.getInstance();
+            Path localPath = Paths.get(mProgramOptions.getOutputDir(), fileName + TRAVEL_BEHAVIOR_KML_FILE_EXTENSION);
+
+            File kmlFile = new File(localPath.toString());
             mKmlWriter = new BufferedWriter(new FileWriter(kmlFile));
 
             mKmlWriter.write("<?xml version=\"1.0\" encoding =\"UTF-8\"?>\n");
@@ -209,7 +216,8 @@ public class KmlFileWriter {
         byte data[] = new byte[BUFFER];
 
         FileInputStream kmlIn = new FileInputStream(kmlFile);
-        FileOutputStream kmzDestination = new FileOutputStream(fileName + TRAVEL_BEHAVIOR_KMZ_FILE_EXTENSION);
+        Path localPath = Paths.get(kmlFile.getParent(), fileName + TRAVEL_BEHAVIOR_KMZ_FILE_EXTENSION);
+        FileOutputStream kmzDestination = new FileOutputStream(localPath.toString());
         ZipOutputStream kmzOut = new ZipOutputStream(new BufferedOutputStream(kmzDestination));
 
         kmzOut.putNextEntry(new ZipEntry("doc.kml")); // name of kml in zip archive

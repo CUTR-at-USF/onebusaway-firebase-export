@@ -91,6 +91,20 @@ public class ProcessorMain {
                         "endDate was provided but startDate was not provided.");
                 return;
             }
+
+            // Verify and process custom output folder
+            if (cmd.hasOption(ProgramOptions.SAVE_ON_PATH)) {
+                String argDir = cmd.getOptionValue(ProgramOptions.SAVE_ON_PATH);
+                // Validate if the argDir is a valid path, if not exists then try to create it
+                String newDir = StringUtils.validateAndParseOutputPath(argDir);
+
+                if (!newDir.isEmpty()) {
+                    programOptions.setOutputDir(newDir);
+                } else {
+                    // Error messages were provided in the validateAndParseOutputPath() method.
+                    return;
+                }
+            }
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
@@ -118,6 +132,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.NO_MERGE_WALKING_RUNNING, false, "Do not merge waling and running events");
         options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
+        options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Path of directory to save output data on.");
         return options;
     }
 }

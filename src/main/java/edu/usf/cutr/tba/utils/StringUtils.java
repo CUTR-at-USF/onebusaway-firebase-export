@@ -16,6 +16,10 @@
 package edu.usf.cutr.tba.utils;
 import edu.usf.cutr.tba.options.ProgramOptions;
 
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -48,4 +52,36 @@ public class StringUtils {
         }
         return validDateMillis;
     }
+
+    /**
+     * Validate if newPath is a valid path. If newPath exists then return it. Otherwise try
+     * to create it and return it. Return "" if it is not possible to create the newPath.
+     * @param newPath path of directory to be verified.
+     * @return String of a valid path or "" if the path is invalid or if its not possible to
+     * be created.
+     */
+    public static String validateAndParseOutputPath(String newPath) {
+        try {
+            Path localPath = Paths.get(newPath);
+            if (Files.exists(localPath)) {
+                return localPath.toString();
+            } else {
+                // Folder does not exists, try to create it
+                System.out.println("The provided path does not exist. " +
+                        "Trying to create the folder: '" + localPath.toString() + "' ...");
+                try {
+                    Files.createDirectories(localPath);
+                    return localPath.toString();
+                } catch (Exception e ) {
+                    System.out.println("It was not possible to create the directory: " + localPath.toString());
+                    System.err.println("Error:" + e);
+                    return "";
+                }
+            }
+        } catch (InvalidPathException e) {
+            System.err.println("Invalid command line option. SAVE_ON_PATH is not a valid path." + e);
+            return "";
+        }
+    }
+
 }
