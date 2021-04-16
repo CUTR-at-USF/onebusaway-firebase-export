@@ -139,6 +139,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Path of directory to save output data on.");
+        options.addOption(ProgramOptions.NO_EXPORT_KMZ, false, "No export data in KMZ format.");
         return options;
     }
 }
