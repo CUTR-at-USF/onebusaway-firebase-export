@@ -44,6 +44,9 @@ public class ProgramOptions {
     // Custom directory to save output files on
     public static final String SAVE_ON_PATH = "outputDir";
 
+    // Option to skip KMZ export
+    public static final String NO_EXPORT_KMZ = "noKMZ";
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
@@ -63,6 +66,8 @@ public class ProgramOptions {
     private long mEndDate = 0;
 
     private String mOutputDir = "";
+
+    private Boolean mNoKMZ = false;
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -156,8 +161,15 @@ public class ProgramOptions {
 
     public String getOutputDir() { return mOutputDir; }
 
-    public ProgramOptions setOutputDir (String outputDir) {
+    public ProgramOptions setOutputDir(String outputDir) {
         this.mOutputDir = outputDir;
+        return this;
+    }
+
+    public Boolean getNoKMZ() { return mNoKMZ; }
+
+    public ProgramOptions setNoKMZ( Boolean noKMZ) {
+        this.mNoKMZ = noKMZ;
         return this;
     }
 

@@ -105,6 +105,12 @@ public class ProcessorMain {
                     return;
                 }
             }
+
+            // Verify noKMZ option
+            if (cmd.hasOption(ProgramOptions.NO_EXPORT_KMZ)) {
+                programOptions.setNoKMZ(Boolean.TRUE);
+            }
+
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
