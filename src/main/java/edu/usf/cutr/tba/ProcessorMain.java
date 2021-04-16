@@ -108,7 +108,7 @@ public class ProcessorMain {
 
             // Verify noKMZ option
             if (cmd.hasOption(ProgramOptions.NO_EXPORT_KMZ)) {
-                programOptions.setNoKMZ(Boolean.TRUE);
+                programOptions.setNoKMZ(true);
             }
 
         } catch (ParseException e) {

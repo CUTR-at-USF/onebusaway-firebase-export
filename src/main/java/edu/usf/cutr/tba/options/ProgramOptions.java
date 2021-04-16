@@ -67,7 +67,7 @@ public class ProgramOptions {
 
     private String mOutputDir = "";
 
-    private Boolean mNoKMZ = false;
+    private boolean mNoKMZ = false;
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -166,9 +166,9 @@ public class ProgramOptions {
         return this;
     }
 
-    public Boolean getNoKMZ() { return mNoKMZ; }
+    public boolean getNoKMZ() { return mNoKMZ; }
 
-    public ProgramOptions setNoKMZ( Boolean noKMZ) {
+    public ProgramOptions setNoKMZ( boolean noKMZ) {
         this.mNoKMZ = noKMZ;
         return this;
     }
