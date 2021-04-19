@@ -105,6 +105,12 @@ public class ProcessorMain {
                     return;
                 }
             }
+
+            // Verify noKMZ option
+            if (cmd.hasOption(ProgramOptions.SKIP_KMZ)) {
+                programOptions.setSkipKmz(true);
+            }
+
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
@@ -133,6 +139,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Path of directory to save output data on.");
+        options.addOption(ProgramOptions.SKIP_KMZ, false, "No export data in KMZ format.");
         return options;
     }
 }
