@@ -59,7 +59,7 @@ public class TravelBehaviorDataAnalysisManager {
         mOneDayTravelBehaviorRecordList = new ArrayList<>();
         mProgramOptions = ProgramOptions.getInstance();
 
-        if (!mProgramOptions.getNoKMZ()) {
+        if (!mProgramOptions.skipKmz()) {
             mKmlFileWriter = new KmlFileWriter();
         }
     }
@@ -390,7 +390,7 @@ public class TravelBehaviorDataAnalysisManager {
     private void flushOneDayTravelBehaviorRecordList() {
         // flush all data to csv
         mCSVFileWriter.appendAllToCsV(mOneDayTravelBehaviorRecordList);
-        if (!mProgramOptions.getNoKMZ()) {
+        if (!mProgramOptions.skipKmz()) {
             // Write a KML file for this user's behavior for this day
             mKmlFileWriter.appendAllToKml(mOneDayTravelBehaviorRecordList);
         }

@@ -45,7 +45,7 @@ public class ProgramOptions {
     public static final String SAVE_ON_PATH = "outputDir";
 
     // Option to skip KMZ export
-    public static final String NO_EXPORT_KMZ = "noKMZ";
+    public static final String SKIP_KMZ = "skipKMZ";
 
     private boolean mIsMergeStillEventsEnabled = true;
 
@@ -67,7 +67,7 @@ public class ProgramOptions {
 
     private String mOutputDir = "";
 
-    private boolean mNoKMZ = false;
+    private boolean mSkipKmz = false;
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -166,10 +166,10 @@ public class ProgramOptions {
         return this;
     }
 
-    public boolean getNoKMZ() { return mNoKMZ; }
+    public boolean skipKmz() { return mSkipKmz; }
 
-    public ProgramOptions setNoKMZ( boolean noKMZ) {
-        this.mNoKMZ = noKMZ;
+    public ProgramOptions setSkipKmz(boolean skipKmz) {
+        this.mSkipKmz = skipKmz;
         return this;
     }
 
