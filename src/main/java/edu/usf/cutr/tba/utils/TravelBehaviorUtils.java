@@ -200,7 +200,7 @@ public class TravelBehaviorUtils {
         DeviceInformation devInfo = userDeviceInfoList.get(low).toObject(DeviceInformation.class);
         String timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
-            timeStamp = userDeviceInfoList.get(low).getId();
+            timeStamp = StringUtils.parsableTimeStamp(userDeviceInfoList.get(low).getId());
         }
         if(activityEndTimeMillis < Long.parseLong(timeStamp)){
             return devInfo;
@@ -210,7 +210,7 @@ public class TravelBehaviorUtils {
         devInfo = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
         timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
-            timeStamp = userDeviceInfoList.get(high).getId();
+            timeStamp = StringUtils.parsableTimeStamp(userDeviceInfoList.get(high).getId());
         }
         if (activityEndTimeMillis >= Long.parseLong(timeStamp)){
             devInfo.setTimestamp(timeStamp);
@@ -225,7 +225,7 @@ public class TravelBehaviorUtils {
             devInfo = userDeviceInfoList.get(mid).toObject(DeviceInformation.class);
             timeStamp = devInfo.getTimestamp();
             if (timeStamp == null) {
-                timeStamp = userDeviceInfoList.get(high).getId();
+                timeStamp = StringUtils.parsableTimeStamp(userDeviceInfoList.get(high).getId());
             }
 
             if (activityEndTimeMillis < Long.parseLong(timeStamp)) {
@@ -241,7 +241,7 @@ public class TravelBehaviorUtils {
         devInfo = userDeviceInfoList.get(high).toObject(DeviceInformation.class);
         timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
-            timeStamp = userDeviceInfoList.get(high).getId();
+            timeStamp = StringUtils.parsableTimeStamp(userDeviceInfoList.get(high).getId());
         }
         devInfo.setTimestamp(timeStamp);
         return devInfo;
