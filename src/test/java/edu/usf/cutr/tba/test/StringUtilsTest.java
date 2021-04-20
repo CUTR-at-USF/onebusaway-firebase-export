@@ -92,4 +92,42 @@ public class StringUtilsTest {
         }
     }
 
+    /**
+     * Given different strings representing candidate Long time stamps,
+     * verify the behavior of testParsableTimeStamp to return a parsable time stamp string
+     */
+    @Test
+    public void testParsableTimeStamp() {
+        String timeStamp1 = "268-19cf3571-dace-479b-80a3-942f1f356076";
+        String timeStamp2 = "23XY-ABCD";
+        String timeStamp3 = "XY-23-ABCD";
+        String timeStamp4 = "XYSTABCD";
+        String timeStamp5 = "1563559647071";
+
+        assertEquals("268", StringUtils.parsableTimeStamp(timeStamp1));
+        assertEquals(Long.toString(Long.MIN_VALUE), StringUtils.parsableTimeStamp(timeStamp2));
+        assertEquals(Long.toString(Long.MIN_VALUE), StringUtils.parsableTimeStamp(timeStamp3));
+        assertEquals(Long.toString(Long.MIN_VALUE), StringUtils.parsableTimeStamp(timeStamp4));
+        assertEquals("1563559647071", StringUtils.parsableTimeStamp(timeStamp5));
+    }
+
+    /**
+     * Given different strings representing candidate long time stamps,
+     * verify the behavior of testParsableTimeStamp to return a parsable time stamp string
+     */
+    @Test
+    public void testTimeStampToLong() {
+        String timeStamp1 = "268-19cf3571-dace-479b-80a3-942f1f356076";
+        String timeStamp2 = "23XY-ABCD";
+        String timeStamp3 = "XY-23-ABCD";
+        String timeStamp4 = "XYSTABCD";
+        String timeStamp5 = "1563559647071";
+
+        assertEquals(268, StringUtils.timeStampToLong(timeStamp1));
+        assertEquals(Long.MIN_VALUE, StringUtils.timeStampToLong(timeStamp2));
+        assertEquals(Long.MIN_VALUE, StringUtils.timeStampToLong(timeStamp3));
+        assertEquals(Long.MIN_VALUE, StringUtils.timeStampToLong(timeStamp4));
+        assertEquals( Long.parseLong("1563559647071"), StringUtils.timeStampToLong(timeStamp5));
+    }
+
 }
