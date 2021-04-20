@@ -17,7 +17,6 @@ package edu.usf.cutr.tba.utils;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.tba.model.DeviceInformation;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Comparator;
 
@@ -45,19 +44,7 @@ public class QueryDocumentSnapshotDeviceComparator implements Comparator<QueryDo
         String timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
             timeStamp = o.getId();
-            if (!NumberUtils.isParsable(timeStamp)) {
-                // The timestamp must be a random string with a numeric prefix, get the prefix
-                int indexDash = timeStamp.indexOf("-");
-                if (indexDash == -1) {
-                    // Dash not found, return MIN_VALUE
-                    return Long.MIN_VALUE;
-                }
-                timeStamp = timeStamp.substring(0 , indexDash);
-                // if prefix is not Parsable, return MIN_VALUE
-                if (!NumberUtils.isParsable(timeStamp)) {
-                    return Long.MIN_VALUE;
-                }
-            }
+            return StringUtils.timeStampToLong(timeStamp);
         }
         return Long.parseLong(timeStamp);
     }
