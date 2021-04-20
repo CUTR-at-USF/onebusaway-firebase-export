@@ -85,29 +85,6 @@ public class StringUtils {
         }
     }
 
-    /**
-     * If stringTimestamp is parsable to Long then return its long value, it it is not parsable, the function will find
-     * the best timeStamp option between a prefix value of the provided string or the MIN_VALUE of the Long class.
-     * @param timeStamp string containing a possible time stamp
-     * @return Long time stamp
-     */
-    public static long timeStampToLong(String timeStamp) {
-        if (!NumberUtils.isParsable(timeStamp)) {
-            // The timestamp must be a random string with a numeric prefix, get the prefix
-            int indexDash = timeStamp.indexOf("-");
-            if (indexDash == -1) {
-                // Dash not found, return MIN_VALUE
-                return Long.MIN_VALUE;
-            }
-            timeStamp = timeStamp.substring(0 , indexDash);
-            // if prefix is not Parsable, return MIN_VALUE
-            if (!NumberUtils.isParsable(timeStamp)) {
-                return Long.MIN_VALUE;
-            }
-        }
-        // timeStamp is parsable
-        return Long.parseLong(timeStamp);
-    }
 
     /**
      * If the provided timeStamp is parsable return the same string. If it is not parsable, the function will find the
@@ -123,11 +100,12 @@ public class StringUtils {
                 // Dash not found, return MIN_VALUE
                 return Long.toString(Long.MIN_VALUE);
             }
-            timeStamp = timeStamp.substring(0 , indexDash);
+            String prefix = timeStamp.substring(0 , indexDash);
             // if prefix is not Parsable, return MIN_VALUE
-            if (!NumberUtils.isParsable(timeStamp)) {
+            if (!NumberUtils.isParsable(prefix)) {
                 return Long.toString(Long.MIN_VALUE);
             }
+            return prefix;
         }
         return timeStamp;
     }
