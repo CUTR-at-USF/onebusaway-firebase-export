@@ -43,8 +43,7 @@ public class QueryDocumentSnapshotDeviceComparator implements Comparator<QueryDo
 
         String timeStamp = devInfo.getTimestamp();
         if (timeStamp == null) {
-            timeStamp = o.getId();
-            return StringUtils.timeStampToLong(timeStamp);
+            timeStamp = StringUtils.parsableTimeStamp(o.getId());
         }
         return Long.parseLong(timeStamp);
     }
