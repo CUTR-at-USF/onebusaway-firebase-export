@@ -30,7 +30,8 @@ By default it is 2 minutes. Example usage: `-walkingRunningMergeThreshold 1` mak
 * `-outputDir <outputFolderPathAndName>` Takes a string with the desired output folder path and use it to save the
 analysis output files. If the folder does not exist, the application will try to create it. Example usage:
 -outputDir myOutputData will look for the myOutputData folder in the current working directory. If myOutputData folder 
-  does not exist, it will be created. 
+  does not exist, it will be created.
+* `-skipKMZ` Does not export the output data in KMZ format. This option does not take a parameter.  
 
 ## License
 

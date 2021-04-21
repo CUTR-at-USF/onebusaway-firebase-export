@@ -106,6 +106,11 @@ public class ProcessorMain {
                 }
             }
 
+            // Verify noKMZ option
+            if (cmd.hasOption(ProgramOptions.SKIP_KMZ)) {
+                programOptions.setSkipKmz(true);
+            }
+
             // Verify and process file with multiple users
             if (cmd.hasOption(ProgramOptions.MULTI_USERS_PATH)) {
                 String argMultiUserPath = cmd.getOptionValue(ProgramOptions.MULTI_USERS_PATH);
@@ -139,6 +144,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.START_DATE, true, "Start date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Path of directory to save output data on.");
+        options.addOption(ProgramOptions.SKIP_KMZ, false, "No export data in KMZ format.");
         options.addOption(ProgramOptions.MULTI_USERS_PATH, true, "Path to file including multiple user IDs.");
         return options;
     }

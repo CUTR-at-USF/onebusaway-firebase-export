@@ -15,6 +15,7 @@
  */
 package edu.usf.cutr.tba.utils;
 import edu.usf.cutr.tba.options.ProgramOptions;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -67,13 +68,12 @@ public class StringUtils {
                 return localPath.toString();
             } else {
                 // Folder does not exists, try to create it
-                System.out.println("The provided path does not exists or there is no access permission. " +
-                        "Trying to create the folder: \n" + localPath.toString());
+                System.out.println("The provided path does not exist. " +
+                        "Trying to create the folder: '" + localPath.toString() + "' ...");
                 try {
                     Files.createDirectories(localPath);
                     return localPath.toString();
-                }
-                catch (Exception e ) {
+                } catch (Exception e ) {
                     System.out.println("It was not possible to create the directory: " + localPath.toString());
                     System.err.println("Error:" + e);
                     return "";
@@ -85,4 +85,28 @@ public class StringUtils {
         }
     }
 
+
+    /**
+     * If the provided timeStamp is parsable return the same string. If it is not parsable, the function will find the
+     * best timeStamp option between a prefix value of the provided string or the MIN_VALUE of the Long class.
+     * @param timeStamp string containing a possible time stamp
+     * @return string with a parsable time stamp
+     */
+    public static String parsableTimeStamp(String timeStamp) {
+        if (!NumberUtils.isParsable(timeStamp)) {
+            // The timestamp must be a random string with a numeric prefix, get the prefix
+            int indexDash = timeStamp.indexOf("-");
+            if (indexDash == -1) {
+                // Dash not found, return MIN_VALUE
+                return Long.toString(Long.MIN_VALUE);
+            }
+            String prefix = timeStamp.substring(0 , indexDash);
+            // if prefix is not Parsable, return MIN_VALUE
+            if (!NumberUtils.isParsable(prefix)) {
+                return Long.toString(Long.MIN_VALUE);
+            }
+            return prefix;
+        }
+        return timeStamp;
+    }
 }

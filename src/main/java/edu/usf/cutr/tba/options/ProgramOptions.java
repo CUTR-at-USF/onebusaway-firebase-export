@@ -44,6 +44,9 @@ public class ProgramOptions {
     // Custom directory to save output files on
     public static final String SAVE_ON_PATH = "outputDir";
 
+    // Option to skip KMZ export
+    public static final String SKIP_KMZ = "skipKMZ";
+
     // Path to file with multiple IDs
     public static final String MULTI_USERS_PATH = "multiUserId";
 
@@ -68,6 +71,8 @@ public class ProgramOptions {
     private long mEndDate = 0;
 
     private String mOutputDir = "";
+
+    private boolean mSkipKmz = false;
 
     private static ProgramOptions sProgramOptions = null;
 
@@ -161,8 +166,15 @@ public class ProgramOptions {
 
     public String getOutputDir() { return mOutputDir; }
 
-    public ProgramOptions setOutputDir (String outputDir) {
+    public ProgramOptions setOutputDir(String outputDir) {
         this.mOutputDir = outputDir;
+        return this;
+    }
+
+    public boolean skipKmz() { return mSkipKmz; }
+
+    public ProgramOptions setSkipKmz(boolean skipKmz) {
+        this.mSkipKmz = skipKmz;
         return this;
     }
 
