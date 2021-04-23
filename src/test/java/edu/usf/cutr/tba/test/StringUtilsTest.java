@@ -98,14 +98,14 @@ public class StringUtilsTest {
      */
     @Test
     public void testParsableTimeStamp() {
-        String timeStamp1 = "268-19cf3571-dace-479b-80a3-942f1f356076";
+        String timeStamp1 = "0-eb01e0cd-b143-467e-94c9-a25edbefc122";
         String timeStamp2 = "23XY-ABCD";
         String timeStamp3 = "XY-23-ABCD";
         String timeStamp4 = "XYSTABCD";
         String timeStamp5 = "1563559647071";
         String timeStamp6 = "-XY-23-ABCD";
 
-        assertEquals("268", StringUtils.parsableTimeStamp(timeStamp1));
+        assertEquals("0", StringUtils.parsableTimeStamp(timeStamp1));
         assertEquals(Long.toString(Long.MIN_VALUE), StringUtils.parsableTimeStamp(timeStamp2));
         assertEquals(Long.toString(Long.MIN_VALUE), StringUtils.parsableTimeStamp(timeStamp3));
         assertEquals(Long.toString(Long.MIN_VALUE), StringUtils.parsableTimeStamp(timeStamp4));
