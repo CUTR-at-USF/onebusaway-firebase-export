@@ -225,7 +225,7 @@ public class TravelBehaviorUtils {
             devInfo = userDeviceInfoList.get(mid).toObject(DeviceInformation.class);
             timeStamp = devInfo.getTimestamp();
             if (timeStamp == null) {
-                timeStamp = StringUtils.parsableTimeStamp(userDeviceInfoList.get(high).getId());
+                timeStamp = StringUtils.parsableTimeStamp(userDeviceInfoList.get(mid).getId());
             }
 
             if (activityEndTimeMillis < Long.parseLong(timeStamp)) {
