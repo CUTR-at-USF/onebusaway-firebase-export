@@ -97,7 +97,7 @@ public class TravelBehaviorDataAnalysisManager {
                 processUserById(userId[0]);
             }
         } else {
-            System.out.println("The list of userId provided is empty or wrong formatted.");
+            System.err.println("The list of userId provided is empty or wrong formatted.");
         }
     }
 
