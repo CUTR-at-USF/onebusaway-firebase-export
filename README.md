@@ -31,7 +31,9 @@ By default it is 2 minutes. Example usage: `-walkingRunningMergeThreshold 1` mak
 analysis output files. If the folder does not exist, the application will try to create it. Example usage:
 -outputDir myOutputData will look for the myOutputData folder in the current working directory. If myOutputData folder 
   does not exist, it will be created.
-* `-skipKMZ` Does not export the output data in KMZ format. This option does not take a parameter.  
+* `-skipKMZ` Does not export the output data in KMZ format. This option does not take a parameter.
+* `-multiUserId <pathToCSVFile>` Takes a string as argument with the path to a CSV file containing a list of userId, 
+  one per row and performs the analysis for that specific list of users. Example usage: `-multiUserId "listOfUsers.csv"`.
 
 ## License
 
