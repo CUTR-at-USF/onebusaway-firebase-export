@@ -22,6 +22,11 @@ import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.StringUtils;
 import org.apache.commons.cli.*;
 
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ProcessorMain {
     public static void main(String[] args) {
         Options options = createCommandLineOptions();
@@ -114,6 +119,18 @@ public class ProcessorMain {
             // Verify and process file with multiple users
             if (cmd.hasOption(ProgramOptions.MULTI_USERS_PATH)) {
                 String argMultiUserPath = cmd.getOptionValue(ProgramOptions.MULTI_USERS_PATH);
+                // Validate if the argMultiUserPath exists, if not exists then return
+                try {
+                    Path localPath = Paths.get(argMultiUserPath);
+                    if (!Files.exists(localPath)) {
+                        System.err.println("The provided csv file for multiple userId's does not exist.");
+                        return;
+                    }
+                    programOptions.setMultiUserId(localPath.toString());
+                } catch (InvalidPathException e) {
+                    System.err.println("Invalid command line option. multiUserId is not a valid path." + e);
+                    return;
+                }
             }
 
         } catch (ParseException e) {
