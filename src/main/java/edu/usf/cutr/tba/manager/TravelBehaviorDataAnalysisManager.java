@@ -75,12 +75,12 @@ public class TravelBehaviorDataAnalysisManager {
         if (mProgramOptions.getMultiUserId() != null) {
             // analyze all data for a specific list of userIds
             analyzeListOfUserIdTravelBehaviorData(mProgramOptions.getMultiUserId());
-        } else if (mProgramOptions.getUserId() == null) {
-            // analyze all data and append the data in the csv file
-            analyzeAllTravelBehaviorData();
-        } else {
+        } else if (mProgramOptions.getUserId() != null) {
             // analyze specific user data
             processUserById(mProgramOptions.getUserId());
+        } else {
+            // analyze all data and append the data in the csv file
+            analyzeAllTravelBehaviorData();
         }
 
         //close the csv file
@@ -97,7 +97,7 @@ public class TravelBehaviorDataAnalysisManager {
                 processUserById(userId[0]);
             }
         } else {
-            System.err.println("The list of userId provided is empty or wrong formatted.");
+            System.err.println("The list of userId provided is empty or incorrectly formatted.");
         }
     }
 
