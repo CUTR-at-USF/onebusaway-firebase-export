@@ -9,6 +9,12 @@ import java.util.List;
 
 public class CSVFileReader {
 
+    /**
+     * Return a list of string arrays with the parsed data from a csv file. Each element in the list corresponds
+     * to a row in the csv.
+     * @param csvFilePath string with the path to the csv file.
+     * @return List of string arrays where the element at index 0 of each string array will be processed as a userId
+     */
     public List<String[]> readUserList(String csvFilePath) {
         // create parserSettings to be used in RowProcessor
         CsvParserSettings parserSettings = new CsvParserSettings();
