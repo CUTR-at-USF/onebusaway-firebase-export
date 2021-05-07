@@ -47,11 +47,16 @@ public class ProgramOptions {
     // Option to skip KMZ export
     public static final String SKIP_KMZ = "skipKMZ";
 
+    // Path to file with multiple IDs
+    public static final String MULTI_USERS_PATH = "multiUserId";
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
 
     private String mUserId;
+
+    private String mMultiUserId;
 
     private String mKeyFilePath;
 
@@ -170,6 +175,13 @@ public class ProgramOptions {
 
     public ProgramOptions setSkipKmz(boolean skipKmz) {
         this.mSkipKmz = skipKmz;
+        return this;
+    }
+
+    public String getMultiUserId() { return mMultiUserId; }
+
+    public ProgramOptions setMultiUserId( String multiUserId) {
+        this.mMultiUserId = multiUserId;
         return this;
     }
 

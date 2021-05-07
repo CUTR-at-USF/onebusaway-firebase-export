@@ -22,6 +22,11 @@ import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.StringUtils;
 import org.apache.commons.cli.*;
 
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ProcessorMain {
     public static void main(String[] args) {
         Options options = createCommandLineOptions();
@@ -111,6 +116,23 @@ public class ProcessorMain {
                 programOptions.setSkipKmz(true);
             }
 
+            // Verify and process file with multiple users
+            if (cmd.hasOption(ProgramOptions.MULTI_USERS_PATH)) {
+                String argMultiUserPath = cmd.getOptionValue(ProgramOptions.MULTI_USERS_PATH);
+                // Validate if the argMultiUserPath exists, if not exists then return
+                try {
+                    Path localPath = Paths.get(argMultiUserPath);
+                    if (!Files.exists(localPath)) {
+                        System.err.println("The provided csv file for multiple userId's does not exist.");
+                        return;
+                    }
+                    programOptions.setMultiUserId(localPath.toString());
+                } catch (InvalidPathException e) {
+                    System.err.println("Invalid command line option. multiUserId is not a valid path." + e);
+                    return;
+                }
+            }
+
         } catch (ParseException e) {
             System.err.println("Invalid command line options");
         }
@@ -140,6 +162,7 @@ public class ProcessorMain {
         options.addOption(ProgramOptions.END_DATE, true, "End date (mm-dd-yyyy) to filter data collection based on a date range.");
         options.addOption(ProgramOptions.SAVE_ON_PATH, true, "Path of directory to save output data on.");
         options.addOption(ProgramOptions.SKIP_KMZ, false, "No export data in KMZ format.");
+        options.addOption(ProgramOptions.MULTI_USERS_PATH, true, "Path to file including multiple user IDs.");
         return options;
     }
 }
