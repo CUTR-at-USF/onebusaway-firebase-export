@@ -18,6 +18,7 @@ package edu.usf.cutr.tba.manager;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.tba.constants.TravelBehaviorConstants;
 import edu.usf.cutr.tba.exception.FirebaseFileNotInitializedException;
+import edu.usf.cutr.tba.io.CSVFileReader;
 import edu.usf.cutr.tba.io.CSVFileWriter;
 import edu.usf.cutr.tba.io.FirebaseReader;
 import edu.usf.cutr.tba.io.KmlFileWriter;
@@ -43,6 +44,8 @@ public class TravelBehaviorDataAnalysisManager {
 
     private CSVFileWriter mCSVFileWriter;
 
+    private CSVFileReader mCSVFileReader;
+
     private KmlFileWriter mKmlFileWriter;
 
     private TravelBehaviorRecord mLastTravelBehaviorRecord;
@@ -58,6 +61,7 @@ public class TravelBehaviorDataAnalysisManager {
         mCSVFileWriter = new CSVFileWriter();
         mOneDayTravelBehaviorRecordList = new ArrayList<>();
         mProgramOptions = ProgramOptions.getInstance();
+        mCSVFileReader = new CSVFileReader();
 
         if (!mProgramOptions.skipKmz()) {
             mKmlFileWriter = new KmlFileWriter();
@@ -68,16 +72,33 @@ public class TravelBehaviorDataAnalysisManager {
         // create csv file and add the header
         mCSVFileWriter.createHeader(TravelBehaviorRecord.CSV_HEADER);
 
-        if (mProgramOptions.getUserId() == null) {
-            // analyze all data and append the data in the csv file
-            analyzeAllTravelBehaviorData();
-        } else {
+        if (mProgramOptions.getMultiUserId() != null) {
+            // analyze all data for a specific list of userIds
+            analyzeListOfUserIdTravelBehaviorData(mProgramOptions.getMultiUserId());
+        } else if (mProgramOptions.getUserId() != null) {
             // analyze specific user data
             processUserById(mProgramOptions.getUserId());
+        } else {
+            // analyze all data and append the data in the csv file
+            analyzeAllTravelBehaviorData();
         }
 
         //close the csv file
         mCSVFileWriter.closeWriter();
+    }
+
+    /**
+     * Retrieves a list of user ids in firebase and analyses each user's data one by one
+     */
+    private void analyzeListOfUserIdTravelBehaviorData(String pathToCSVFileListOfUserIds) {
+        List<String[]> allUserIds = mCSVFileReader.readUserList(pathToCSVFileListOfUserIds);
+        if (allUserIds.size() > 0) {
+            for(String[] userId : allUserIds){
+                processUserById(userId[0]);
+            }
+        } else {
+            System.err.println("The list of userId provided is empty or incorrectly formatted.");
+        }
     }
 
     /**
