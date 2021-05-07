@@ -93,10 +93,10 @@ public class TravelBehaviorDataAnalysisManager {
     private void analyzeListOfUserIdTravelBehaviorData(String pathToCSVFileListOfUserIds) {
         List<String[]> allUserIds = mCSVFileReader.readUserList(pathToCSVFileListOfUserIds);
         if (allUserIds.size() > 0) {
-            int userRecordNumber = 0;
+            int userRecordNumber = 1;
             for(String[] userId : allUserIds){
-                if (userRecordNumber % 1000 == 0) {
-                    System.out.println("Processing user " + userRecordNumber + 1 + " out of " + allUserIds.size());
+                if (userRecordNumber % ProgramOptions.mShowProgressInterval == 1) {
+                    System.out.println("Processing user record " + userRecordNumber + " out of " + allUserIds.size());
                 }
                 processUserById(userId[0]);
                 userRecordNumber++;
@@ -111,8 +111,13 @@ public class TravelBehaviorDataAnalysisManager {
      */
     private void analyzeAllTravelBehaviorData() {
         List<QueryDocumentSnapshot> allUserIds = mFirebaseReader.getAllUserIds();
+        int userRecordNumber = 1;
         for (QueryDocumentSnapshot doc : allUserIds) {
+            if (userRecordNumber % ProgramOptions.mShowProgressInterval == 1) {
+                System.out.println("Processing user record " + userRecordNumber + " out of " + allUserIds.size());
+            }
             processUserById(doc.getId());
+            userRecordNumber++;
         }
     }
 
