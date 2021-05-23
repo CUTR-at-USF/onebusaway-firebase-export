@@ -95,7 +95,7 @@ public class TravelBehaviorDataAnalysisManager {
         if (allUserIds.size() > 0) {
             int userRecordNumber = 1;
             for(String[] userId : allUserIds){
-                if (userRecordNumber % ProgramOptions.mShowProgressInterval == 1) {
+                if (userRecordNumber % ProgramOptions.SHOW_PROGRESS_INTERVAL == 1) {
                     System.out.println("Processing user record " + userRecordNumber + " out of " + allUserIds.size());
                 }
                 processUserById(userId[0]);
@@ -113,7 +113,7 @@ public class TravelBehaviorDataAnalysisManager {
         List<QueryDocumentSnapshot> allUserIds = mFirebaseReader.getAllUserIds();
         int userRecordNumber = 1;
         for (QueryDocumentSnapshot doc : allUserIds) {
-            if (userRecordNumber % ProgramOptions.mShowProgressInterval == 1) {
+            if (userRecordNumber % ProgramOptions.SHOW_PROGRESS_INTERVAL == 1) {
                 System.out.println("Processing user record " + userRecordNumber + " out of " + allUserIds.size());
             }
             processUserById(doc.getId());

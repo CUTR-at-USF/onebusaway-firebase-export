@@ -51,7 +51,7 @@ public class ProgramOptions {
     public static final String MULTI_USERS_PATH = "multiUserId";
 
     // When to show the number of processed user records (interval)
-    public static final int mShowProgressInterval = 1000;
+    public static final int SHOW_PROGRESS_INTERVAL = 1000;
 
     private boolean mIsMergeStillEventsEnabled = true;
 
