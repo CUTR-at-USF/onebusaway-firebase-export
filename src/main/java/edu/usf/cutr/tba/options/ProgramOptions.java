@@ -50,6 +50,9 @@ public class ProgramOptions {
     // Path to file with multiple IDs
     public static final String MULTI_USERS_PATH = "multiUserId";
 
+    // When to show the number of processed user records (interval)
+    public static final int SHOW_PROGRESS_INTERVAL = 1000;
+
     private boolean mIsMergeStillEventsEnabled = true;
 
     private boolean mIsMergeAllWalkingAndRunningEventsEnabled = true;
