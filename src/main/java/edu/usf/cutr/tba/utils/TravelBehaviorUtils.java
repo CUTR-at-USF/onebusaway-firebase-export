@@ -54,6 +54,7 @@ public class TravelBehaviorUtils {
     public static String getDateAndTimeFromMillis(Long millis) {
         Date date = new Date(millis);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        // Set time zone to GMT to obtain timestamp as UTC date
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         return sdf.format(date);
     }
