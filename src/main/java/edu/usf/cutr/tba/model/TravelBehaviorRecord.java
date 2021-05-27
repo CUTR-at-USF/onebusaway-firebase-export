@@ -17,6 +17,8 @@ package edu.usf.cutr.tba.model;
 
 import edu.usf.cutr.tba.utils.StringUtils;
 
+import java.util.List;
+
 public class TravelBehaviorRecord {
 
     public static final String[] CSV_HEADER = {"User ID",
@@ -47,7 +49,19 @@ public class TravelBehaviorRecord {
             "Tour Index",
             "Ignoring Battery Optimizations",
             "Talk Back Enabled",
-            "Power Save Mode Enabled"
+            "Power Save Mode Enabled",
+            "Origin latitude fused",
+            "Origin longitude fused",
+            "Origin latitude gps",
+            "Origin longitude gps",
+            "Origin latitude network",
+            "Origin longitude network",
+            "Destination latitude fused",
+            "Destination longitude fused",
+            "Destination latitude gps",
+            "Destination longitude gps",
+            "Destination latitude network",
+            "Destination longitude network"
     };
 
     private String mUserId;
@@ -80,6 +94,9 @@ public class TravelBehaviorRecord {
     private Boolean mIsIgnoringBatteryOptimizations;
     private Boolean mIsTalkBackEnabled;
     private Boolean mIsPowerSaveModeEnabled;
+
+    public List<TravelBehaviorInfo.LocationInfo> locationInfoListStart;
+    public List<TravelBehaviorInfo.LocationInfo> locationInfoListEnd;
 
     // Internal usage
     private Long mActivityStartTimeMillis;
