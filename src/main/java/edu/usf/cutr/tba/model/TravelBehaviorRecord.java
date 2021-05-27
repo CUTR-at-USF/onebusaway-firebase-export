@@ -391,6 +391,16 @@ public class TravelBehaviorRecord {
 
     public Boolean getIsPowerSaveModeEnabled() { return mIsPowerSaveModeEnabled; }
 
+    public TravelBehaviorInfo.LocationInfo getLocationInfo(List<TravelBehaviorInfo.LocationInfo> locationInfoList,
+                                                           String locationProvider) {
+        for (TravelBehaviorInfo.LocationInfo locationInfo : locationInfoList) {
+            if(locationProvider.equals(locationInfo.getProvider())) {
+                return locationInfo;
+            }
+        }
+        return null;
+    }
+
     public String[] toStringArray() {
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
                 mActivityStartDateAndTime, mOriginLocationDateAndTime, StringUtils.valueOf(mActivityStartOriginTimeDiff),
@@ -399,6 +409,8 @@ public class TravelBehaviorRecord {
                 StringUtils.valueOf(mEndLat), StringUtils.valueOf(mEndLon), StringUtils.valueOf(mDestinationHorAccuracy), mDestinationProvider,
                 StringUtils.valueOf(mActivityDuration), StringUtils.valueOf(mOriginDestinationDistance), StringUtils.valueOf(mChainId),
                 StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex),
-                StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled), StringUtils.valueOf(mIsPowerSaveModeEnabled)};
+                StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled),
+                StringUtils.valueOf(mIsPowerSaveModeEnabled),
+                (getLocationInfo(locationInfoListStart, "fused") == null) ? "" :  StringUtils.valueOf(getLocationInfo(locationInfoListStart, "fused").getLat())};
     }
 }
