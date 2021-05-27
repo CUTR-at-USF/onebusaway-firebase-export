@@ -482,4 +482,26 @@ public class TravelBehaviorUtilsTest {
         userDevInfoById.clear();
         assertNull(TravelBehaviorUtils.getClosestDeviceInfo(userDevInfoById, actEndTime));
     }
+
+    /**
+     * Given a time stamp in milliseconds, verify that the function
+     * getDateAndTimeFromMillis return a UTC date formatted in the format
+     * "yyyy-MM-dd'T'HH:mm:ss'Z'"
+     */
+    @Test
+    public  void testGetDateAndTimeFromMillis() {
+        // UTC time: Friday, August 9, 2019 8:29:42.198 PM
+        long testDate1 = 1565382582198L;
+        // UTC time: Friday, August 9, 2019 11:49:42.198 PM
+        long testDate2 = 1565394582198L;
+        // UTC time: Saturday, August 10, 2019 7:09:52.198 AM
+        long testDate3 = 1565420992198L;
+        // UTC time: Sunday, August 11, 2019 3:36:22.198 AM
+        long testDate4 = 1565494582198L;
+
+        assertEquals("2019-08-09T20:29:42Z", TravelBehaviorUtils.getDateAndTimeFromMillis(testDate1));
+        assertEquals("2019-08-09T23:49:42Z", TravelBehaviorUtils.getDateAndTimeFromMillis(testDate2));
+        assertEquals("2019-08-10T07:09:52Z", TravelBehaviorUtils.getDateAndTimeFromMillis(testDate3));
+        assertEquals("2019-08-11T03:36:22Z", TravelBehaviorUtils.getDateAndTimeFromMillis(testDate4));
+    }
 }
