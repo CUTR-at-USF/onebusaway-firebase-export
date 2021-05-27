@@ -233,6 +233,8 @@ public class TravelBehaviorDataAnalysisManager {
                     setOriginLocationDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(bestLocation.time)).
                     setOriginHorAccuracy(bestLocation.accuracy).setOriginProvider(bestLocation.provider).
                     setLocationStartTimeMillis(bestLocation.time);
+            // Add locationInfoList to the start of the tbr
+            tbr.locationInfoListStart = tbi.locationInfoList;
         }
 
         if (tbr.getActivityStartTimeMillis() != null && tbr.getLocationStartTimeMillis() != null) {
@@ -267,6 +269,8 @@ public class TravelBehaviorDataAnalysisManager {
                     setDestinationLocationDateAndTime(TravelBehaviorUtils.getDateAndTimeFromMillis(bestLocation.time)).
                     setDestinationHorAccuracy(bestLocation.accuracy).setDestinationProvider(bestLocation.provider).
                     setLocationEndTimeMillis(bestLocation.time);
+            // Add locationInfoList to the end of the lastTravelBehaviorRecord
+            mLastTravelBehaviorRecord.locationInfoListEnd = tbi.locationInfoList;
         }
 
         if (mLastTravelBehaviorRecord.getActivityEndTimeMillis() != null &&
