@@ -19,6 +19,8 @@ import edu.usf.cutr.tba.utils.StringUtils;
 
 import java.util.List;
 
+import static edu.usf.cutr.tba.utils.TravelBehaviorUtils.getLocationInfo;
+
 public class TravelBehaviorRecord {
 
     public static final String[] CSV_HEADER = {"User ID",
@@ -95,8 +97,8 @@ public class TravelBehaviorRecord {
     private Boolean mIsTalkBackEnabled;
     private Boolean mIsPowerSaveModeEnabled;
 
-    public List<TravelBehaviorInfo.LocationInfo> locationInfoListStart;
-    public List<TravelBehaviorInfo.LocationInfo> locationInfoListEnd;
+    public List<TravelBehaviorInfo.LocationInfo> locationInfoListStart = null;
+    public List<TravelBehaviorInfo.LocationInfo> locationInfoListEnd = null;
 
     // Internal usage
     private Long mActivityStartTimeMillis;
@@ -391,17 +393,14 @@ public class TravelBehaviorRecord {
 
     public Boolean getIsPowerSaveModeEnabled() { return mIsPowerSaveModeEnabled; }
 
-    public TravelBehaviorInfo.LocationInfo getLocationInfo(List<TravelBehaviorInfo.LocationInfo> locationInfoList,
-                                                           String locationProvider) {
-        for (TravelBehaviorInfo.LocationInfo locationInfo : locationInfoList) {
-            if(locationProvider.equals(locationInfo.getProvider())) {
-                return locationInfo;
-            }
-        }
-        return null;
-    }
 
     public String[] toStringArray() {
+        TravelBehaviorInfo.LocationInfo locationStartFused = getLocationInfo(locationInfoListStart, "fused");
+        TravelBehaviorInfo.LocationInfo locationStartGps = getLocationInfo(locationInfoListStart, "gps");
+        TravelBehaviorInfo.LocationInfo locationStartNetwork = getLocationInfo(locationInfoListStart, "network");
+        TravelBehaviorInfo.LocationInfo locationEndFused = getLocationInfo(locationInfoListEnd, "fused");
+        TravelBehaviorInfo.LocationInfo locationEndGps = getLocationInfo(locationInfoListEnd, "gps");
+        TravelBehaviorInfo.LocationInfo locationEndNetwork = getLocationInfo(locationInfoListEnd, "network");
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
                 mActivityStartDateAndTime, mOriginLocationDateAndTime, StringUtils.valueOf(mActivityStartOriginTimeDiff),
                 StringUtils.valueOf(mStartLat), StringUtils.valueOf(mStartLon), StringUtils.valueOf(mOriginHorAccuracy), mOriginProvider,
@@ -411,6 +410,17 @@ public class TravelBehaviorRecord {
                 StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex),
                 StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled),
                 StringUtils.valueOf(mIsPowerSaveModeEnabled),
-                (getLocationInfo(locationInfoListStart, "fused") == null) ? "" :  StringUtils.valueOf(getLocationInfo(locationInfoListStart, "fused").getLat())};
+                (locationStartFused == null) ? "" :  StringUtils.valueOf(locationStartFused.getLat()),
+                (locationStartFused == null) ? "" :  StringUtils.valueOf(locationStartFused.getLon()),
+                (locationStartGps == null) ? "" :  StringUtils.valueOf(locationStartGps.getLat()),
+                (locationStartGps == null) ? "" :  StringUtils.valueOf(locationStartGps.getLon()),
+                (locationStartNetwork == null) ? "" :  StringUtils.valueOf(locationStartNetwork.getLat()),
+                (locationStartNetwork == null) ? "" :  StringUtils.valueOf(locationStartNetwork.getLon()),
+                (locationEndFused == null) ? "" :  StringUtils.valueOf(locationEndFused.getLat()),
+                (locationEndFused == null) ? "" :  StringUtils.valueOf(locationEndFused.getLon()),
+                (locationEndGps == null) ? "" :  StringUtils.valueOf(locationEndGps.getLat()),
+                (locationEndGps == null) ? "" :  StringUtils.valueOf(locationEndGps.getLon()),
+                (locationEndNetwork == null) ? "" :  StringUtils.valueOf(locationEndNetwork.getLat()),
+                (locationEndNetwork == null) ? "" :  StringUtils.valueOf(locationEndNetwork.getLon())};
     }
 }
