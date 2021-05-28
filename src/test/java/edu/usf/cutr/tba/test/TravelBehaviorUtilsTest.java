@@ -2,6 +2,7 @@ package edu.usf.cutr.tba.test;
 
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import edu.usf.cutr.tba.model.DeviceInformation;
+import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
 import org.junit.Test;
@@ -503,5 +504,52 @@ public class TravelBehaviorUtilsTest {
         assertEquals("2019-08-09T23:49:42Z", TravelBehaviorUtils.getDateAndTimeFromMillis(testDate2));
         assertEquals("2019-08-10T07:09:52Z", TravelBehaviorUtils.getDateAndTimeFromMillis(testDate3));
         assertEquals("2019-08-11T03:36:22Z", TravelBehaviorUtils.getDateAndTimeFromMillis(testDate4));
+    }
+
+    /**
+     * Given different list of LocationInfo object, verify that the getLocationInfo
+     * return the objects that match the location provider or the null object if not match
+     * if found
+     */
+    @Test
+    public void testGetLocationInfo() {
+        List<TravelBehaviorInfo.LocationInfo> locationInfoEmptyList = null;
+        List<TravelBehaviorInfo.LocationInfo> locationInfoFullList = null;
+        List<TravelBehaviorInfo.LocationInfo> locationInfoPartialList = null;
+
+        TravelBehaviorInfo.LocationInfo locationInfoFused = new TravelBehaviorInfo.LocationInfo();
+        locationInfoFused.provider = "fused";
+        locationInfoFused.lat = 37.5540478;
+        locationInfoFused.lon = -122.2586887;
+        TravelBehaviorInfo.LocationInfo locationInfoGps = new TravelBehaviorInfo.LocationInfo();
+        locationInfoGps.provider = "gps";
+        locationInfoGps.lat = 37.55404742;
+        locationInfoGps.lon = -122.2586892;
+        TravelBehaviorInfo.LocationInfo locationInfoNetwork = new TravelBehaviorInfo.LocationInfo();
+        locationInfoNetwork.provider = "network";
+        locationInfoNetwork.lat = 37.5540953;
+        locationInfoNetwork.lon = -122.2587029;
+
+        // If the list is null, the function must return null
+        assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoEmptyList, "fused"));
+
+        // Create a full list and verify the proper returned values for provider and lat-lon
+        locationInfoFullList = new ArrayList<>();
+        locationInfoFullList.add(locationInfoFused);
+        locationInfoFullList.add(locationInfoGps);
+        locationInfoFullList.add(locationInfoNetwork);
+        assertEquals(locationInfoFused, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, "fused"));
+        assertEquals(locationInfoGps, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, "gps"));
+        assertEquals(locationInfoNetwork, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, "network"));
+
+        // Create a partial list and verify the proper returned values for provider and lat-lon
+        locationInfoPartialList = new ArrayList<>();
+        locationInfoPartialList.add(locationInfoFused);
+        locationInfoPartialList.add(locationInfoNetwork);
+        // Check for an available provider in the partial list
+        assertEquals(locationInfoFused, TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, "fused"));
+        // Check for an non available provider in the partial list
+        assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, "gps"));
+        assertEquals(locationInfoNetwork, TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, "network"));
     }
 }
