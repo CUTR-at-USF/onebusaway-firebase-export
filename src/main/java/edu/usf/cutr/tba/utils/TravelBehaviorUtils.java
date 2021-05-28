@@ -266,4 +266,30 @@ public class TravelBehaviorUtils {
         }
         return activityStartTime;
     }
+
+    /**
+     * Perform a linear search over the LocationInfo List and return the
+     * the LocationInfo object whose provider matches the locationProvider parameter.
+     * @param locationInfoList List of LocationInfo Objects
+     * @param locationProvider A location provider like "fused", "gps" or "network"
+     * @return A locationInfo object or null if a match provider is not found.
+     */
+    public static TravelBehaviorInfo.LocationInfo getLocationInfo(List<TravelBehaviorInfo.LocationInfo> locationInfoList,
+                                                           String locationProvider) {
+        try{
+            if (locationInfoList == null) {
+                return null;
+            }
+            for (TravelBehaviorInfo.LocationInfo locationInfo : locationInfoList) {
+                if(locationProvider.equals(locationInfo.getProvider())) {
+                    return locationInfo;
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            System.err.println("Error while looking for a locationInfo object." + e);
+            return null;
+        }
+
+    }
 }
