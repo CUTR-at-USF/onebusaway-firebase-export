@@ -507,9 +507,9 @@ public class TravelBehaviorUtilsTest {
     }
 
     /**
-     * Given different list of LocationInfo object, verify that the getLocationInfo
-     * return the objects that match the location provider or the null object if not match
-     * if found
+     * Given different list of LocationInfo objects, verify that the getLocationInfo method
+     * return an objects that matches the location provider or the null object if not match
+     * provider is found.
      */
     @Test
     public void testGetLocationInfo() {
