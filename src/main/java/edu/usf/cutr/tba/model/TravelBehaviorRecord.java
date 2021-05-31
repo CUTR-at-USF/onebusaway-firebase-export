@@ -73,6 +73,10 @@ public class TravelBehaviorRecord {
             "Destination longitude network"
     };
 
+    public static final String FUSED = "fused";
+    public static final String GPS = "gps";
+    public static final String NETWORK = "network";
+
     private String mUserId;
     private String mTripId;
     private String mRegionId;
@@ -402,12 +406,12 @@ public class TravelBehaviorRecord {
 
 
     public String[] toStringArray() {
-        TravelBehaviorInfo.LocationInfo locationStartFused = getLocationInfo(locationInfoListOrigin, "fused");
-        TravelBehaviorInfo.LocationInfo locationStartGps = getLocationInfo(locationInfoListOrigin, "gps");
-        TravelBehaviorInfo.LocationInfo locationStartNetwork = getLocationInfo(locationInfoListOrigin, "network");
-        TravelBehaviorInfo.LocationInfo locationEndFused = getLocationInfo(locationInfoListDestination, "fused");
-        TravelBehaviorInfo.LocationInfo locationEndGps = getLocationInfo(locationInfoListDestination, "gps");
-        TravelBehaviorInfo.LocationInfo locationEndNetwork = getLocationInfo(locationInfoListDestination, "network");
+        TravelBehaviorInfo.LocationInfo locationStartFused = getLocationInfo(locationInfoListOrigin, FUSED);
+        TravelBehaviorInfo.LocationInfo locationStartGps = getLocationInfo(locationInfoListOrigin, GPS);
+        TravelBehaviorInfo.LocationInfo locationStartNetwork = getLocationInfo(locationInfoListOrigin, NETWORK);
+        TravelBehaviorInfo.LocationInfo locationEndFused = getLocationInfo(locationInfoListDestination, FUSED);
+        TravelBehaviorInfo.LocationInfo locationEndGps = getLocationInfo(locationInfoListDestination, GPS);
+        TravelBehaviorInfo.LocationInfo locationEndNetwork = getLocationInfo(locationInfoListDestination, NETWORK);
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
                 mActivityStartDateAndTime, mOriginLocationDateAndTime, StringUtils.valueOf(mActivityStartOriginTimeDiff),
                 StringUtils.valueOf(mStartLat), StringUtils.valueOf(mStartLon), StringUtils.valueOf(mOriginHorAccuracy), mOriginProvider,
