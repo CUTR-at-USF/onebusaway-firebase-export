@@ -551,5 +551,7 @@ public class TravelBehaviorUtilsTest {
         // Check for an unavailable provider in the partial list
         assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, TravelBehaviorRecord.GPS));
         assertEquals(network, TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, TravelBehaviorRecord.NETWORK));
+        // Check for null provider as argument
+        assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, null));
     }
 }
