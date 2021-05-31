@@ -517,39 +517,39 @@ public class TravelBehaviorUtilsTest {
         List<TravelBehaviorInfo.LocationInfo> locationInfoFullList = null;
         List<TravelBehaviorInfo.LocationInfo> locationInfoPartialList = null;
 
-        TravelBehaviorInfo.LocationInfo locationInfoFused = new TravelBehaviorInfo.LocationInfo();
-        locationInfoFused.provider = "fused";
-        locationInfoFused.lat = 37.5540478;
-        locationInfoFused.lon = -122.2586887;
-        TravelBehaviorInfo.LocationInfo locationInfoGps = new TravelBehaviorInfo.LocationInfo();
-        locationInfoGps.provider = "gps";
-        locationInfoGps.lat = 37.55404742;
-        locationInfoGps.lon = -122.2586892;
-        TravelBehaviorInfo.LocationInfo locationInfoNetwork = new TravelBehaviorInfo.LocationInfo();
-        locationInfoNetwork.provider = "network";
-        locationInfoNetwork.lat = 37.5540953;
-        locationInfoNetwork.lon = -122.2587029;
+        TravelBehaviorInfo.LocationInfo fused = new TravelBehaviorInfo.LocationInfo();
+        fused.provider = "fused";
+        fused.lat = 37.5540478;
+        fused.lon = -122.2586887;
+        TravelBehaviorInfo.LocationInfo gps = new TravelBehaviorInfo.LocationInfo();
+        gps.provider = "gps";
+        gps.lat = 37.55404742;
+        gps.lon = -122.2586892;
+        TravelBehaviorInfo.LocationInfo network = new TravelBehaviorInfo.LocationInfo();
+        network.provider = "network";
+        network.lat = 37.5540953;
+        network.lon = -122.2587029;
 
         // If the list is null, the function must return null
-        assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoEmptyList, "fused"));
+        assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoEmptyList, TravelBehaviorRecord.FUSED));
 
         // Create a full list and verify the proper returned values for provider and lat-lon
         locationInfoFullList = new ArrayList<>();
-        locationInfoFullList.add(locationInfoFused);
-        locationInfoFullList.add(locationInfoGps);
-        locationInfoFullList.add(locationInfoNetwork);
-        assertEquals(locationInfoFused, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, "fused"));
-        assertEquals(locationInfoGps, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, "gps"));
-        assertEquals(locationInfoNetwork, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, "network"));
+        locationInfoFullList.add(fused);
+        locationInfoFullList.add(gps);
+        locationInfoFullList.add(network);
+        assertEquals(fused, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, TravelBehaviorRecord.FUSED));
+        assertEquals(gps, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, TravelBehaviorRecord.GPS));
+        assertEquals(network, TravelBehaviorUtils.getLocationInfo(locationInfoFullList, TravelBehaviorRecord.NETWORK));
 
         // Create a partial list and verify the proper returned values for provider and lat-lon
         locationInfoPartialList = new ArrayList<>();
-        locationInfoPartialList.add(locationInfoFused);
-        locationInfoPartialList.add(locationInfoNetwork);
+        locationInfoPartialList.add(fused);
+        locationInfoPartialList.add(network);
         // Check for an available provider in the partial list
-        assertEquals(locationInfoFused, TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, "fused"));
-        // Check for an non available provider in the partial list
-        assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, "gps"));
-        assertEquals(locationInfoNetwork, TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, "network"));
+        assertEquals(fused, TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, TravelBehaviorRecord.FUSED));
+        // Check for an unavailable provider in the partial list
+        assertNull(TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, TravelBehaviorRecord.GPS));
+        assertEquals(network, TravelBehaviorUtils.getLocationInfo(locationInfoPartialList, TravelBehaviorRecord.NETWORK));
     }
 }
