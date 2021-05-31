@@ -276,20 +276,16 @@ public class TravelBehaviorUtils {
      */
     public static TravelBehaviorInfo.LocationInfo getLocationInfo(List<TravelBehaviorInfo.LocationInfo> locationInfoList,
                                                            String locationProvider) {
-        try{
-            if (locationInfoList == null) {
-                return null;
-            }
-            for (TravelBehaviorInfo.LocationInfo locationInfo : locationInfoList) {
-                if(locationProvider.equals(locationInfo.getProvider())) {
-                    return locationInfo;
-                }
-            }
-            return null;
-        } catch (Exception e) {
-            System.err.println("Error while looking for a locationInfo object." + e);
+
+        if (locationInfoList == null || locationProvider == null) {
             return null;
         }
+        for (TravelBehaviorInfo.LocationInfo locationInfo : locationInfoList) {
+            if (locationProvider.equals(locationInfo.getProvider())) {
+                return locationInfo;
+            }
+        }
+        return null;
 
     }
 }
