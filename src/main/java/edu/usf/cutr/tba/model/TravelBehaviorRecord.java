@@ -412,12 +412,12 @@ public class TravelBehaviorRecord {
 
 
     public String[] toStringArray() {
-        TravelBehaviorInfo.LocationInfo locationStartFused = getLocationInfo(locationInfoListOrigin, FUSED);
-        TravelBehaviorInfo.LocationInfo locationStartGps = getLocationInfo(locationInfoListOrigin, GPS);
-        TravelBehaviorInfo.LocationInfo locationStartNetwork = getLocationInfo(locationInfoListOrigin, NETWORK);
-        TravelBehaviorInfo.LocationInfo locationEndFused = getLocationInfo(locationInfoListDestination, FUSED);
-        TravelBehaviorInfo.LocationInfo locationEndGps = getLocationInfo(locationInfoListDestination, GPS);
-        TravelBehaviorInfo.LocationInfo locationEndNetwork = getLocationInfo(locationInfoListDestination, NETWORK);
+        TravelBehaviorInfo.LocationInfo originFused = getLocationInfo(locationInfoListOrigin, FUSED);
+        TravelBehaviorInfo.LocationInfo originGps = getLocationInfo(locationInfoListOrigin, GPS);
+        TravelBehaviorInfo.LocationInfo originNetwork = getLocationInfo(locationInfoListOrigin, NETWORK);
+        TravelBehaviorInfo.LocationInfo destinationFused = getLocationInfo(locationInfoListDestination, FUSED);
+        TravelBehaviorInfo.LocationInfo destinationGps = getLocationInfo(locationInfoListDestination, GPS);
+        TravelBehaviorInfo.LocationInfo destinationNetwork = getLocationInfo(locationInfoListDestination, NETWORK);
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
                 mActivityStartDateAndTime, mOriginLocationDateAndTime, StringUtils.valueOf(mActivityStartOriginTimeDiff),
                 StringUtils.valueOf(mStartLat), StringUtils.valueOf(mStartLon), StringUtils.valueOf(mOriginHorAccuracy), mOriginProvider,
@@ -427,29 +427,29 @@ public class TravelBehaviorRecord {
                 StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex),
                 StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled),
                 StringUtils.valueOf(mIsPowerSaveModeEnabled),
-                (locationStartFused == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(locationStartFused.getTime()),
-                (locationStartFused == null) ? "" :  StringUtils.valueOf(locationStartFused.getLat()),
-                (locationStartFused == null) ? "" :  StringUtils.valueOf(locationStartFused.getLon()),
-                (locationStartFused == null) ? "" :  StringUtils.valueOf(locationStartFused.getAccuracy()),
-                (locationStartGps == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(locationStartGps.getTime()),
-                (locationStartGps == null) ? "" :  StringUtils.valueOf(locationStartGps.getLat()),
-                (locationStartGps == null) ? "" :  StringUtils.valueOf(locationStartGps.getLon()),
-                (locationStartGps == null) ? "" :  StringUtils.valueOf(locationStartGps.getAccuracy()),
-                (locationStartNetwork == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(locationStartNetwork.getTime()),
-                (locationStartNetwork == null) ? "" :  StringUtils.valueOf(locationStartNetwork.getLat()),
-                (locationStartNetwork == null) ? "" :  StringUtils.valueOf(locationStartNetwork.getLon()),
-                (locationStartNetwork == null) ? "" :  StringUtils.valueOf(locationStartNetwork.getAccuracy()),
-                (locationEndFused == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(locationEndFused.getTime()),
-                (locationEndFused == null) ? "" :  StringUtils.valueOf(locationEndFused.getLat()),
-                (locationEndFused == null) ? "" :  StringUtils.valueOf(locationEndFused.getLon()),
-                (locationEndFused == null) ? "" :  StringUtils.valueOf(locationEndFused.getAccuracy()),
-                (locationEndGps == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(locationEndGps.getTime()),
-                (locationEndGps == null) ? "" :  StringUtils.valueOf(locationEndGps.getLat()),
-                (locationEndGps == null) ? "" :  StringUtils.valueOf(locationEndGps.getLon()),
-                (locationEndGps == null) ? "" :  StringUtils.valueOf(locationEndGps.getAccuracy()),
-                (locationEndNetwork == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(locationEndNetwork.getTime()),
-                (locationEndNetwork == null) ? "" :  StringUtils.valueOf(locationEndNetwork.getLat()),
-                (locationEndNetwork == null) ? "" :  StringUtils.valueOf(locationEndNetwork.getLon()),
-                (locationEndNetwork == null) ? "" :  StringUtils.valueOf(locationEndNetwork.getAccuracy())};
+                (originFused == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(originFused.getTime()),
+                (originFused == null) ? "" :  StringUtils.valueOf(originFused.getLat()),
+                (originFused == null) ? "" :  StringUtils.valueOf(originFused.getLon()),
+                (originFused == null) ? "" :  StringUtils.valueOf(originFused.getAccuracy()),
+                (originGps == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(originGps.getTime()),
+                (originGps == null) ? "" :  StringUtils.valueOf(originGps.getLat()),
+                (originGps == null) ? "" :  StringUtils.valueOf(originGps.getLon()),
+                (originGps == null) ? "" :  StringUtils.valueOf(originGps.getAccuracy()),
+                (originNetwork == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(originNetwork.getTime()),
+                (originNetwork == null) ? "" :  StringUtils.valueOf(originNetwork.getLat()),
+                (originNetwork == null) ? "" :  StringUtils.valueOf(originNetwork.getLon()),
+                (originNetwork == null) ? "" :  StringUtils.valueOf(originNetwork.getAccuracy()),
+                (destinationFused == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(destinationFused.getTime()),
+                (destinationFused == null) ? "" :  StringUtils.valueOf(destinationFused.getLat()),
+                (destinationFused == null) ? "" :  StringUtils.valueOf(destinationFused.getLon()),
+                (destinationFused == null) ? "" :  StringUtils.valueOf(destinationFused.getAccuracy()),
+                (destinationGps == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(destinationGps.getTime()),
+                (destinationGps == null) ? "" :  StringUtils.valueOf(destinationGps.getLat()),
+                (destinationGps == null) ? "" :  StringUtils.valueOf(destinationGps.getLon()),
+                (destinationGps == null) ? "" :  StringUtils.valueOf(destinationGps.getAccuracy()),
+                (destinationNetwork == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(destinationNetwork.getTime()),
+                (destinationNetwork == null) ? "" :  StringUtils.valueOf(destinationNetwork.getLat()),
+                (destinationNetwork == null) ? "" :  StringUtils.valueOf(destinationNetwork.getLon()),
+                (destinationNetwork == null) ? "" :  StringUtils.valueOf(destinationNetwork.getAccuracy())};
     }
 }
