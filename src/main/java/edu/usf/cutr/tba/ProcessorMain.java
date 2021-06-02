@@ -101,7 +101,7 @@ public class ProcessorMain {
             if (cmd.hasOption(ProgramOptions.SAVE_ON_PATH)) {
                 String argDir = cmd.getOptionValue(ProgramOptions.SAVE_ON_PATH);
                 // Validate if the argDir is a valid path, if not exists then try to create it
-                String newDir = StringUtils.validateAndParseOutputPath(argDir);
+                String newDir = StringUtils.validateAndParseOutputPath(argDir, null);
 
                 if (!newDir.isEmpty()) {
                     programOptions.setOutputDir(newDir);
