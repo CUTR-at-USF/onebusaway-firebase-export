@@ -77,15 +77,15 @@ public class StringUtilsTest {
             Path newFolderPath = Paths.get(createdFolder.getParent(), "newFolder", "newSubFolder");
 
             // test for an existent folder
-            assertEquals(existentFolder, StringUtils.validateAndParseOutputPath(existentFolder));
+            assertEquals(existentFolder, StringUtils.validateAndParseOutputPath(existentFolder, null));
 
             // test for a non existent folder, the new folder must be created.
-            assertEquals(newFolderPath.toString(), StringUtils.validateAndParseOutputPath(newFolderPath.toString()));
+            assertEquals(newFolderPath.toString(), StringUtils.validateAndParseOutputPath(newFolderPath.toString(), null));
             assertTrue(Files.exists(newFolderPath));
 
             // Test for an invalid path
             String invalidPath = createdFolder.getParent() + "/\0/";
-            assertEquals("", StringUtils.validateAndParseOutputPath(invalidPath));
+            assertEquals("", StringUtils.validateAndParseOutputPath(invalidPath, null));
 
         } catch (Exception e){
             System.out.println("Exception while testing testValidateAndParseOutputPath: " + e);
