@@ -61,9 +61,15 @@ public class StringUtils {
      * @return String of a valid path or "" if the path is invalid or if its not possible to
      * be created.
      */
-    public static String validateAndParseOutputPath(String newPath) {
+    public static String validateAndParseOutputPath(String newPath, String subFolder) {
         try {
-            Path localPath = Paths.get(newPath);
+            Path localPath;
+            if (subFolder == null) {
+                localPath = Paths.get(newPath);
+            } else {
+                localPath = Paths.get(newPath, subFolder);
+            }
+
             if (Files.exists(localPath)) {
                 return localPath.toString();
             } else {
