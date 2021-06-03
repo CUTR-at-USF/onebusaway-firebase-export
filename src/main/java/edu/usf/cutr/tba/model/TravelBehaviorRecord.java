@@ -56,7 +56,7 @@ public class TravelBehaviorRecord {
             "Origin fused Date and Time (UTC)",
             "Origin fused latitude",
             "Origin fused longitude",
-            "Origin fused Horizontal Accuracy",
+            "Origin fused Horizontal Accuracy (meters)",
             "Origin gps Date and Time (UTC)",
             "Origin gps latitude",
             "Origin gps longitude",
