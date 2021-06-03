@@ -16,6 +16,11 @@
 package edu.usf.cutr.tba.model;
 
 import edu.usf.cutr.tba.utils.StringUtils;
+import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
+
+import java.util.List;
+
+import static edu.usf.cutr.tba.utils.TravelBehaviorUtils.getLocationInfo;
 
 public class TravelBehaviorRecord {
 
@@ -25,30 +30,58 @@ public class TravelBehaviorRecord {
             "Google Activity",
             "Google Activity Confidence",
             "Vehicle type",
-            "Activity Start Date and Time (UTC)",
-            "Origin location Date and Time (UTC)",
-            "Activity Start/Origin Time Diff (minutes)",
-            "Origin latitude",
-            "Origin longitude",
-            "Origin Horizontal Accuracy",
-            "Origin Location Provider",
-            "Activity Destination Date and Time (UTC)",
-            "Destination Location Date and Time (UTC)",
-            "Activity End/Destination Time Diff (minutes)",
-            "Destination latitude",
-            "Destination longitude",
-            "Destination Horizontal Accuracy",
-            "Destination Location Provider",
-            "Duration (minutes)",
-            "Origin-Destination Bird-Eye Distance (meters)",
+            "Activity Start Date and Time* (UTC)",
+            "Origin location Date and Time (*best) (UTC)",
+            "Activity Start/Origin Time Diff* (minutes)",
+            "Origin latitude (*best)",
+            "Origin longitude (*best)",
+            "Origin Horizontal Accuracy (meters) (*best)",
+            "Origin Location Provider (*best)",
+            "Activity Destination Date and Time* (UTC)",
+            "Destination Location Date and Time (*best) (UTC)",
+            "Activity End/Destination Time Diff* (minutes)",
+            "Destination latitude (*best)",
+            "Destination longitude (*best)",
+            "Destination Horizontal Accuracy (meters) (*best)",
+            "Destination Location Provider (*best)",
+            "Duration* (minutes)",
+            "Origin-Destination Bird-Eye Distance* (meters)",
             "Chain ID",
             "Chain Index",
             "Tour ID",
             "Tour Index",
             "Ignoring Battery Optimizations",
             "Talk Back Enabled",
-            "Power Save Mode Enabled"
+            "Power Save Mode Enabled",
+            "Origin fused Date and Time (UTC)",
+            "Origin fused latitude",
+            "Origin fused longitude",
+            "Origin fused Horizontal Accuracy (meters)",
+            "Origin gps Date and Time (UTC)",
+            "Origin gps latitude",
+            "Origin gps longitude",
+            "Origin gps Horizontal Accuracy (meters)",
+            "Origin network Date and Time (UTC)",
+            "Origin network latitude",
+            "Origin network longitude",
+            "Origin network Horizontal Accuracy (meters)",
+            "Destination fused Date and Time (UTC)",
+            "Destination fused latitude",
+            "Destination fused longitude",
+            "Destination fused Horizontal Accuracy (meters)",
+            "Destination gps Date and Time (UTC)",
+            "Destination gps latitude",
+            "Destination gps longitude",
+            "Destination gps Horizontal Accuracy (meters)",
+            "Destination network Date and Time (UTC)",
+            "Destination network latitude",
+            "Destination network longitude",
+            "Destination network Horizontal Accuracy (meters)"
     };
+
+    public static final String FUSED = "fused";
+    public static final String GPS = "gps";
+    public static final String NETWORK = "network";
 
     private String mUserId;
     private String mTripId;
@@ -80,6 +113,9 @@ public class TravelBehaviorRecord {
     private Boolean mIsIgnoringBatteryOptimizations;
     private Boolean mIsTalkBackEnabled;
     private Boolean mIsPowerSaveModeEnabled;
+
+    public List<TravelBehaviorInfo.LocationInfo> locationInfoListOrigin = null;
+    public List<TravelBehaviorInfo.LocationInfo> locationInfoListDestination = null;
 
     // Internal usage
     private Long mActivityStartTimeMillis;
@@ -374,7 +410,14 @@ public class TravelBehaviorRecord {
 
     public Boolean getIsPowerSaveModeEnabled() { return mIsPowerSaveModeEnabled; }
 
+
     public String[] toStringArray() {
+        TravelBehaviorInfo.LocationInfo originFused = getLocationInfo(locationInfoListOrigin, FUSED);
+        TravelBehaviorInfo.LocationInfo originGps = getLocationInfo(locationInfoListOrigin, GPS);
+        TravelBehaviorInfo.LocationInfo originNetwork = getLocationInfo(locationInfoListOrigin, NETWORK);
+        TravelBehaviorInfo.LocationInfo destinationFused = getLocationInfo(locationInfoListDestination, FUSED);
+        TravelBehaviorInfo.LocationInfo destinationGps = getLocationInfo(locationInfoListDestination, GPS);
+        TravelBehaviorInfo.LocationInfo destinationNetwork = getLocationInfo(locationInfoListDestination, NETWORK);
         return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
                 mActivityStartDateAndTime, mOriginLocationDateAndTime, StringUtils.valueOf(mActivityStartOriginTimeDiff),
                 StringUtils.valueOf(mStartLat), StringUtils.valueOf(mStartLon), StringUtils.valueOf(mOriginHorAccuracy), mOriginProvider,
@@ -382,6 +425,31 @@ public class TravelBehaviorRecord {
                 StringUtils.valueOf(mEndLat), StringUtils.valueOf(mEndLon), StringUtils.valueOf(mDestinationHorAccuracy), mDestinationProvider,
                 StringUtils.valueOf(mActivityDuration), StringUtils.valueOf(mOriginDestinationDistance), StringUtils.valueOf(mChainId),
                 StringUtils.valueOf(mChainIndex), StringUtils.valueOf(mTourId), StringUtils.valueOf(mTourIndex),
-                StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled), StringUtils.valueOf(mIsPowerSaveModeEnabled)};
+                StringUtils.valueOf(mIsIgnoringBatteryOptimizations), StringUtils.valueOf(mIsTalkBackEnabled),
+                StringUtils.valueOf(mIsPowerSaveModeEnabled),
+                (originFused == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(originFused.getTime()),
+                (originFused == null) ? "" :  StringUtils.valueOf(originFused.getLat()),
+                (originFused == null) ? "" :  StringUtils.valueOf(originFused.getLon()),
+                (originFused == null) ? "" :  StringUtils.valueOf(originFused.getAccuracy()),
+                (originGps == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(originGps.getTime()),
+                (originGps == null) ? "" :  StringUtils.valueOf(originGps.getLat()),
+                (originGps == null) ? "" :  StringUtils.valueOf(originGps.getLon()),
+                (originGps == null) ? "" :  StringUtils.valueOf(originGps.getAccuracy()),
+                (originNetwork == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(originNetwork.getTime()),
+                (originNetwork == null) ? "" :  StringUtils.valueOf(originNetwork.getLat()),
+                (originNetwork == null) ? "" :  StringUtils.valueOf(originNetwork.getLon()),
+                (originNetwork == null) ? "" :  StringUtils.valueOf(originNetwork.getAccuracy()),
+                (destinationFused == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(destinationFused.getTime()),
+                (destinationFused == null) ? "" :  StringUtils.valueOf(destinationFused.getLat()),
+                (destinationFused == null) ? "" :  StringUtils.valueOf(destinationFused.getLon()),
+                (destinationFused == null) ? "" :  StringUtils.valueOf(destinationFused.getAccuracy()),
+                (destinationGps == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(destinationGps.getTime()),
+                (destinationGps == null) ? "" :  StringUtils.valueOf(destinationGps.getLat()),
+                (destinationGps == null) ? "" :  StringUtils.valueOf(destinationGps.getLon()),
+                (destinationGps == null) ? "" :  StringUtils.valueOf(destinationGps.getAccuracy()),
+                (destinationNetwork == null) ? "" :  TravelBehaviorUtils.getDateAndTimeFromMillis(destinationNetwork.getTime()),
+                (destinationNetwork == null) ? "" :  StringUtils.valueOf(destinationNetwork.getLat()),
+                (destinationNetwork == null) ? "" :  StringUtils.valueOf(destinationNetwork.getLon()),
+                (destinationNetwork == null) ? "" :  StringUtils.valueOf(destinationNetwork.getAccuracy())};
     }
 }
