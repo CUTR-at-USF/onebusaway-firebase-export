@@ -152,7 +152,7 @@ public class TravelBehaviorDataAnalysisManager {
 
         // create sub-folder named after userId for kmz files
         Path userFolderPath = Paths.get(mProgramOptions.getOutputDir(), userId);
-        StringUtils.validateAndParseOutputPath(userFolderPath.toString());
+        StringUtils.validateAndParseFolderPath(userFolderPath.toString());
 
         // analyze each transition activity of the user one by one
         for (QueryDocumentSnapshot doc : userInfoById) {
