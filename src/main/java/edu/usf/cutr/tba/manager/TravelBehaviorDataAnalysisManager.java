@@ -28,6 +28,8 @@ import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 import edu.usf.cutr.tba.options.ProgramOptions;
 import edu.usf.cutr.tba.utils.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -148,8 +150,9 @@ public class TravelBehaviorDataAnalysisManager {
         // fall back to the QueryDocumentSnapshot id which is assumed has the timestamp as its name
         Collections.sort(userDeviceInfoList, new QueryDocumentSnapshotDeviceComparator());
 
-        // create sub folder for user
-        StringUtils.validateAndParseOutputPath(mProgramOptions.getOutputDir(), userId);
+        // create sub-folder named after userId for kmz files
+        Path userFolderPath = Paths.get(mProgramOptions.getOutputDir(), userId);
+        StringUtils.validateAndParseOutputPath(userFolderPath.toString());
 
         // analyze each transition activity of the user one by one
         for (QueryDocumentSnapshot doc : userInfoById) {

@@ -61,21 +61,15 @@ public class StringUtils {
      * @return String of a valid path or "" if the path is invalid or if its not possible to
      * be created.
      */
-    public static String validateAndParseOutputPath(String newPath, String subFolder) {
+    public static String validateAndParseOutputPath(String newPath) {
         try {
-            Path localPath;
-            if (subFolder == null) {
-                localPath = Paths.get(newPath);
-            } else {
-                localPath = Paths.get(newPath, subFolder);
-            }
+            Path localPath = Paths.get(newPath);
 
             if (Files.exists(localPath)) {
                 return localPath.toString();
             } else {
                 // Folder does not exists, try to create it
-                System.out.println("The provided path does not exist. " +
-                        "Trying to create the folder: '" + localPath.toString() + "' ...");
+                System.out.println("Creating new folder: '" + localPath.toString() + "' ...");
                 try {
                     Files.createDirectories(localPath);
                     return localPath.toString();
