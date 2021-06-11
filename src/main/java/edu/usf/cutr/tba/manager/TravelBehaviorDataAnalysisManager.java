@@ -151,11 +151,10 @@ public class TravelBehaviorDataAnalysisManager {
         Collections.sort(userDeviceInfoList, new QueryDocumentSnapshotDeviceComparator());
 
         // create sub-folder named after userId for kmz files
-        if(!mProgramOptions.skipKmz()) {
+        if (!mProgramOptions.skipKmz()) {
             Path userFolderPath = Paths.get(mProgramOptions.getOutputDir(), userId);
             StringUtils.validateAndParseFolderPath(userFolderPath.toString());
         }
-
 
         // analyze each transition activity of the user one by one
         for (QueryDocumentSnapshot doc : userInfoById) {
