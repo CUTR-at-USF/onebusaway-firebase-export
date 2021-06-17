@@ -26,11 +26,10 @@ import edu.usf.cutr.tba.model.DeviceInformation;
 import edu.usf.cutr.tba.model.TravelBehaviorInfo;
 import edu.usf.cutr.tba.model.TravelBehaviorRecord;
 import edu.usf.cutr.tba.options.ProgramOptions;
-import edu.usf.cutr.tba.utils.LocationUtils;
-import edu.usf.cutr.tba.utils.QueryDocumentSnapshotComparator;
-import edu.usf.cutr.tba.utils.QueryDocumentSnapshotDeviceComparator;
-import edu.usf.cutr.tba.utils.TravelBehaviorUtils;
+import edu.usf.cutr.tba.utils.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -150,6 +149,12 @@ public class TravelBehaviorDataAnalysisManager {
         // Sort the data by timestamp, if timestamp is not available, then the comparator will
         // fall back to the QueryDocumentSnapshot id which is assumed has the timestamp as its name
         Collections.sort(userDeviceInfoList, new QueryDocumentSnapshotDeviceComparator());
+
+        // create sub-folder named after userId for kmz files
+        if (!mProgramOptions.skipKmz()) {
+            Path userFolderPath = Paths.get(mProgramOptions.getOutputDir(), userId);
+            StringUtils.validateAndParseFolderPath(userFolderPath.toString());
+        }
 
         // analyze each transition activity of the user one by one
         for (QueryDocumentSnapshot doc : userInfoById) {
