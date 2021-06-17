@@ -69,12 +69,11 @@ public class StringUtils {
                 return localPath.toString();
             } else {
                 // Folder does not exists, try to create it
-                System.out.println("Creating new folder: '" + localPath.toString() + "' ...");
                 try {
                     Files.createDirectories(localPath);
                     return localPath.toString();
                 } catch (Exception e ) {
-                    System.out.println("It was not possible to create the directory: " + localPath.toString());
+                    System.out.println("It was not possible to create a directory for kmz files.");
                     System.err.println("Error:" + e);
                     return "";
                 }
