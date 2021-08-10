@@ -94,9 +94,7 @@ public class TravelBehaviorDataAnalysisManager {
         if (allUserIds.size() > 0) {
             int userRecordNumber = 1;
             for(String[] userId : allUserIds){
-                if (userRecordNumber % ProgramOptions.SHOW_PROGRESS_INTERVAL == 1) {
-                    System.out.println("Processing user record " + userRecordNumber + " out of " + allUserIds.size());
-                }
+                System.out.println("Processing user record " + userRecordNumber + " out of " + allUserIds.size());
                 processUserById(userId[0]);
                 userRecordNumber++;
             }
