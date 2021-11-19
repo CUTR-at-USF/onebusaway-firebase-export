@@ -25,6 +25,7 @@ import static edu.usf.cutr.tba.utils.TravelBehaviorUtils.getLocationInfo;
 public class TravelBehaviorRecord {
 
     public static final String[] CSV_HEADER = {"User ID",
+            "Device Trip ID",
             "Trip ID",
             "Region ID",
             "Google Activity",
@@ -84,6 +85,7 @@ public class TravelBehaviorRecord {
     public static final String NETWORK = "network";
 
     private String mUserId;
+    private String mDeviceTripId;
     private String mTripId;
     private String mRegionId;
     private String mGoogleActivity;
@@ -134,6 +136,11 @@ public class TravelBehaviorRecord {
 
     public TravelBehaviorRecord setTripId(String tripId) {
         mTripId = tripId;
+        return this;
+    }
+
+    public TravelBehaviorRecord setDeviceTripId(String deviceTripId) {
+        mDeviceTripId = deviceTripId;
         return this;
     }
 
@@ -395,6 +402,10 @@ public class TravelBehaviorRecord {
         return mTripId;
     }
 
+    public  String getDeviceTripId() {
+        return  mDeviceTripId;
+    }
+
     /**
      * Returns duration of the activity, in minutes
      *
@@ -418,7 +429,7 @@ public class TravelBehaviorRecord {
         TravelBehaviorInfo.LocationInfo destinationFused = getLocationInfo(locationInfoListDestination, FUSED);
         TravelBehaviorInfo.LocationInfo destinationGps = getLocationInfo(locationInfoListDestination, GPS);
         TravelBehaviorInfo.LocationInfo destinationNetwork = getLocationInfo(locationInfoListDestination, NETWORK);
-        return new String[]{mUserId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
+        return new String[]{mUserId, mDeviceTripId, mTripId, mRegionId, mGoogleActivity, StringUtils.valueOf(mGoogleConfidence), mVehicleType,
                 mActivityStartDateAndTime, mOriginLocationDateAndTime, StringUtils.valueOf(mActivityStartOriginTimeDiff),
                 StringUtils.valueOf(mStartLat), StringUtils.valueOf(mStartLon), StringUtils.valueOf(mOriginHorAccuracy), mOriginProvider,
                 mActivityEndDateAndTime, mDestinationLocationDateAndTime, StringUtils.valueOf(mActivityEndDestinationTimeDiff),
