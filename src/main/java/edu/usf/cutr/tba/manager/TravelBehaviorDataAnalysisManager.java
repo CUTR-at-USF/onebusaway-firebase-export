@@ -55,6 +55,8 @@ public class TravelBehaviorDataAnalysisManager {
 
     private int mTourId = 0;
 
+    private int mDeviceTripId = 0;
+
     public TravelBehaviorDataAnalysisManager() throws FirebaseFileNotInitializedException {
         mFirebaseReader = new FirebaseReader();
         mCSVFileWriter = new CSVFileWriter();
@@ -123,6 +125,8 @@ public class TravelBehaviorDataAnalysisManager {
      * @param userId firebase user id
      */
     private void processUserById(String userId) {
+        // Reset DeviceTripID every time a new user data is processed
+        mDeviceTripId = 0;
         // Holds all user data by id
         List<QueryDocumentSnapshot> userInfoById;
 
@@ -188,6 +192,8 @@ public class TravelBehaviorDataAnalysisManager {
                     exitActivity.detectedActivity.equals(mLastTravelBehaviorRecord.getGoogleActivity())) {
                 completeTravelBehaviorRecord(tbi, doc, userDeviceInfoList);
                 mLastTravelBehaviorRecord.setTripId(String.valueOf(mTripId++));
+                // Set the device trip Id
+                mLastTravelBehaviorRecord.setDeviceTripId(String.valueOf(mDeviceTripId++));
 
                 addTravelBehaviorRecord(mLastTravelBehaviorRecord);
 
@@ -213,7 +219,7 @@ public class TravelBehaviorDataAnalysisManager {
      * @param userId firebase user id
      * @param tbi Firebase TravelBehaviorInfo object
      * @param enterActivity enter activity
-     * @return
+     * @return new travel behavior record
      */
     private TravelBehaviorRecord createTravelBehaviorRecord(String userId, TravelBehaviorInfo tbi,
                                                             TravelBehaviorInfo.TravelBehaviorActivity enterActivity) {
