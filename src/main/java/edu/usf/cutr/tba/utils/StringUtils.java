@@ -61,20 +61,19 @@ public class StringUtils {
      * @return String of a valid path or "" if the path is invalid or if its not possible to
      * be created.
      */
-    public static String validateAndParseOutputPath(String newPath) {
+    public static String validateAndParseFolderPath(String newPath) {
         try {
             Path localPath = Paths.get(newPath);
+
             if (Files.exists(localPath)) {
                 return localPath.toString();
             } else {
                 // Folder does not exists, try to create it
-                System.out.println("The provided path does not exist. " +
-                        "Trying to create the folder: '" + localPath.toString() + "' ...");
                 try {
                     Files.createDirectories(localPath);
                     return localPath.toString();
                 } catch (Exception e ) {
-                    System.out.println("It was not possible to create the directory: " + localPath.toString());
+                    System.out.println("It was not possible to create a directory for kmz files.");
                     System.err.println("Error:" + e);
                     return "";
                 }

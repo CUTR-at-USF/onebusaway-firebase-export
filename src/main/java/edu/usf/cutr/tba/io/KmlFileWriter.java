@@ -184,7 +184,7 @@ public class KmlFileWriter {
 
             String fileName = firstTbr.getUserId() + "_" + TravelBehaviorUtils.getDateAndTimeFileNameFromMillis(millis);
             mProgramOptions = ProgramOptions.getInstance();
-            Path localPath = Paths.get(mProgramOptions.getOutputDir(), fileName + TRAVEL_BEHAVIOR_KML_FILE_EXTENSION);
+            Path localPath = Paths.get(mProgramOptions.getOutputDir(),firstTbr.getUserId(), fileName + TRAVEL_BEHAVIOR_KML_FILE_EXTENSION);
 
             File kmlFile = new File(localPath.toString());
             mKmlWriter = new BufferedWriter(new FileWriter(kmlFile));
