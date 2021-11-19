@@ -67,7 +67,7 @@ public class StringUtilsTest {
      * verifies the behavior of validateAndParseOutputPath
      */
     @Test
-    public void testValidateAndParseOutputPath() {
+    public void testValidateAndParseFolderPath() {
         try{
             // Create a subfolder inside the temporary folder
             File createdFolder= folder.newFolder("subfolder");
@@ -77,18 +77,18 @@ public class StringUtilsTest {
             Path newFolderPath = Paths.get(createdFolder.getParent(), "newFolder", "newSubFolder");
 
             // test for an existent folder
-            assertEquals(existentFolder, StringUtils.validateAndParseOutputPath(existentFolder));
+            assertEquals(existentFolder, StringUtils.validateAndParseFolderPath(existentFolder));
 
             // test for a non existent folder, the new folder must be created.
-            assertEquals(newFolderPath.toString(), StringUtils.validateAndParseOutputPath(newFolderPath.toString()));
+            assertEquals(newFolderPath.toString(), StringUtils.validateAndParseFolderPath(newFolderPath.toString()));
             assertTrue(Files.exists(newFolderPath));
 
             // Test for an invalid path
             String invalidPath = createdFolder.getParent() + "/\0/";
-            assertEquals("", StringUtils.validateAndParseOutputPath(invalidPath));
+            assertEquals("", StringUtils.validateAndParseFolderPath(invalidPath));
 
         } catch (Exception e){
-            System.out.println("Exception while testing testValidateAndParseOutputPath: " + e);
+            System.out.println("Exception while testing testValidateAndParseFolderPath: " + e);
         }
     }
 
