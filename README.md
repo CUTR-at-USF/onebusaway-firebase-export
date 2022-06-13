@@ -1,4 +1,4 @@
-# travel-behavior-analysis [![Java CI with Maven](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml)
+# onebusaway-firebase-export [![Java CI with Maven](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml)
 Java application to process travel behavior data collected by OneBusAway and stored in Firebase Firestore.
 
 ## Build 
