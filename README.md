@@ -5,6 +5,8 @@ A single CSV file contains trips in an origin/destination format where each line
 
 For more details about the output formats see [this final report](https://digitalcommons.usf.edu/cutr_nctr/13/).
 
+You can process this CSV output further by using another project, [onebusaway-travel-behavior-analysis](https://github.com/CUTR-at-USF/onebusaway-travel-behavior-analysis).
+
 ## Build 
 To build the application use `mvn clean package` command. This command will create a jar file 
 (i.e., `travel-behavior-analysis-1.0-SNAPSHOT.jar`) under the `target` folder.
