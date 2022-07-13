@@ -1,5 +1,5 @@
 # onebusaway-firebase-export [![Java CI with Maven](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml)
-Java application to process travel behavior data collected by OneBusAway and stored in Firebase Firestore.
+Java application to export travel behavior data collected by OneBusAway and stored in Firebase Firestore into comma-separate value (CSV) and KML files.
 
 ## Build 
 To build the application use `mvn clean package` command. This command will create a jar file 
