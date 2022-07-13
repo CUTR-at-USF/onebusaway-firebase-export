@@ -1,5 +1,9 @@
 # onebusaway-firebase-export [![Java CI with Maven](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/travel-behavior-analysis/actions/workflows/maven.yml)
-Java application to export travel behavior data collected by OneBusAway and stored in Firebase Firestore into comma-separate value (CSV) and KML files.
+Java application to export travel behavior data collected by OneBusAway and stored in Firebase Firestore into comma-separate value (CSV) and KML/KMZ files.
+
+A single CSV file contains trips in an origin/destination format where each line is a trip taken by a user. Multiple KML/KMZ files are output, one for each user-day of travel behavior.
+
+For more details about the output formats see [this final report](https://digitalcommons.usf.edu/cutr_nctr/13/).
 
 ## Build 
 To build the application use `mvn clean package` command. This command will create a jar file 
